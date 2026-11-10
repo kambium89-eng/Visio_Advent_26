@@ -16,7 +16,7 @@ header {
 
 h1 {
     color: #FFCF89;
-    font-size: 2.5rem;
+    font-size: clamp(1.6rem, 6vw, 2.5rem);
     letter-spacing: 2px;
 }
 
@@ -30,55 +30,222 @@ main {
     padding: 20px;
 }
 
-h2 {
-    color: #FFB162;
-}
-
-/* Raster für die 24 Türchen */
-#kalender {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    max-width: 600px;
-    margin: 40px auto;
-}
-
-/* Einzelne Türchen */
-.tuerchen {
-    aspect-ratio: 1;
-    background-color: #2C3B4D;
-    color: #FFCF89;
-    border: 1px solid #A35139;
-    border-radius: 8px;
-    font-size: 1.8rem;
-    font-weight: bold;
+/* Door container */
+.door-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 1376 / 2048;
+    margin: 30px auto;
+    perspective: 1000px;
     cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
+    transform-style: preserve-3d;
 }
 
-/* Animation beim Darüberfahren */
-.tuerchen:hover {
-    transform: scale(1.05);
-    background-color: #A35139;
+/* Both door halves */
+.door-left,
+.door-right {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    background-image: url("Images/c090a2a5fac20823f051128933508178.png");
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+
+    backface-visibility: hidden;
 }
 
-/* Darstellung auf grösseren Bildschirmen */
-@media (min-width: 768px) {
-    #kalender {
-        grid-template-columns: repeat(6, 1fr);
+/* Left half */
+.door-left {
+    left: 0;
+    background-position: left center;
+    transform-origin: left center;
+}
+
+/* Right half */
+.door-right {
+    right: 0;
+    background-position: right center;
+    transform-origin: right center;
+}
+
+/* Opening animations */
+.door-container.opening .door-left {
+    animation: openLeft 1.5s ease-in-out forwards;
+}
+
+.door-container.opening .door-right {
+    animation: openRight 1.5s ease-in-out forwards;
+}
+
+@keyframes openLeft {
+    to {
+        transform: rotateY(-105deg);
     }
 }
 
-/* Noch verschlossene Türchen */
-.tuerchen.gesperrt {
-    background-color: #25313E;
-    color: #788593;
-    border-color: #3B4855;
+@keyframes openRight {
+    to {
+        transform: rotateY(105deg);
+    }
 }
 
-/* Bereits freigeschaltete Türchen */
-.tuerchen.offen {
-    background-color: #2C3B4D;
+/* Zoom starts after doors open */
+.door-container.opening {
+    animation: zoomThrough 1.5s ease-in 1.5s forwards;
+}
+
+@keyframes zoomThrough {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(8);
+        opacity: 0;
+    }
+}
+
+/* Video nach der Türanimation */
+.video-container,
+.image-container {
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.video-container iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 200px;
+    border: 0;
+}
+
+.video-container a,
+.image-container a {
     color: #FFCF89;
-    border-color: #A35139;
+}
+
+.image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Frühere Türchen am Seitenende */
+.calendar-footer {
+    padding: 20px 20px 40px;
+}
+
+.past-days p {
+    color: #C9C1B1;
+    font-size: 0.95rem;
+}
+
+.past-day-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.past-day-buttons button,
+.explanation-toggle {
+    padding: 12px 18px;
+    border: 1px solid #FFCF89;
+    border-radius: 8px;
+    background: transparent;
+    color: #FFCF89;
+    font: inherit;
+    cursor: pointer;
+}
+
+.past-day-buttons button {
+    min-width: 44px;
+    padding: 8px 12px;
+}
+
+.past-day-buttons button[aria-pressed="true"],
+.past-day-buttons button:hover,
+.explanation-toggle:hover {
+    background-color: #FFCF89;
+    color: #1B2632;
+}
+
+.past-day-buttons button:focus-visible,
+.explanation-toggle:focus-visible,
+.door-container:focus-visible {
+    outline: 2px solid #F5E6CC;
+    outline-offset: 5px;
+}
+
+/* Geschichte und Erklärung im selben Lesebereich */
+.story-container {
+    max-width: 680px;
+    margin: 30px auto;
+    text-align: left;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    perspective: 1200px;
+}
+
+.story-container h2,
+.day-title {
+    color: #FFCF89;
+    line-height: 1.3;
+}
+
+.story-card {
+    backface-visibility: hidden;
+}
+
+.story-card.turning-out {
+    animation: storyTurnOut 0.35s ease-in forwards;
+}
+
+.story-card.turning-in {
+    animation: storyTurnIn 0.35s ease-out;
+}
+
+@keyframes storyTurnOut {
+    to {
+        transform: rotateY(-90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes storyTurnIn {
+    from {
+        transform: rotateY(90deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0);
+        opacity: 1;
+    }
+}
+
+.explanation-toggle:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.pending-container,
+.locked-container {
+    margin: 30px auto;
+    line-height: 1.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .story-card.turning-out,
+    .story-card.turning-in {
+        animation-duration: 1ms;
+    }
 }

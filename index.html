@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adventskalender 2026</title>
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css?v=2026-12-07-test">
 </head>
+
 <body>
     <header>
         <h1>Adventskalender 2026</h1>
@@ -15,11 +15,68 @@
     </header>
 
     <main>
-        <h2>Willkommen!</h2>
-        <p>Dein persönlicher Adventskalender entsteht hier.</p>
-        <div id="kalender"></div>
+        <h2 class="day-title" id="day-title">7. Dezember</h2>
+
+        <div class="door-container" id="door-container" role="button" tabindex="0"
+            aria-label="Tür für den 7. Dezember öffnen" aria-expanded="false" aria-controls="image-container">
+            <div class="door-left"></div>
+            <div class="door-right"></div>
+        </div>
+
+        <article class="story-container" id="story-container" aria-label="Geschichte zum 5. Dezember" hidden>
+            <div class="story-card" id="story-card" aria-live="polite">
+                <div id="story-content">
+                    <p role="status">Die Geschichte wird geladen …</p>
+                </div>
+                <div id="explanation-content" hidden></div>
+            </div>
+            <button type="button" class="explanation-toggle" id="explanation-toggle"
+                aria-controls="explanation-content" hidden>Erklärung anzeigen</button>
+        </article>
+
+        <section class="video-container" id="video-container" aria-label="Samichlaus zum 6. Dezember" hidden>
+            <iframe
+                id="christmas-video"
+                data-src="https://www.youtube-nocookie.com/embed/NpBb5qFIaIY?hl=de&amp;playsinline=1"
+                title="Weihnachtsvideo: Otto &amp; der Weihnachtsmann"
+                allow="encrypted-media; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+            ></iframe>
+            <p>
+                <a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen</a>
+            </p>
+        </section>
+
+        <section class="image-container" id="image-container" aria-label="Weihnachtscomic zum 7. Dezember" hidden>
+            <img
+                src="Images/Calvin&amp;Hobbs_Xmas.jpg"
+                alt="Weihnachtscomic mit Calvin und Hobbes: Calvin träumt von einem Brief des Weihnachtsmanns mit umgekehrten Weihnachtsregeln."
+                width="900"
+                height="632"
+                loading="lazy"
+            >
+            <p>
+                <a href="Images/Calvin&amp;Hobbs_Xmas.jpg" target="_blank" rel="noopener">Bild in voller Größe öffnen</a>
+            </p>
+        </section>
+
+        <section class="pending-container" id="pending-container" hidden>
+            <p>Die Überraschung für diesen Tag wird noch vorbereitet.</p>
+        </section>
+
+        <section class="locked-container" id="locked-container" hidden>
+            <p id="locked-message"></p>
+        </section>
     </main>
 
-<script src="script.js"></script>
+    <footer class="calendar-footer">
+        <nav class="past-days" id="past-days" aria-label="Vergangene Türchen" hidden>
+            <p>Vergangene Türchen</p>
+            <div class="past-day-buttons" id="past-day-buttons"></div>
+        </nav>
+    </footer>
+<script src="vendor/marked.umd.js"></script>
+<script src="script.js?v=2026-12-07-test"></script>
 </body>
 </html>
