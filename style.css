@@ -1,0 +1,84 @@
+
+/* Grundlegende Seitengestaltung */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #1B2632;
+    color: #F5E6CC;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Kopfbereich */
+header {
+    padding: 60px 20px 30px;
+}
+
+h1 {
+    color: #FFCF89;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+
+header p {
+    color: #C9C1B1;
+    font-size: 1.1rem;
+}
+
+/* Hauptinhalt */
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #FFB162;
+}
+
+/* Raster für die 24 Türchen */
+#kalender {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+/* Einzelne Türchen */
+.tuerchen {
+    aspect-ratio: 1;
+    background-color: #2C3B4D;
+    color: #FFCF89;
+    border: 1px solid #A35139;
+    border-radius: 8px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+/* Animation beim Darüberfahren */
+.tuerchen:hover {
+    transform: scale(1.05);
+    background-color: #A35139;
+}
+
+/* Darstellung auf grösseren Bildschirmen */
+@media (min-width: 768px) {
+    #kalender {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* Noch verschlossene Türchen */
+.tuerchen.gesperrt {
+    background-color: #25313E;
+    color: #788593;
+    border-color: #3B4855;
+}
+
+/* Bereits freigeschaltete Türchen */
+.tuerchen.offen {
+    background-color: #2C3B4D;
+    color: #FFCF89;
+    border-color: #A35139;
+}
