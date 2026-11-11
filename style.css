@@ -73,7 +73,7 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .form-message{font-size:13px;line-height:1.7;margin:14px 0 0;color:var(--pine);overflow-wrap:break-word}
 .form-message:empty{display:none}
 .form-message.error{color:#9b3931}
-.team-session{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:20px;font-size:11px;color:var(--pine-soft)}
+.team-session{display:flex;align-items:center;justify-content:flex-end;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:20px;font-size:11px;color:var(--pine-soft)}
 .pride-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;border:0;padding:0;margin:0}
 .pride-field:last-child{grid-column:1/-1}
 .pride-fields textarea{resize:vertical;min-height:77px}
@@ -88,6 +88,7 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .example-label{padding:10px 15px;background:#fbf0ce;font-size:12px;text-align:center;color:#775b24;border-radius:5px;margin-bottom:20px}
 .memory-instructions{text-align:center;font-size:14px;line-height:1.7;color:var(--pine-soft)}
 .memory-instructions p{margin:0}
+.memory-instructions p+p{margin-top:8px;font-size:12px}
 .memory-day .day-content{padding:20px 30px}
 .memories-ready .content-heading{margin-bottom:10px}
 .memories-ready .content-heading .day-intro{display:none}
@@ -95,8 +96,10 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .memories-ready .content-heading h2{font-size:42px;line-height:1.1}
 .memories-ready .day-content{padding:16px 28px}
 .memories-ready .team-session{margin-bottom:6px;padding-bottom:0;border:0}
-.memories-ready .team-session{margin-bottom:10px;padding-bottom:6px}
 .memories-ready .example-label{padding:7px 12px;margin:0 0 12px;font-size:11px}
+.memories-started .content-heading,.memories-started .memory-instructions{display:none}
+.memories-started .day-content{background:transparent;border-color:transparent;box-shadow:none}
+.memories-started .example-label{width:fit-content;margin:8px auto 0;background:#fbf0ced9}
 .empty-state{text-align:center;font:17px/1.8 Georgia,serif;padding:15px 0;color:var(--pine-soft)}
 .snowfall{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .snowflake{position:absolute;top:-20px;background:#fffdf4;border-radius:50%;opacity:0;animation:snow-fall var(--duration) var(--delay) linear infinite}
@@ -132,22 +135,15 @@ a.village-house:hover img,a.village-house:focus-visible img{transform:translateY
 .memory-house.is-smoking img{filter:drop-shadow(0 0 9px #d3ba6b8c);transform:translateY(-2px)}
 .memory-day .village-marker{border:0;cursor:pointer;appearance:none}
 .memory-day .village-marker.is-smoking{background:#e7d8ad;color:var(--pine)}
-.memory-cloud-layer{position:fixed;inset:0;z-index:15;pointer-events:none;font-family:Georgia,"Times New Roman",serif}
-.memory-puffs{position:absolute;inset:0;pointer-events:none}
+.memory-cloud-layer{position:fixed;inset:0;z-index:15;overflow:hidden;pointer-events:none;font-family:Georgia,"Times New Roman",serif;mask-image:linear-gradient(to bottom,transparent,#000 85px,#000)}
 .memory-puff{position:absolute;display:block;border-radius:48% 56% 45% 52%;background:#fffef6;box-shadow:0 1px 8px #485a3620;opacity:0}
-.memory-cloud{position:absolute;pointer-events:auto;padding:25px 26px 20px;border-radius:44px 49px 42px 47px;background:#fffef8;color:var(--pine);filter:drop-shadow(0 9px 18px #3f53312b);font-family:Georgia,"Times New Roman",serif}
-.memory-cloud::before,.memory-cloud::after{content:"";position:absolute;z-index:0;background:#fffef8;border-radius:50%;pointer-events:none}
-.memory-cloud::before{width:76px;height:48px;left:28px;top:-14px}
-.memory-cloud::after{width:104px;height:62px;right:35px;top:-23px}
+.memory-cloud{position:absolute;pointer-events:auto;padding:45px 44px 43px;color:var(--pine);font-family:Georgia,"Times New Roman",serif;filter:drop-shadow(0 8px 16px #3f53312b);will-change:transform;isolation:isolate}
+.memory-cloud-shape{position:absolute!important;inset:0;width:100%;height:100%;z-index:0!important;overflow:visible;pointer-events:none;fill:#fffef8}
 .memory-cloud>*{position:relative;z-index:1}
-.memory-cloud .memory-cloud-close{position:absolute;right:17px;top:10px;z-index:2;border:0;border-radius:50%;background:transparent;color:#6e8066;font:22px/1 Georgia,serif;width:28px;height:28px;padding:0}
+.memory-cloud .memory-cloud-close{position:absolute;right:45px;top:32px;z-index:2;border:0;border-radius:50%;background:transparent;color:#6e8066;font:22px/1 Georgia,serif;width:28px;height:28px;padding:0}
 .memory-cloud-close:hover{background:#edf2e4}
-.memory-cloud-label{margin:0 18px 9px 0;font:10px/1.5 Georgia,serif;text-transform:uppercase;letter-spacing:1px;color:#8e783f}
-.memory-cloud-text{margin:0;font:17px/1.65 Georgia,"Times New Roman",serif;max-height:min(34vh,260px);overflow-y:auto;overflow-wrap:anywhere;scrollbar-width:thin;scrollbar-color:#bac6ae transparent;overscroll-behavior:contain}
-.memory-cloud-actions{display:flex;align-items:center;flex-wrap:wrap;justify-content:space-between;gap:5px 15px;margin-top:13px}
-.memory-cloud-actions:has(>[hidden]:first-child):has(>[hidden]:last-child){display:none}
-.memory-cloud-actions .text-button,.memory-day-link{font:11px/1.6 Georgia,serif;color:var(--pine-soft)}
-.memory-day-link{margin-left:auto}
+.memory-cloud-label{margin:0 18px 9px 0;font:9px/1.5 Georgia,serif;text-transform:uppercase;letter-spacing:.8px;color:#8e783f}
+.memory-cloud-text{margin:0;font:17px/1.65 Georgia,"Times New Roman",serif;max-height:min(31vh,250px);overflow-y:auto;overflow-wrap:anywhere;scrollbar-width:thin;scrollbar-color:#bac6ae transparent;overscroll-behavior:contain}
 .village-house.arrival-target{visibility:hidden}
 .village-hint{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:9px;letter-spacing:.3px;color:#6d7e68;margin:0 0 6px;z-index:9}
 .village-hint span{margin-left:6px}
@@ -163,3 +159,4 @@ a.village-house:hover img,a.village-house:focus-visible img{transform:translateY
 @media(min-height:1000px){:root{--village-height:320px}.village-scene{height:255px}.village-tree{height:240px}.page-header{padding-top:35px}.day-content{padding:36px 50px}}
 @media(max-width:1100px){.preview-label{top:10px;font-size:9px;right:12px}.village-scene{width:calc(100% - 30px)}.village-house{width:calc(var(--width) * .86)}main{max-width:850px}.day-content{padding:26px 36px}.tree-left{left:-25px}.tree-right{right:-25px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.snowflake{animation:none}.day-content,.village-house img,.primary-button{transition:none}}
+@media(prefers-reduced-motion:reduce){.memory-cloud{will-change:auto}.memory-cloud-layer{mask-image:none}}

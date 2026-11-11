@@ -35,7 +35,16 @@ const EXAMPLE_PROUD_MOMENTS = [
     "Ich habe etwas Schönes mit anderen geteilt.",
     "Ich habe mich an etwas Schwieriges herangewagt.",
     "Ich habe jemandem Danke gesagt.",
-    "Ich habe mir erlaubt, auf meinen eigenen Weg stolz zu sein."
+    "Ich habe mir erlaubt, auf meinen eigenen Weg stolz zu sein.",
+    "Ich habe eine Grenze gesetzt und gut auf mich geachtet.",
+    "Ich habe mich nach einem Rückschlag wieder aufgerappelt.",
+    "Ich habe eine neue Kollegin oder einen neuen Kollegen willkommen geheissen.",
+    "Ich habe eine kleine Gewohnheit verändert, die mir guttut.",
+    "Ich habe eine Entscheidung getroffen, die ich lange aufgeschoben habe.",
+    "Ich habe mir selbst ein freundliches Wort geschenkt.",
+    "Ich habe mich entschuldigt und den ersten Schritt gemacht.",
+    "Ich habe meine Hilfe angeboten, ohne etwas dafür zu erwarten.",
+    "Ich habe bemerkt, wie viel ich schon gelernt habe."
 ];
 const $ = id => document.getElementById(id);
 const memoryClouds = typeof MemoryClouds === "function" ? new MemoryClouds() : null;
@@ -69,7 +78,7 @@ const HOUSE_POSITIONS = [
 
 function makeVillage() {
     document.body.classList.toggle('full-village',releasedDay>9);
-    const memoryDay=Boolean(memoryClouds&&selectedDay===23&&releasedDay>=23);
+    const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23&&releasedDay>=23);
     memoryClouds?.beginPage(memoryDay);
     const nav=$("village-houses");nav.replaceChildren();
     for(let day=1;day<=releasedDay;day++) {
@@ -78,7 +87,7 @@ function makeVillage() {
         house.className=`village-house${memoryDay?" memory-house":ready?"":" unprepared"}`;
         house.dataset.day=day;
         house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--layer:${bottom<40?5:bottom<80?4:3}`;
-        house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember${ready?`: ${DAYS[day].title}`:" – wird noch vorbereitet"}`);
+        house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember${ready?`: ${day===23?"Eine kleine Überraschung":DAYS[day].title}`:" – wird noch vorbereitet"}`);
         const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
         const url=new URL(location.href);url.searchParams.set("tag",day);
         if(memoryDay)house.type="button";
@@ -89,12 +98,15 @@ function makeVillage() {
         const image=document.createElement("img");image.src=`assets/web/houses/house-${String(day).padStart(2,"0")}.webp`;image.alt="";image.width=150;image.height=150;image.draggable=false;
         const number=document.createElement(memoryDay?"button":ready?"a":"span");number.className=`house-number village-marker${memoryDay||ready?"":" unprepared"}`;number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
         number.dataset.day=day;number.style.cssText=`--left:${left}%;--bottom:${bottom}px`;
-        if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day,ready&&day!==23?url.href:null);}
+        if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day);}
         else if(ready){number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
+        if(day===selectedDay){house.setAttribute("aria-current","page");number.setAttribute("aria-current","page");}
         house.append(image);nav.append(house,number);
     }
     $("village-count").textContent=`${releasedDay} von 24 Häuschen`;
-    document.querySelector(".village-hint").textContent=memoryDay?"Fahre mit der Maus über ein Häuschen – oder wähle es mit der Tabtaste. Lass unsere Stolzmomente aufsteigen.":"Jeden Tag ein neues Häuschen. Klicke auf ein Häuschen und schau noch einmal vorbei.";
+    const hint=document.querySelector(".village-hint");
+    hint.hidden=selectedDay===23;
+    hint.textContent=selectedDay===23?"":"Jeden Tag ein neues Häuschen. Klicke auf ein Häuschen und schau noch einmal vorbei.";
 }
 
 async function arrive(day,viewId) {
@@ -114,7 +126,7 @@ async function arrive(day,viewId) {
         if(finished)return;finished=true;
         arrivalAnimation?.cancel();arrivalAnimation=null;overlay.getAnimations({subtree:true}).forEach(a=>a.cancel());
         target.classList.remove("arrival-target");overlay.hidden=true;overlay.setAttribute("aria-hidden","true");
-        if(viewId===generation){document.body.classList.remove("is-arriving");$("page-status").textContent=`${day}. Dezember: ${DAYS[day]?.title||"Tagesinhalt"}`;}
+        if(viewId===generation){document.body.classList.remove("is-arriving");$("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;}
         finishArrival=null;
     };
     $("arrival-skip").onclick=()=>{finishArrival?.();content.focus({preventScroll:true});};
@@ -134,12 +146,15 @@ async function arrive(day,viewId) {
 
 function setHeading(day,future) {
     const info=DAYS[day];
-    $("day-eyebrow").textContent=`${day}. Dezember${info?` · ${info.kind}`:""}`;
-    $("day-title").textContent=future?"Noch ein bisschen Vorfreude":info?.title||"Hier entsteht eine Überraschung";
+    const surpriseLogin=day===23&&!token&&!future;
+    $("day-eyebrow").textContent=`${day}. Dezember${info&&!surpriseLogin&&!future?` · ${info.kind}`:""}`;
+    $("day-title").textContent=surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":future?"Noch ein bisschen Vorfreude":info?.title||"Hier entsteht eine Überraschung";
     $("day-intro").textContent=future?`Dieses Häuschen öffnet sich am ${day}. Dezember.`:info?.intro||"An diesem Tag wartet bald ein kleiner Adventsmoment auf dich.";
+    $("day-intro").hidden=surpriseLogin;
     const guidance=$("day-guidance");
     if(guidance){guidance.hidden=day!==1||future;guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";}
-    document.title=`${day}. Dezember · ${info?.title||"Adventskalender 2026"}`;
+    document.title=`${day}. Dezember · ${surpriseLogin||future?"Eine kleine Überraschung":info?.title||"Adventskalender 2026"}`;
+    $("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;
 }
 
 async function selectDay(day,updateUrl=false) {
@@ -209,11 +224,13 @@ async function api(path,options={}) {
 function forgetLogin(){token="";writeSession("advent-team-token",null);memoryClouds?.clear();}
 function renderProtected(day,viewId) {
     if(!token){renderLogin(day,viewId);return;}
-    body.innerHTML='<div class="team-session"><span>Mit dem Teamzugang angemeldet</span><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
+    if(day===23){makeVillage();setHeading(day,day>releasedDay);}
+    body.innerHTML='<div class="team-session"><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
     $("team-logout").onclick=()=>{forgetLogin();writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);renderProtected(day,viewId);};
     if(day===1)renderPrideForm(viewId);else renderReveal(viewId);
 }
 function renderLogin(day,viewId,message="") {
+    if(day===23){makeVillage();setHeading(day,day>releasedDay);}
     body.innerHTML='<form class="login-panel" id="team-login"><p class="form-intro">Dieser Adventsmoment gehört unserem Team.</p><label class="field-label" for="team-name">Teamname</label><input id="team-name" name="username" autocomplete="username" required value="Wichtel" maxlength="80"><label class="field-label" for="team-password">Passwort</label><input id="team-password" name="password" type="password" autocomplete="current-password" required maxlength="200"><button class="primary-button" type="submit">Mit dem Teamzugang anmelden <span aria-hidden="true">→</span></button><p class="form-message" id="login-message" role="status"></p><p class="login-help">Verwende den gemeinsamen Teamzugang aus unserem Advents-E-Mail.</p></form>';
     $("login-message").textContent=message;
     $("team-login").addEventListener("submit",async event=>{
@@ -264,7 +281,6 @@ async function renderReveal(viewId){
     catch(error){
         if(viewId!==generation)return;
         if(error.status===403&&error.data?.locked){
-            memoryClouds?.setWaiting("Unsere echten Stolzmomente ruhen noch bis zum 23. Dezember. Zum Ausprobieren kannst du oben die gekennzeichnete Beispielansicht öffnen.");
             target.innerHTML='<div class="release-lock"><div class="release-date" aria-hidden="true">23. Dezember</div><h3>Vorfreude ist auch ein schönes Gefühl.</h3><p>Unsere gesammelten Antworten bleiben bis zum 23. Dezember geschützt. Dann kannst du hier entdecken, worauf unser Team stolz ist.</p></div>';
             if(isPreview){const button=document.createElement("button");button.className="text-button";button.type="button";button.textContent="Vorschau mit Beispielantworten ansehen";target.querySelector(".release-lock").append(button);button.onclick=()=>showMemoryVillage(target,EXAMPLE_PROUD_MOMENTS,true);}
         }else{target.replaceChildren();const status=document.createElement("p");status.className="form-message";status.setAttribute("role","status");target.append(status);handleProtectedError(error,23,viewId,status);}
@@ -276,8 +292,10 @@ function showMemoryVillage(target,answers,example){
     memoryClouds?.setCollection(answers,example);
     if(!answers.length){const empty=document.createElement("p");empty.className="empty-state";empty.textContent="In unserer Sammlung sind noch keine Beiträge. Auch kleine Schritte sind ein Grund, stolz auf sich zu sein.";target.append(empty);return;}
     const instructions=document.createElement("div");instructions.className="memory-instructions";
-    const text=document.createElement("p");text.textContent=memoryClouds?"In jedem Häuschen steckt ein Stolzmoment. Fahre darüber und lass ihn als kleine Wolke aufsteigen.":"Lade die Seite einmal neu, um die Stolzmomente in unserem Dorf zu entdecken.";
-    instructions.append(text);target.append(instructions);
+    const text=document.createElement("p");text.textContent=memoryClouds?"Lass deine Maus über die Häuschen schweben und schau, was passiert.":"Lade die Seite einmal neu, um die Überraschung in unserem Dorf zu entdecken.";
+    instructions.append(text);
+    if(memoryClouds){const help=document.createElement("p");help.textContent="Bleib bei einem Häuschen: Es steigen immer neue Stolzmomente auf. Über einer Wolke kannst du sie in Ruhe lesen.";instructions.append(help);const keyboard=document.createElement("p");keyboard.className="sr-only";keyboard.textContent="Mit der Tabtaste wählst du ein Häuschen. Enter zeigt den nächsten Gedanken. Escape schliesst die Wolken.";instructions.append(keyboard);}
+    target.append(instructions);
     content.scrollTop=0;
 }
 
