@@ -51,13 +51,16 @@ function makeVillage() {
         house.dataset.day=day;
         house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--layer:${bottom<40?5:bottom<80?4:3}`;
         house.setAttribute("aria-label",`${day}. Dezember${ready?`: ${DAYS[day].title}`:" – wird noch vorbereitet"}`);
+        const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
         if(ready) {
             const url=new URL(location.href);url.searchParams.set("tag",day);house.href=url.href;
-            house.addEventListener("click",event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}});
+            house.addEventListener("click",openHouse);
         }
         const image=document.createElement("img");image.src=`assets/web/houses/house-${String(day).padStart(2,"0")}.webp`;image.alt="";image.width=150;image.height=150;
-        const number=document.createElement("span");number.className="house-number";number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
-        house.append(image,number);nav.append(house);
+        const number=document.createElement(ready?"a":"span");number.className=`house-number village-marker${ready?"":" unprepared"}`;number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
+        number.dataset.day=day;number.style.cssText=`--left:${left}%;--bottom:${bottom}px`;
+        if(ready){number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
+        house.append(image);nav.append(house,number);
     }
     $("village-count").textContent=`${releasedDay} von 24 Häuschen`;
 }
@@ -112,7 +115,7 @@ async function selectDay(day,updateUrl=false) {
     if(updateUrl){const url=new URL(location.href);url.searchParams.set("tag",day);history.pushState(null,"",url);}
     window.scrollTo({top:0,behavior:"instant"});
     body.replaceChildren();content.style.maxWidth="";content.scrollTop=0;
-    document.querySelectorAll(".village-house").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
+    document.querySelectorAll(".village-house,.village-marker").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
     const future=day>releasedDay;setHeading(day,future);
     content.dataset.type=DAYS[day]?.type||'pending';
     if(future||!DAYS[day]){document.body.classList.remove("is-arriving");body.innerHTML='<p class="empty-state">Jeden Tag kommt ein neuer kleiner Moment dazu.</p>';return;}

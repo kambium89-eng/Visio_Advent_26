@@ -111,6 +111,10 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 a.village-house:hover img,a.village-house:focus-visible img{transform:translateY(-6px)}
 .house-number{position:absolute;left:50%;bottom:0;transform:translate(-50%,40%);font:28px/1 "Alex Brush",cursive;color:#40593e;min-width:28px;padding:3px 6px 0;border-radius:50%;background:#fffdf3ef;box-shadow:0 1px 6px #5d664517}
 .village-house[aria-current="page"] .house-number{color:#fffdf6;background:var(--pine)}
+.village-marker{bottom:var(--bottom);left:var(--left);z-index:10;pointer-events:auto;text-decoration:none;text-align:center}
+.village-marker[aria-current="page"]{color:#fffdf6;background:var(--pine)}
+.village-marker.unprepared{opacity:.58;pointer-events:none}
+.village-house.arrival-target+.village-marker{visibility:hidden}
 .village-house[aria-current="page"] img{filter:drop-shadow(0 0 9px #d3ba6b75)}
 .village-house.unprepared{pointer-events:none;opacity:.58}
 .village-house.arrival-target{visibility:hidden}
