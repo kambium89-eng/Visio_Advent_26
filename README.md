@@ -19,6 +19,10 @@ Das zu einem Tag gehörende Haus erscheint gross und verkleinert sich automatisc
 
 Die Inhalte bleiben beim Scrollen im Lesebereich, das Dorf bleibt unten sichtbar. Am 24. Dezember enthält es alle 24 Häuser. Das Design ist für Computer gedacht. Titel und Hausnummern verwenden die mitgelieferte Schrift Alex Brush. Alle übrigen Texte verwenden Georgia.
 
+Am 23. Dezember wird das Dorf selbst zum Rückblick: Alle enthüllten Häuschen lassen beim Berühren mit der Maus oder beim Fokussieren kleine Rauchwolken aus ihrem Kamin aufsteigen. In einer Wolke erscheint jeweils ein anonymer Stolzmoment in Georgia. Die Wolke bleibt beim Überfahren lesbar und lässt sich mit Escape oder ihrem Schliessen-Knopf ausblenden. Bei mehreren Gedanken pro Haus gibt es einen Weiter-Knopf. Bereits fertige Tagesinhalte bleiben über einen Link in ihrer Wolke erreichbar. An allen anderen Tagen bleibt die bisherige Haus-Navigation erhalten.
+
+`memory-clouds.js` verwaltet die Wolken und die Kaminpositionen der quadratischen WebP-Bilder. Werden Hausmotive ausgetauscht, müssen ihre normierten Kaminpositionen in `CHIMNEY_ANCHORS` geprüft werden. Private Antworttexte werden als Text ausgegeben und beim Abmelden oder Verlassen des Rückblicks aus der Wolkenansicht entfernt. Der Vorschau-Rundgang verwendet 23 ausdrücklich erfundene Beispielgedanken, ohne Beiträge zu speichern oder die serverseitige Datumssperre zu verändern.
+
 ## Bilder und Inhalte
 
 - `assets/houses/house-01.png` bis `house-24.png`: Original-PNGs für die Tages-E-Mails.

@@ -12,7 +12,33 @@ const DAYS = {
     9: {title:"Weihnachten mit Calvin und Hobbes",kind:"Eine kleine Portion Humor",intro:"Ein Weihnachtswunsch kommt selten allein.",type:"image"},
     23: {title:"Darauf sind wir stolz",kind:"Unser gemeinsamer Rückblick",intro:"Viele kleine und grosse Dinge. Und jede Menge Gründe, stolz zu sein.",type:"reveal"}
 };
+const EXAMPLE_PROUD_MOMENTS = [
+    "Ich habe etwas Neues ausprobiert, obwohl ich zuerst unsicher war.",
+    "Ich habe jemandem aufmerksam zugehört.",
+    "Ich habe eine Pause gemacht, als ich sie gebraucht habe.",
+    "Ich habe eine schwierige Aufgabe Schritt für Schritt geschafft.",
+    "Ich habe um Hilfe gebeten und nicht aufgegeben.",
+    "Ich habe einer anderen Person Mut gemacht.",
+    "Ich habe einen Fehler zugegeben und daraus gelernt.",
+    "Ich habe mir Zeit für etwas genommen, das mir Freude macht.",
+    "Ich habe heute einen kleinen Anfang gewagt.",
+    "Ich habe ein ehrliches Kompliment ausgesprochen.",
+    "Ich habe eine Idee mit anderen geteilt.",
+    "Ich habe eine Aufgabe fertig gemacht, die lange liegen geblieben war.",
+    "Ich bin geduldig mit mir geblieben.",
+    "Ich habe mich getraut, eine Frage zu stellen.",
+    "Ich habe etwas repariert, statt es wegzuwerfen.",
+    "Ich habe mich für jemanden mitgefreut.",
+    "Ich habe meine Meinung freundlich vertreten.",
+    "Ich habe jemanden zum Lachen gebracht.",
+    "Ich habe einen kleinen Fortschritt wahrgenommen.",
+    "Ich habe etwas Schönes mit anderen geteilt.",
+    "Ich habe mich an etwas Schwieriges herangewagt.",
+    "Ich habe jemandem Danke gesagt.",
+    "Ich habe mir erlaubt, auf meinen eigenen Weg stolz zu sein."
+];
 const $ = id => document.getElementById(id);
+const memoryClouds = typeof MemoryClouds === "function" ? new MemoryClouds() : null;
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 const params = new URLSearchParams(location.search);
@@ -43,26 +69,32 @@ const HOUSE_POSITIONS = [
 
 function makeVillage() {
     document.body.classList.toggle('full-village',releasedDay>9);
+    const memoryDay=Boolean(memoryClouds&&selectedDay===23&&releasedDay>=23);
+    memoryClouds?.beginPage(memoryDay);
     const nav=$("village-houses");nav.replaceChildren();
     for(let day=1;day<=releasedDay;day++) {
-        const ready=READY_DAYS.includes(day),house=document.createElement(ready?"a":"span");
+        const ready=READY_DAYS.includes(day),house=document.createElement(memoryDay?"button":ready?"a":"span");
         const [left,bottom,width]=HOUSE_POSITIONS[day-1];
-        house.className=`village-house${ready?"":" unprepared"}`;
+        house.className=`village-house${memoryDay?" memory-house":ready?"":" unprepared"}`;
         house.dataset.day=day;
         house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--layer:${bottom<40?5:bottom<80?4:3}`;
-        house.setAttribute("aria-label",`${day}. Dezember${ready?`: ${DAYS[day].title}`:" – wird noch vorbereitet"}`);
+        house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember${ready?`: ${DAYS[day].title}`:" – wird noch vorbereitet"}`);
         const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
-        if(ready) {
-            const url=new URL(location.href);url.searchParams.set("tag",day);house.href=url.href;
+        const url=new URL(location.href);url.searchParams.set("tag",day);
+        if(memoryDay)house.type="button";
+        else if(ready) {
+            house.href=url.href;
             house.addEventListener("click",openHouse);
         }
-        const image=document.createElement("img");image.src=`assets/web/houses/house-${String(day).padStart(2,"0")}.webp`;image.alt="";image.width=150;image.height=150;
-        const number=document.createElement(ready?"a":"span");number.className=`house-number village-marker${ready?"":" unprepared"}`;number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
+        const image=document.createElement("img");image.src=`assets/web/houses/house-${String(day).padStart(2,"0")}.webp`;image.alt="";image.width=150;image.height=150;image.draggable=false;
+        const number=document.createElement(memoryDay?"button":ready?"a":"span");number.className=`house-number village-marker${memoryDay||ready?"":" unprepared"}`;number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
         number.dataset.day=day;number.style.cssText=`--left:${left}%;--bottom:${bottom}px`;
-        if(ready){number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
+        if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day,ready&&day!==23?url.href:null);}
+        else if(ready){number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
         house.append(image);nav.append(house,number);
     }
     $("village-count").textContent=`${releasedDay} von 24 Häuschen`;
+    document.querySelector(".village-hint").textContent=memoryDay?"Fahre mit der Maus über ein Häuschen – oder wähle es mit der Tabtaste. Lass unsere Stolzmomente aufsteigen.":"Jeden Tag ein neues Häuschen. Klicke auf ein Häuschen und schau noch einmal vorbei.";
 }
 
 async function arrive(day,viewId) {
@@ -115,6 +147,7 @@ async function selectDay(day,updateUrl=false) {
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=new URL(location.href);url.searchParams.set("tag",day);history.pushState(null,"",url);}
+    makeVillage();
     window.scrollTo({top:0,behavior:"instant"});
     body.replaceChildren();content.style.maxWidth="";content.scrollTop=0;
     document.querySelectorAll(".village-house,.village-marker").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
@@ -173,7 +206,7 @@ async function api(path,options={}) {
     if(!response.ok){const error=new Error(data.error||"Das hat leider nicht geklappt. Bitte versuche es nochmals.");error.status=response.status;error.data=data;throw error;}
     return data;
 }
-function forgetLogin(){token="";writeSession("advent-team-token",null);}
+function forgetLogin(){token="";writeSession("advent-team-token",null);memoryClouds?.clear();}
 function renderProtected(day,viewId) {
     if(!token){renderLogin(day,viewId);return;}
     body.innerHTML='<div class="team-session"><span>Mit dem Teamzugang angemeldet</span><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
@@ -227,27 +260,29 @@ function renderPrideForm(viewId){
 }
 async function renderReveal(viewId){
     const target=$("protected-content");target.innerHTML='<p class="form-message" role="status">Unser Rückblick wird geladen …</p>';
-    try{const data=await api("/responses");if(viewId!==generation)return;showGallery(target,data.answers,false);}
+    try{const data=await api("/responses");if(viewId!==generation)return;showMemoryVillage(target,data.answers,false);}
     catch(error){
         if(viewId!==generation)return;
         if(error.status===403&&error.data?.locked){
+            memoryClouds?.setWaiting("Unsere echten Stolzmomente ruhen noch bis zum 23. Dezember. Zum Ausprobieren kannst du oben die gekennzeichnete Beispielansicht öffnen.");
             target.innerHTML='<div class="release-lock"><div class="release-date" aria-hidden="true">23. Dezember</div><h3>Vorfreude ist auch ein schönes Gefühl.</h3><p>Unsere gesammelten Antworten bleiben bis zum 23. Dezember geschützt. Dann kannst du hier entdecken, worauf unser Team stolz ist.</p></div>';
-            if(isPreview){const button=document.createElement("button");button.className="text-button";button.type="button";button.textContent="Vorschau mit Beispielantworten ansehen";target.querySelector(".release-lock").append(button);button.onclick=()=>showGallery(target,["Ich habe etwas Neues ausprobiert, obwohl ich zuerst unsicher war.","Ich habe jemandem aufmerksam zugehört.","Ich habe mir eine Pause gegönnt, als ich sie gebraucht habe.","Ich habe eine schwierige Aufgabe Schritt für Schritt geschafft.","Ich habe um Hilfe gebeten und nicht aufgegeben."],true);}
+            if(isPreview){const button=document.createElement("button");button.className="text-button";button.type="button";button.textContent="Vorschau mit Beispielantworten ansehen";target.querySelector(".release-lock").append(button);button.onclick=()=>showMemoryVillage(target,EXAMPLE_PROUD_MOMENTS,true);}
         }else{target.replaceChildren();const status=document.createElement("p");status.className="form-message";status.setAttribute("role","status");target.append(status);handleProtectedError(error,23,viewId,status);}
     }
 }
-function showGallery(target,answers,example){
+function showMemoryVillage(target,answers,example){
     target.replaceChildren();
     if(example){const label=document.createElement("p");label.className="example-label";label.textContent="Beispielansicht – diese Texte sind erfunden und keine gespeicherten Teambeiträge.";target.append(label);}
+    memoryClouds?.setCollection(answers,example);
     if(!answers.length){const empty=document.createElement("p");empty.className="empty-state";empty.textContent="In unserer Sammlung sind noch keine Beiträge. Auch kleine Schritte sind ein Grund, stolz auf sich zu sein.";target.append(empty);return;}
-    const gallery=document.createElement("div");gallery.className="pride-gallery";
-    for(const answer of answers){const quote=document.createElement("blockquote");quote.className="pride-quote";quote.textContent=answer;gallery.append(quote);}
-    target.append(gallery);
+    const instructions=document.createElement("div");instructions.className="memory-instructions";
+    const text=document.createElement("p");text.textContent=memoryClouds?"In jedem Häuschen steckt ein Stolzmoment. Fahre darüber und lass ihn als kleine Wolke aufsteigen.":"Lade die Seite einmal neu, um die Stolzmomente in unserem Dorf zu entdecken.";
+    instructions.append(text);target.append(instructions);
+    content.scrollTop=0;
 }
 
 if(isPreview){$("preview-label").hidden=false;$("preview-label").textContent=`Vorschau · ${releasedDay}. Dezember`;}
 if(!reducedMotion.matches)for(let i=0;i<25;i++){const flake=document.createElement("i");flake.className="snowflake";const size=2+(i%4);flake.style.cssText=`left:${(i*37.7)%100}%;width:${size}px;height:${size}px;--duration:${13+i%11}s;--delay:-${i*.93}s;--opacity:${.25+(i%4)*.1}`;$("snowfall").append(flake);}
 window.addEventListener("popstate",()=>selectDay(getDayFromUrl()));
 document.addEventListener("visibilitychange",()=>{if(document.hidden)finishArrival?.();});
-makeVillage();
 selectDay(getDayFromUrl());
