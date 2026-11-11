@@ -1,82 +1,60 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventskalender 2026</title>
-    <link rel="stylesheet" href="style.css?v=2026-12-07-test">
+    <meta name="theme-color" content="#305448">
+    <meta name="description" content="24 Tage voller Überraschungen. Unser Weihnachtsdorf wächst jeden Tag um ein Häuschen – und einen kleinen Moment für dich.">
+    <title>Adventskalender 2026 · VisioCoaching</title>
+    <link rel="preload" href="assets/fonts/AlexBrush-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="style.css?v=village-1">
+    <script src="vendor/marked.umd.js" defer></script>
+    <script src="script.js?v=village-1" defer></script>
 </head>
+<body class="is-arriving">
+    <a class="skip-link" href="#day-content">Zum Tagesinhalt</a>
+    <div class="snowfall" id="snowfall" aria-hidden="true"></div>
+    <div class="preview-label" id="preview-label" hidden></div>
 
-<body>
-    <header>
-        <h1>Adventskalender 2026</h1>
-        <p>24 Tage voller Überraschungen</p>
+    <header class="page-header">
+        <p class="brand">VisioCoaching <span aria-hidden="true">✧</span> Advent 2026</p>
+        <h1>Adventskalender <span>2026</span></h1>
+        <p class="subtitle">24 Tage voller Überraschungen</p>
+        <div class="header-ornament" aria-hidden="true"><span></span>✧<span></span></div>
     </header>
 
-    <main>
-        <h2 class="day-title" id="day-title">7. Dezember</h2>
-
-        <div class="door-container" id="door-container" role="button" tabindex="0"
-            aria-label="Tür für den 7. Dezember öffnen" aria-expanded="false" aria-controls="image-container">
-            <div class="door-left"></div>
-            <div class="door-right"></div>
-        </div>
-
-        <article class="story-container" id="story-container" aria-label="Geschichte zum 5. Dezember" hidden>
-            <div class="story-card" id="story-card" aria-live="polite">
-                <div id="story-content">
-                    <p role="status">Die Geschichte wird geladen …</p>
-                </div>
-                <div id="explanation-content" hidden></div>
-            </div>
-            <button type="button" class="explanation-toggle" id="explanation-toggle"
-                aria-controls="explanation-content" hidden>Erklärung anzeigen</button>
+    <main id="main">
+        <article class="day-content paper" id="day-content" aria-labelledby="day-title" tabindex="-1">
+            <header class="content-heading">
+                <p class="eyebrow" id="day-eyebrow"></p>
+                <h2 id="day-title"></h2>
+                <p class="day-intro" id="day-intro"></p>
+            </header>
+            <div id="content-body"></div>
         </article>
-
-        <section class="video-container" id="video-container" aria-label="Samichlaus zum 6. Dezember" hidden>
-            <iframe
-                id="christmas-video"
-                data-src="https://www.youtube-nocookie.com/embed/NpBb5qFIaIY?hl=de&amp;playsinline=1"
-                title="Weihnachtsvideo: Otto &amp; der Weihnachtsmann"
-                allow="encrypted-media; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-            ></iframe>
-            <p>
-                <a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen</a>
-            </p>
-        </section>
-
-        <section class="image-container" id="image-container" aria-label="Weihnachtscomic zum 7. Dezember" hidden>
-            <img
-                src="Images/Calvin&amp;Hobbs_Xmas.jpg"
-                alt="Weihnachtscomic mit Calvin und Hobbes: Calvin träumt von einem Brief des Weihnachtsmanns mit umgekehrten Weihnachtsregeln."
-                width="900"
-                height="632"
-                loading="lazy"
-            >
-            <p>
-                <a href="Images/Calvin&amp;Hobbs_Xmas.jpg" target="_blank" rel="noopener">Bild in voller Größe öffnen</a>
-            </p>
-        </section>
-
-        <section class="pending-container" id="pending-container" hidden>
-            <p>Die Überraschung für diesen Tag wird noch vorbereitet.</p>
-        </section>
-
-        <section class="locked-container" id="locked-container" hidden>
-            <p id="locked-message"></p>
-        </section>
+        <noscript><p class="paper noscript">Bitte aktiviere JavaScript, um die Häuschen und Tagesinhalte zu öffnen.</p></noscript>
     </main>
 
-    <footer class="calendar-footer">
-        <nav class="past-days" id="past-days" aria-label="Vergangene Türchen" hidden>
-            <p>Vergangene Türchen</p>
-            <div class="past-day-buttons" id="past-day-buttons"></div>
-        </nav>
+    <footer class="village" id="village" aria-label="Unser wachsendes Weihnachtsdorf">
+        <div class="village-caption"><p>Unser kleines Weihnachtsdorf</p><span id="village-count"></span></div>
+        <div class="village-scene" id="village-scene">
+            <div class="snow-bank snow-bank-back" aria-hidden="true"></div>
+            <img class="village-tree tree-left" src="assets/web/decorations/tree_1.webp" alt="" width="222" height="300">
+            <img class="village-tree tree-right" src="assets/web/decorations/tree_2.webp" alt="" width="227" height="300">
+            <img class="snow-patch snow-patch-left" src="assets/web/decorations/snow_1.webp" alt="" width="900" height="900">
+            <img class="snow-patch snow-patch-right" src="assets/web/decorations/snow_2.webp" alt="" width="900" height="900">
+            <nav id="village-houses" aria-label="Bereits enthüllte Häuschen"></nav>
+            <div class="snow-bank snow-bank-front" aria-hidden="true"></div>
+        </div>
+        <p class="village-hint">Jeden Tag ein neues Häuschen. <span>Klicke auf ein Häuschen und schau noch einmal vorbei.</span></p>
     </footer>
-<script src="vendor/marked.umd.js"></script>
-<script src="script.js?v=2026-12-07-test"></script>
+
+    <div class="arrival" id="arrival" aria-hidden="true" hidden>
+        <div class="arrival-wash"></div>
+        <img id="arrival-house" alt="" width="736" height="736">
+        <div class="arrival-copy"><span id="arrival-day"></span><p>Ein kleiner Moment für dich.</p></div>
+        <button class="text-button arrival-skip" id="arrival-skip" type="button">Direkt zum Inhalt <span aria-hidden="true">↓</span></button>
+    </div>
+    <div class="sr-only" id="page-status" role="status" aria-live="polite"></div>
 </body>
 </html>
