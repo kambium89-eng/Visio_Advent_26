@@ -226,7 +226,7 @@ function renderProtected(day,viewId) {
     if(!token){renderLogin(day,viewId);return;}
     if(day===23){makeVillage();setHeading(day,day>releasedDay);}
     body.innerHTML='<div class="team-session"><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
-    $("team-logout").onclick=()=>{forgetLogin();writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);renderProtected(day,viewId);};
+    $("team-logout").onclick=()=>{finishArrival?.();forgetLogin();writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);renderProtected(day,++generation);};
     if(day===1)renderPrideForm(viewId);else renderReveal(viewId);
 }
 function renderLogin(day,viewId,message="") {
