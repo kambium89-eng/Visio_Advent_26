@@ -31,17 +31,22 @@ test('login, authorization, CORS and cache controls',async()=>{
   assert.equal((await f.request('/responses','GET',undefined,token+'bad')).status,401);
   assert.equal((await f.request('/responses','GET',undefined,token,'2026-12-01T21:00:01Z')).status,401);
 });
-test('exactly five bounded answers; safe upsert without identities',async()=>{
+test('one to five bounded answers; safe upsert without identities',async()=>{
   const f=fixture(),token=await f.login(),id=randomUUID();
   const answers=['  A small step  ','Second','<script>alert(1)</script>','Fourth','Fifth'];
-  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:answers.slice(0,4)},token)).status,400);
-  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[' ',...answers.slice(1)]},token)).status,400);
+  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[]},token)).status,400);
+  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[' ','','','','']},token)).status,400);
+  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[...answers,'Sixth']},token)).status,400);
   assert.equal((await f.request('/responses','POST',{submissionId:id,answers:['a'.repeat(501),...answers.slice(1)]},token)).status,400);
   assert.equal((await f.request('/responses','POST',{submissionId:id,answers,name:'ignored',email:'ignored'},token)).status,201);
   assert.equal((await f.request('/responses','POST',{submissionId:id,answers:['Changed',...answers.slice(1)]},token)).status,201);
   const rows=f.sqlite.prepare('SELECT * FROM pride_responses').all();
   assert.equal(rows.length,1);assert.deepEqual(Object.keys(rows[0]).sort(),['answers_json','id','saved_at']);
   assert.equal(JSON.parse(rows[0].answers_json)[0],'Changed');
+  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:['One thing is enough']},token)).status,201);
+  assert.deepEqual(JSON.parse(f.sqlite.prepare('SELECT answers_json FROM pride_responses WHERE id = ?').get(id).answers_json),['One thing is enough']);
+  assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[' ','','  One thought in the third field  ','','']},token)).status,201);
+  assert.deepEqual(JSON.parse(f.sqlite.prepare('SELECT answers_json FROM pride_responses WHERE id = ?').get(id).answers_json),['One thought in the third field']);
 });
 test('real Zurich midnight controls release; preview parameters cannot release answers',async()=>{
   const f=fixture(),before='2026-12-22T22:59:59Z',after='2026-12-22T23:00:00Z';

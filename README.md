@@ -17,7 +17,7 @@ Vor dem 1. Dezember zeigt die erste Version den gekennzeichneten Vorschau-Stand 
 
 Das zu einem Tag gehörende Haus erscheint gross und verkleinert sich automatisch auf seinen festen Platz im Dorf am unteren Fensterrand. Danach wird der Tagesinhalt eingeblendet. Frühere fertig vorbereitete Tage sind über ihre Häuser erreichbar. Noch nicht ausgearbeitete Tage erscheinen im Vorschau-Dorf blasser. Zukünftige Häuser fehlen, bis ihr Datum erreicht ist. Bei reduzierter Bewegung wird die Animation übersprungen.
 
-Die Inhalte bleiben beim Scrollen im Lesebereich, das Dorf bleibt unten sichtbar. Am 24. Dezember enthält es alle 24 Häuser. Das Design ist für Computer gedacht.
+Die Inhalte bleiben beim Scrollen im Lesebereich, das Dorf bleibt unten sichtbar. Am 24. Dezember enthält es alle 24 Häuser. Das Design ist für Computer gedacht. Titel und Hausnummern verwenden die mitgelieferte Schrift Alex Brush. Alle übrigen Texte verwenden Georgia.
 
 ## Bilder und Inhalte
 
@@ -33,7 +33,7 @@ Die Inhalte bleiben beim Scrollen im Lesebereich, das Dorf bleibt unten sichtbar
 
 Tag 1 und 23 verwenden den gemeinsamen Teamzugang. Der Datenspeicher läuft separat über Sites mit einer privaten D1-Datenbank. `backend/` enthält die Quellkopie des Dienstes mit Datenbankschema, Migrationen und Tests. Die Plattform stellt den Dienst separat bereit; ein GitHub-Push veröffentlicht nur die Website.
 
-Passwort und Sitzungsschlüssel sind ausschliesslich als Runtime-Secrets hinterlegt. Sie stehen nicht im Repository. Die API prüft jeden Datenzugriff. Gespeichert werden fünf Antworttexte, eine zufällige Einsendungs-ID und ein Speicherzeitpunkt, keine Namen oder E-Mail-Adressen. Wiederholtes Speichern mit derselben Einsendungs-ID ersetzt die frühere Fassung. Im selben Browser-Tab lassen sich eigene Antworten auch zurückziehen.
+Passwort und Sitzungsschlüssel sind ausschliesslich als Runtime-Secrets hinterlegt. Sie stehen nicht im Repository. Die API prüft jeden Datenzugriff. Gespeichert werden ein bis fünf freiwillige Gedanken, eine zufällige Einsendungs-ID und ein Speicherzeitpunkt, keine Namen oder E-Mail-Adressen. Leere Felder werden weggelassen; ein Gedanke genügt. Wiederholtes Speichern mit derselben Einsendungs-ID ersetzt die frühere Fassung. Im selben Browser-Tab lassen sich eigene Antworten auch zurückziehen. Die Formulierung auf Tag 1 verrät den späteren Rückblick nicht.
 
 Die tatsächlichen Beiträge sind serverseitig bis zum 23. Dezember 2026 um 00:00 Uhr Schweizer Zeit gesperrt. Die Vorschau des Rückblicks kann vorher ausdrücklich gekennzeichnete, erfundene Beispieltexte zeigen. Diese Beispiele werden nicht gespeichert. Der echte Rückblick zeigt nur gemischte Antworttexte ohne Zuordnung zu Einsendungen.
 

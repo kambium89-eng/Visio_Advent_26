@@ -105,6 +105,8 @@ function setHeading(day,future) {
     $("day-eyebrow").textContent=`${day}. Dezember${info?` · ${info.kind}`:""}`;
     $("day-title").textContent=future?"Noch ein bisschen Vorfreude":info?.title||"Hier entsteht eine Überraschung";
     $("day-intro").textContent=future?`Dieses Häuschen öffnet sich am ${day}. Dezember.`:info?.intro||"An diesem Tag wartet bald ein kleiner Adventsmoment auf dich.";
+    const guidance=$("day-guidance");
+    if(guidance){guidance.hidden=day!==1||future;guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";}
     document.title=`${day}. Dezember · ${info?.title||"Adventskalender 2026"}`;
 }
 
@@ -197,12 +199,12 @@ function renderPrideForm(viewId){
     if(readSession("advent-pride-saved")){renderSaved();return;}
     showFields();
     function showFields(){
-        target.innerHTML='<p class="form-intro">Schreibe 5 Dinge auf, auf die du stolz bist.</p><form id="pride-form"><fieldset class="pride-fields"><legend class="sr-only">Fünf Dinge, auf die du stolz bist</legend></fieldset><p class="notice">Deine Antworten werden am 23. Dezember ohne Namen im Adventskalender mit unserem Team geteilt. Teile bitte nur, was du mit allen teilen möchtest, und bleib freundlich und respektvoll.</p><div class="form-footer"><button class="primary-button" type="submit">Antworten speichern <span aria-hidden="true">→</span></button><p class="form-message" id="pride-message" role="status"></p></div></form>';
+        target.innerHTML='<p class="form-intro">Was macht dich stolz?</p><form id="pride-form"><fieldset class="pride-fields"><legend class="sr-only">Deine Gedanken, bis zu fünf Dinge</legend></fieldset><p class="notice">Teile bitte nur, was du mit allen teilen möchtest und bleib freundlich und respektvoll. Die Antworten könnten vielleicht später zu einer Überraschung führen</p><div class="form-footer"><button class="primary-button" type="submit">Antworten speichern <span aria-hidden="true">→</span></button><p class="form-message" id="pride-message" role="status"></p></div></form>';
         const fields=target.querySelector(".pride-fields");
-        for(let i=1;i<=5;i++){const field=document.createElement("div");field.className="pride-field";field.innerHTML=`<label class="field-label" for="pride-${i}"><span>${i}.</span>Darauf bin ich stolz</label><textarea id="pride-${i}" name="answer-${i}" rows="2" maxlength="500" required placeholder="Eine kleine oder grosse Sache …"></textarea>`;fields.append(field);}
+        for(let i=1;i<=5;i++){const field=document.createElement("div");field.className="pride-field";field.innerHTML=`<label class="field-label" for="pride-${i}"><span>${i}.</span>Darauf bin ich stolz</label><textarea id="pride-${i}" name="answer-${i}" rows="2" maxlength="500" placeholder="Eine kleine oder grosse Sache …"></textarea>`;fields.append(field);}
         $("pride-form").addEventListener("submit",async event=>{
-            event.preventDefault();const answers=Array.from(fields.querySelectorAll("textarea"),t=>t.value.trim());
-            const status=$("pride-message");status.classList.remove("error");if(answers.some(a=>!a)){status.textContent="Bitte fülle alle fünf Felder aus.";status.classList.add("error");return;}
+            event.preventDefault();const answers=Array.from(fields.querySelectorAll("textarea"),t=>t.value.trim()).filter(Boolean);
+            const status=$("pride-message");status.classList.remove("error");if(!answers.length){status.textContent="Ein Gedanke reicht. Wenn du magst, schreib etwas in eines der Felder.";return;}
             let submissionId=readSession("advent-pride-id");if(!submissionId){submissionId=crypto.randomUUID();writeSession("advent-pride-id",submissionId);}
             const button=event.currentTarget.querySelector("button");button.disabled=true;status.textContent="Deine Antworten werden gespeichert …";
             try{await api("/responses",{method:"POST",body:JSON.stringify({answers,submissionId})});if(viewId!==generation)return;writeSession("advent-pride-saved","1");renderSaved();}
@@ -210,10 +212,10 @@ function renderPrideForm(viewId){
         });
     }
     function renderSaved(){
-        target.innerHTML='<div class="success-panel"><div class="success-symbol" aria-hidden="true">✧</div><h3>Das darfst du feiern.</h3><p>Danke! Deine fünf Antworten sind gespeichert. Am 23. Dezember werden sie ohne Namen mit unserem Team geteilt.</p><button class="text-button" id="replace-answers" type="button">Meine Antworten ersetzen</button><span aria-hidden="true"> · </span><button class="text-button" id="withdraw-answers" type="button">Antworten zurückziehen</button><div id="withdraw-confirmation"></div></div>';
+        target.innerHTML='<div class="success-panel"><div class="success-symbol" aria-hidden="true">✧</div><h3>Das darfst du feiern.</h3><p>Danke, dein Beitrag ist gespeichert. Schön, dass du dir diesen Moment genommen hast.</p><button class="text-button" id="replace-answers" type="button">Meine Antworten ersetzen</button><span aria-hidden="true"> · </span><button class="text-button" id="withdraw-answers" type="button">Antworten zurückziehen</button><div id="withdraw-confirmation"></div></div>';
         $("replace-answers").onclick=()=>{writeSession("advent-pride-saved",null);showFields();};
         $("withdraw-answers").onclick=()=>{
-            const confirmation=$("withdraw-confirmation");confirmation.innerHTML='<p class="form-message">Möchtest du deine fünf Antworten wirklich aus der Sammlung löschen?</p><button class="text-button" id="confirm-withdraw" type="button">Ja, meine Antworten löschen</button><span aria-hidden="true"> · </span><button class="text-button" id="cancel-withdraw" type="button">Behalten</button><p class="form-message" id="withdraw-message" role="status"></p>';
+            const confirmation=$("withdraw-confirmation");confirmation.innerHTML='<p class="form-message">Möchtest du deinen Beitrag wirklich aus der Sammlung löschen?</p><button class="text-button" id="confirm-withdraw" type="button">Ja, meine Antworten löschen</button><span aria-hidden="true"> · </span><button class="text-button" id="cancel-withdraw" type="button">Behalten</button><p class="form-message" id="withdraw-message" role="status"></p>';
             $("cancel-withdraw").onclick=()=>confirmation.replaceChildren();
             $("confirm-withdraw").onclick=async()=>{
                 const button=$("confirm-withdraw");button.disabled=true;

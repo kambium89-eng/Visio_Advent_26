@@ -1,9 +1,9 @@
 # Visio Advent 2026 – Datenspeicher
 
-Privater D1-Datenspeicher für den Adventskalender auf GitHub Pages. Der Service stellt einen gemeinsamen Teamzugang und eine anonyme Sammlung aus fünf Textantworten bereit.
+Privater D1-Datenspeicher für den Adventskalender auf GitHub Pages. Der Service stellt einen gemeinsamen Teamzugang und eine anonyme Sammlung aus einem bis fünf freiwilligen Gedanken bereit.
 
 - `POST /api/login`: gemeinsamer Teamzugang, signiertes Token für acht Stunden.
-- `POST /api/responses`: fünf Antworten speichern oder mit derselben zufälligen Einsendungs-ID ersetzen. Ab 23. Dezember geschlossen.
+- `POST /api/responses`: einen bis fünf Gedanken speichern oder mit derselben zufälligen Einsendungs-ID ersetzen. Leere Felder werden weggelassen. Ab 23. Dezember geschlossen.
 - `GET /api/responses`: Team-Login erforderlich. Freigabe erst am 23. Dezember 2026 nach Serverzeit in `Europe/Zurich`. Vorher wird die Tabelle nicht gelesen.
 - `DELETE /api/responses`: eigene Einsendung mit der nur im ursprünglichen Browser-Tab vorhandenen zufälligen Einsendungs-ID zurückziehen. Team-Login erforderlich.
 - `GET /api/health`: einfacher Verfügbarkeitscheck ohne Beiträge.

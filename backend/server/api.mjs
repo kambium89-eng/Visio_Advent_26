@@ -87,11 +87,13 @@ export async function handleApi(request,env,now=new Date()){
       return json({answers});
     }
     if(request.method==="POST"){
-      if(today>=RELEASE_DATE)return json({error:"Die Sammlung ist abgeschlossen. Du kannst die Beiträge jetzt im Rückblick am 23. Dezember ansehen."},403);
+      if(today>=RELEASE_DATE)return json({error:"Die Sammlung ist abgeschlossen. Danke fürs Mitmachen."},403);
       const data=await readJson(request);
       if(!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(data.submissionId||""))return json({error:"Bitte lade die Seite neu und versuche es nochmals."},400);
-      if(!Array.isArray(data.answers)||data.answers.length!==5||data.answers.some(a=>typeof a!=="string"||!a.trim()||a.trim().length>500))return json({error:"Bitte fülle alle fünf Felder aus. Pro Feld sind höchstens 500 Zeichen möglich."},400);
-      await env.DB.prepare("INSERT INTO pride_responses (id, answers_json, saved_at) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET answers_json = excluded.answers_json, saved_at = excluded.saved_at").bind(data.submissionId,JSON.stringify(data.answers.map(a=>a.trim())),now.toISOString()).run();
+      if(!Array.isArray(data.answers)||data.answers.length<1||data.answers.length>5||data.answers.some(a=>typeof a!=="string"||a.trim().length>500))return json({error:"Ein Gedanke reicht. Du kannst bis zu fünf Dinge aufschreiben, mit höchstens 500 Zeichen pro Feld."},400);
+      const answers=data.answers.map(a=>a.trim()).filter(Boolean);
+      if(!answers.length)return json({error:"Ein Gedanke reicht. Wenn du magst, schreib etwas in eines der Felder."},400);
+      await env.DB.prepare("INSERT INTO pride_responses (id, answers_json, saved_at) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET answers_json = excluded.answers_json, saved_at = excluded.saved_at").bind(data.submissionId,JSON.stringify(answers),now.toISOString()).run();
       return json({saved:true},201);
     }
     return json({error:"Dieser Zugriff ist nicht erlaubt."},405,{Allow:"GET, POST, DELETE, OPTIONS"});
