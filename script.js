@@ -1,74 +1,29 @@
 "use strict";
 
-// Vorschau für die erste Version. Vor dem Advent auf null setzen.
-const PREVIEW_DATE = "2026-12-09";
 const API_BASE = "https://visio-advent-2026-api.inventivetoast1.chatgpt.site";
-const READY_DAYS = [1, 5, 6, 7, 9, 23];
-const DAYS = {
-    1: {title:"Fünf Dinge, auf die du stolz bist",kind:"Ein Moment für dich",intro:"Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",type:"form"},
-    5: {title:"Die zwei Wölfe",kind:"Eine kleine Geschichte",intro:"Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",type:"story"},
-    6: {title:"Samichlaus mit Otto",kind:"Zeit zum Schmunzeln",intro:"Ein bisschen Schalk zum Samichlaus. Mach es dir gemütlich.",type:"video"},
-    7: {title:"Ein Spaziergang voller Farben",kind:"Mit offenen Augen",intro:"Manchmal liegt das Schöne direkt vor unseren Füssen.",type:"hunt"},
-    9: {title:"Weihnachten mit Calvin und Hobbes",kind:"Eine kleine Portion Humor",intro:"Ein Weihnachtswunsch kommt selten allein.",type:"image"},
-    23: {title:"Darauf sind wir stolz",kind:"Unser gemeinsamer Rückblick",intro:"Viele kleine und grosse Dinge. Und jede Menge Gründe, stolz zu sein.",type:"reveal"}
+let DAYS = {};
+const DAY_INTROS = {
+    1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
+    5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
+    6: "Ein bisschen Schalk zum Samichlaus. Mach es dir gemütlich.",
+    7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
+    9: "Ein Weihnachtswunsch kommt selten allein."
 };
-const EXAMPLE_PROUD_MOMENTS = [
-    "Ich habe etwas Neues ausprobiert, obwohl ich zuerst unsicher war.",
-    "Ich habe jemandem aufmerksam zugehört.",
-    "Ich habe eine Pause gemacht, als ich sie gebraucht habe.",
-    "Ich habe eine schwierige Aufgabe Schritt für Schritt geschafft.",
-    "Ich habe um Hilfe gebeten und nicht aufgegeben.",
-    "Ich habe einer anderen Person Mut gemacht.",
-    "Ich habe einen Fehler zugegeben und daraus gelernt.",
-    "Ich habe mir Zeit für etwas genommen, das mir Freude macht.",
-    "Ich habe heute einen kleinen Anfang gewagt.",
-    "Ich habe ein ehrliches Kompliment ausgesprochen.",
-    "Ich habe eine Idee mit anderen geteilt.",
-    "Ich habe eine Aufgabe fertig gemacht, die lange liegen geblieben war.",
-    "Ich bin geduldig mit mir geblieben.",
-    "Ich habe mich getraut, eine Frage zu stellen.",
-    "Ich habe etwas repariert, statt es wegzuwerfen.",
-    "Ich habe mich für jemanden mitgefreut.",
-    "Ich habe meine Meinung freundlich vertreten.",
-    "Ich habe jemanden zum Lachen gebracht.",
-    "Ich habe einen kleinen Fortschritt wahrgenommen.",
-    "Ich habe etwas Schönes mit anderen geteilt.",
-    "Ich habe mich an etwas Schwieriges herangewagt.",
-    "Ich habe jemandem Danke gesagt.",
-    "Ich habe mir erlaubt, auf meinen eigenen Weg stolz zu sein.",
-    "Ich habe eine Grenze gesetzt und gut auf mich geachtet.",
-    "Ich habe mich nach einem Rückschlag wieder aufgerappelt.",
-    "Ich habe eine neue Kollegin oder einen neuen Kollegen willkommen geheissen.",
-    "Ich habe eine kleine Gewohnheit verändert, die mir guttut.",
-    "Ich habe eine Entscheidung getroffen, die ich lange aufgeschoben habe.",
-    "Ich habe mir selbst ein freundliches Wort geschenkt.",
-    "Ich habe mich entschuldigt und den ersten Schritt gemacht.",
-    "Ich habe meine Hilfe angeboten, ohne etwas dafür zu erwarten.",
-    "Ich habe bemerkt, wie viel ich schon gelernt habe."
-];
 const $ = id => document.getElementById(id);
 const memoryClouds = typeof MemoryClouds === "function" ? new MemoryClouds() : null;
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
-const params = new URLSearchParams(location.search);
-const previewDay = Number(params.get("vorschau"));
-const explicitPreview = Number.isInteger(previewDay) && previewDay >= 1 && previewDay <= 24;
-function zurichDate() {
-    const parts = Object.fromEntries(new Intl.DateTimeFormat("en",{timeZone:"Europe/Zurich",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()).map(p=>[p.type,p.value]));
-    return `${parts.year}-${parts.month}-${parts.day}`;
-}
-const actualDate=zurichDate();
-const automaticPreview=Boolean(PREVIEW_DATE&&actualDate<"2026-12-01");
-const isPreview=explicitPreview||automaticPreview;
-const calendarDate = explicitPreview ? `2026-12-${String(previewDay).padStart(2,"0")}` : automaticPreview ? PREVIEW_DATE : actualDate;
-const releasedDay = calendarDate < "2026-12-01" ? 0 : calendarDate > "2026-12-24" ? 24 : Number(calendarDate.slice(-2));
-const defaultDay = READY_DAYS.filter(day=>day<=releasedDay).at(-1) || 1;
-let selectedDay = defaultDay, generation = 0, arrivalAnimation = null, finishArrival = null;
-let token = readSession("advent-team-token") || "";
+let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
+let token = readTeamToken();
 let storyPromise;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
-function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:defaultDay;}
+function readTeamToken() {
+    const candidate=readSession("advent-team-token")||"";
+    try{const claims=JSON.parse(atob(candidate.split('.')[0].replace(/-/g,'+').replace(/_/g,'/')));if(Number.isInteger(claims.exp)&&claims.exp>Date.now()/1000)return candidate;}catch{}
+    writeSession("advent-team-token",null);return "";
+}
+function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
 const HOUSE_POSITIONS = [
     [50,12,145],[40,19,133],[60,15,140],[30,11,132],[70,19,143],[20,14,132],
     [80,10,142],[10,20,129],[90,13,131],[5,83,96],[95,83,98],[15,98,105],
@@ -77,33 +32,33 @@ const HOUSE_POSITIONS = [
 ];
 
 function makeVillage() {
-    document.body.classList.toggle('full-village',releasedDay>9);
-    const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23&&releasedDay>=23);
+    document.body.classList.toggle('full-village',selectedDay>9);
+    const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23);
     memoryClouds?.beginPage(memoryDay);
     const nav=$("village-houses");nav.replaceChildren();
-    for(let day=1;day<=releasedDay;day++) {
-        const ready=READY_DAYS.includes(day),house=document.createElement(memoryDay?"button":ready?"a":"span");
+    for(let day=1;day<=selectedDay;day++) {
+        const house=document.createElement(memoryDay?"button":"a");
         const [left,bottom,width]=HOUSE_POSITIONS[day-1];
-        house.className=`village-house${memoryDay?" memory-house":ready?"":" unprepared"}`;
+        house.className=`village-house${memoryDay?" memory-house":""}`;
         house.dataset.day=day;
         house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--layer:${bottom<40?5:bottom<80?4:3}`;
-        house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember${ready?`: ${day===23?"Eine kleine Überraschung":DAYS[day].title}`:" – wird noch vorbereitet"}`);
+        house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember`);
         const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
-        const url=new URL(location.href);url.searchParams.set("tag",day);
+        const url=dayUrl(day);
         if(memoryDay)house.type="button";
-        else if(ready) {
+        else {
             house.href=url.href;
             house.addEventListener("click",openHouse);
         }
-        const image=document.createElement("img");image.src=`assets/web/houses/house-${String(day).padStart(2,"0")}.webp`;image.alt="";image.width=150;image.height=150;image.draggable=false;
-        const number=document.createElement(memoryDay?"button":ready?"a":"span");number.className=`house-number village-marker${memoryDay||ready?"":" unprepared"}`;number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
+        const image=document.createElement("img");image.src=`assets/web/houses/${DAYS[day].house}.webp`;image.dataset.house=DAYS[day].house.slice(-2);image.alt="";image.width=150;image.height=150;image.draggable=false;
+        const number=document.createElement(memoryDay?"button":"a");number.className="house-number village-marker";number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
         number.dataset.day=day;number.style.cssText=`--left:${left}%;--bottom:${bottom}px`;
         if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day);}
-        else if(ready){number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
+        else{number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
         if(day===selectedDay){house.setAttribute("aria-current","page");number.setAttribute("aria-current","page");}
         house.append(image);nav.append(house,number);
     }
-    $("village-count").textContent=`${releasedDay} von 24 Häuschen`;
+    $("village-count").textContent=`${selectedDay} von 24 Häuschen`;
     const hint=document.querySelector(".village-hint");
     hint.hidden=selectedDay===23;
     hint.textContent=selectedDay===23?"":"Jeden Tag ein neues Häuschen. Klicke auf ein Häuschen und schau noch einmal vorbei.";
@@ -144,31 +99,44 @@ async function arrive(day,viewId) {
     if(!finished&&viewId===generation)finishArrival?.();
 }
 
-function setHeading(day,future) {
-    const info=DAYS[day];
-    const surpriseLogin=day===23&&!token&&!future;
-    $("day-eyebrow").textContent=`${day}. Dezember${info&&!surpriseLogin&&!future?` · ${info.kind}`:""}`;
-    $("day-title").textContent=surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":future?"Noch ein bisschen Vorfreude":info?.title||"Hier entsteht eine Überraschung";
-    $("day-intro").textContent=future?`Dieses Häuschen öffnet sich am ${day}. Dezember.`:info?.intro||"An diesem Tag wartet bald ein kleiner Adventsmoment auf dich.";
-    $("day-intro").hidden=surpriseLogin;
+function dayUrl(day) {
+    const url=new URL(location.href);
+    url.search="";url.hash="";url.searchParams.set("tag",day);
+    return url;
+}
+
+function setHeading(day) {
+    const info=DAYS[day],surpriseLogin=day===23&&!token;
+    $("day-eyebrow").textContent=`${day}. Dezember`;
+    $("day-title").textContent=surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":info.title;
+    $("day-intro").textContent=DAY_INTROS[day]||"";
+    $("day-intro").hidden=surpriseLogin||!DAY_INTROS[day];
     const guidance=$("day-guidance");
-    if(guidance){guidance.hidden=day!==1||future;guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";}
-    document.title=`${day}. Dezember · ${surpriseLogin||future?"Eine kleine Überraschung":info?.title||"Adventskalender 2026"}`;
+    guidance.hidden=day!==1;
+    guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";
+    document.title=`${day}. Dezember · ${surpriseLogin?"Eine kleine Überraschung":info.title}`;
     $("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;
+}
+
+function renderPlaceholder(day) {
+    const panel=document.createElement("section");panel.className="day-placeholder";
+    const label=document.createElement("p");label.className="placeholder-label";label.textContent="Dieses Türchen wird noch gefüllt.";
+    const quote=document.createElement("blockquote");quote.textContent=DAYS[day].description;
+    const note=document.createElement("p");note.className="placeholder-note";note.textContent="Das ist für diesen Tag geplant.";
+    panel.append(label,quote,note);body.append(panel);
 }
 
 async function selectDay(day,updateUrl=false) {
     finishArrival?.();generation++;const viewId=generation;selectedDay=day;
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
-    if(updateUrl){const url=new URL(location.href);url.searchParams.set("tag",day);history.pushState(null,"",url);}
+    if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
     makeVillage();
     window.scrollTo({top:0,behavior:"instant"});
     body.replaceChildren();content.style.maxWidth="";content.scrollTop=0;
     document.querySelectorAll(".village-house,.village-marker").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
-    const future=day>releasedDay;setHeading(day,future);
-    content.dataset.type=DAYS[day]?.type||'pending';
-    if(future||!DAYS[day]){document.body.classList.remove("is-arriving");body.innerHTML='<p class="empty-state">Jeden Tag kommt ein neuer kleiner Moment dazu.</p>';return;}
+    setHeading(day);
+    content.dataset.type=DAYS[day].type;
     document.body.classList.add("is-arriving");
     switch(DAYS[day].type){
         case "story":await renderStory(viewId);break;
@@ -176,6 +144,7 @@ async function selectDay(day,updateUrl=false) {
         case "image":body.innerHTML='<img class="comic" src="Images/Calvin&amp;Hobbs_Xmas.jpg" width="900" height="632" alt="Weihnachtscomic mit Calvin und Hobbes: Calvin träumt von einem Brief des Weihnachtsmanns mit umgekehrten Weihnachtsregeln."><p class="media-link"><a href="Images/Calvin&amp;Hobbs_Xmas.jpg" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
         case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
+        default:renderPlaceholder(day);break;
     }
     if(viewId!==generation)return;
     await arrive(day,viewId);
@@ -224,13 +193,13 @@ async function api(path,options={}) {
 function forgetLogin(){token="";writeSession("advent-team-token",null);memoryClouds?.clear();}
 function renderProtected(day,viewId) {
     if(!token){renderLogin(day,viewId);return;}
-    if(day===23){makeVillage();setHeading(day,day>releasedDay);}
+    if(day===23){makeVillage();setHeading(day);}
     body.innerHTML='<div class="team-session"><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
     $("team-logout").onclick=()=>{finishArrival?.();forgetLogin();writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);renderProtected(day,++generation);};
     if(day===1)renderPrideForm(viewId);else renderReveal(viewId);
 }
 function renderLogin(day,viewId,message="") {
-    if(day===23){makeVillage();setHeading(day,day>releasedDay);}
+    if(day===23){makeVillage();setHeading(day);}
     body.innerHTML='<form class="login-panel" id="team-login"><p class="form-intro">Dieser Adventsmoment gehört unserem Team.</p><label class="field-label" for="team-name">Teamname</label><input id="team-name" name="username" autocomplete="username" required value="Wichtel" maxlength="80"><label class="field-label" for="team-password">Passwort</label><input id="team-password" name="password" type="password" autocomplete="current-password" required maxlength="200"><button class="primary-button" type="submit">Mit dem Teamzugang anmelden <span aria-hidden="true">→</span></button><p class="form-message" id="login-message" role="status"></p><p class="login-help">Verwende den gemeinsamen Teamzugang aus unserem Advents-E-Mail.</p></form>';
     $("login-message").textContent=message;
     $("team-login").addEventListener("submit",async event=>{
@@ -276,31 +245,42 @@ function renderPrideForm(viewId){
     }
 }
 async function renderReveal(viewId){
-    const target=$("protected-content");target.innerHTML='<p class="form-message" role="status">Unser Rückblick wird geladen …</p>';
-    try{const data=await api("/responses");if(viewId!==generation)return;showMemoryVillage(target,data.answers,false);}
+    const target=$("protected-content");target.innerHTML='<p class="form-message" role="status">Unsere Stolzmomente werden geladen …</p>';
+    try{const data=await api("/responses");if(viewId!==generation)return;showMemoryVillage(target,data.answers);}
     catch(error){
         if(viewId!==generation)return;
-        if(error.status===403&&error.data?.locked){
-            target.innerHTML='<div class="release-lock"><div class="release-date" aria-hidden="true">23. Dezember</div><h3>Vorfreude ist auch ein schönes Gefühl.</h3><p>Unsere gesammelten Antworten bleiben bis zum 23. Dezember geschützt. Dann kannst du hier entdecken, worauf unser Team stolz ist.</p></div>';
-            if(isPreview){const button=document.createElement("button");button.className="text-button";button.type="button";button.textContent="Vorschau mit Beispielantworten ansehen";target.querySelector(".release-lock").append(button);button.onclick=()=>showMemoryVillage(target,EXAMPLE_PROUD_MOMENTS,true);}
-        }else{target.replaceChildren();const status=document.createElement("p");status.className="form-message";status.setAttribute("role","status");target.append(status);handleProtectedError(error,23,viewId,status);}
+        target.replaceChildren();
+        const status=document.createElement("p");status.className="form-message";status.setAttribute("role","status");target.append(status);
+        handleProtectedError(error,23,viewId,status);
+        if(error.status!==401){const retry=document.createElement("button");retry.type="button";retry.className="text-button";retry.textContent="Erneut versuchen";retry.onclick=()=>{if(viewId===generation)renderReveal(viewId);};target.append(retry);}
     }
 }
-function showMemoryVillage(target,answers,example){
-    target.replaceChildren();
-    if(example){const label=document.createElement("p");label.className="example-label";label.textContent="Beispielansicht – diese Texte sind erfunden und keine gespeicherten Teambeiträge.";target.append(label);}
-    memoryClouds?.setCollection(answers,example);
-    if(!answers.length){const empty=document.createElement("p");empty.className="empty-state";empty.textContent="In unserer Sammlung sind noch keine Beiträge. Auch kleine Schritte sind ein Grund, stolz auf sich zu sein.";target.append(empty);return;}
+function showMemoryVillage(target,answers){
+    target.replaceChildren();memoryClouds?.setCollection(answers);
     const instructions=document.createElement("div");instructions.className="memory-instructions";
     const text=document.createElement("p");text.textContent=memoryClouds?"Lass deine Maus über die Häuschen schweben und schau, was passiert.":"Lade die Seite einmal neu, um die Überraschung in unserem Dorf zu entdecken.";
     instructions.append(text);
     if(memoryClouds){const help=document.createElement("p");help.textContent="Bleib bei einem Häuschen: Es steigen immer neue Stolzmomente auf. Über einer Wolke kannst du sie in Ruhe lesen.";instructions.append(help);const keyboard=document.createElement("p");keyboard.className="sr-only";keyboard.textContent="Mit der Tabtaste wählst du ein Häuschen. Enter zeigt den nächsten Gedanken. Escape schliesst die Wolken.";instructions.append(keyboard);}
-    target.append(instructions);
-    content.scrollTop=0;
+    target.append(instructions);content.scrollTop=0;
 }
 
-if(isPreview){$("preview-label").hidden=false;$("preview-label").textContent=`Vorschau · ${releasedDay}. Dezember`;}
+async function startCalendar() {
+    try {
+        const response=await fetch("content/calendar.json",{cache:"no-cache"});
+        if(!response.ok)throw new Error("calendar");
+        const days=await response.json();
+        if(days.length!==24||days.some((day,index)=>day.day!==index+1||!day.title||!day.description||!day.house))throw new Error("calendar");
+        DAYS=Object.fromEntries(days.map(day=>[day.day,day]));
+        const day=getDayFromUrl();history.replaceState(null,"",dayUrl(day));
+        await selectDay(day);
+    } catch {
+        document.body.classList.remove("is-arriving");
+        $("day-title").textContent="Ein kleiner Moment Geduld";
+        body.innerHTML='<p class="form-message error" role="alert">Das Türchen konnte nicht geladen werden. Bitte lade die Seite nochmals.</p>';
+    }
+}
+
 if(!reducedMotion.matches)for(let i=0;i<25;i++){const flake=document.createElement("i");flake.className="snowflake";const size=2+(i%4);flake.style.cssText=`left:${(i*37.7)%100}%;width:${size}px;height:${size}px;--duration:${13+i%11}s;--delay:-${i*.93}s;--opacity:${.25+(i%4)*.1}`;$("snowfall").append(flake);}
-window.addEventListener("popstate",()=>selectDay(getDayFromUrl()));
+window.addEventListener("popstate",()=>{if(Object.keys(DAYS).length)selectDay(getDayFromUrl());});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)finishArrival?.();});
-selectDay(getDayFromUrl());
+startCalendar();

@@ -53,16 +53,17 @@ class MemoryClouds {
         this.answers = [];
         this.cursor = 0;
         this.ready = false;
-        this.example = false;
+        this.empty = false;
         this.announcer.textContent = "";
         this.layer.hidden = true;
         document.body.classList.remove("memories-ready", "memories-started");
     }
 
-    setCollection(answers, example) {
+    setCollection(answers) {
         this.clear();
         this.answers = answers.filter(answer => typeof answer === "string" && answer.trim()).map(answer => answer.trim());
-        this.example = example;
+        this.empty = this.answers.length === 0;
+        if (this.empty) this.answers = ["Noch ist unser Dorf ganz still. Jeder kleine Erfolg darf hier seinen Platz finden."];
         this.ready = true;
         this.layer.hidden = false;
         document.body.classList.add("memories-ready");
@@ -150,7 +151,7 @@ class MemoryClouds {
         cloud.className = "memory-cloud";
         cloud.setAttribute("aria-label", "Ein Stolzmoment aus unserem Dorf");
         cloud.innerHTML = '<svg class="memory-cloud-shape" viewBox="0 0 360 230" preserveAspectRatio="none" aria-hidden="true"><path d="M55 185C24 187 4 165 13 139C-7 119 0 86 29 76C23 46 49 24 78 32C91 1 131 0 153 21C181-5 222 3 237 31C270 15 305 33 307 63C341 59 364 86 352 114C376 143 357 180 326 183C320 216 280 229 253 210C230 235 192 234 171 214C143 237 105 229 94 207C76 213 56 203 55 185Z"/></svg><button class="memory-cloud-close" type="button" aria-label="Wolke schliessen">×</button><p class="memory-cloud-label"></p><p class="memory-cloud-text"></p>';
-        cloud.querySelector(".memory-cloud-label").textContent = this.example ? "Beispiel · frei erfunden" : "Ein Stolzmoment aus unserem Team";
+        cloud.querySelector(".memory-cloud-label").textContent = this.empty ? "Unser Weihnachtsdorf" : "Ein Stolzmoment aus unserem Team";
         // Answers are always plain text, never HTML.
         cloud.querySelector(".memory-cloud-text").textContent = answer;
         const flight = {cloud, house, animation:null, paused:false};
@@ -174,8 +175,8 @@ class MemoryClouds {
         cloud.addEventListener("pointerleave", resume);
         cloud.addEventListener("focusin", pause);
         cloud.addEventListener("focusout", () => queueMicrotask(resume));
-        const rect = house.querySelector("img").getBoundingClientRect();
-        const [anchorX, anchorY] = CHIMNEY_ANCHORS[day - 1];
+        const image = house.querySelector("img"),rect = image.getBoundingClientRect();
+        const [anchorX, anchorY] = CHIMNEY_ANCHORS[(Number(image.dataset.house) || day) - 1];
         const x = rect.left + rect.width * anchorX;
         const y = rect.top + rect.height * anchorY;
         const width = Math.min(370, innerWidth - 48);
@@ -198,7 +199,7 @@ class MemoryClouds {
             ], {duration,easing:"linear",fill:"forwards"});
             flight.animation.finished.then(() => this.remove(flight)).catch(() => {});
         }
-        this.announcer.textContent = `${this.example ? "Erfundenes Beispiel. " : ""}${answer}`;
+        this.announcer.textContent = answer;
         return flight;
     }
 

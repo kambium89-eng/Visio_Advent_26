@@ -3,8 +3,8 @@
 Privater D1-Datenspeicher für den Adventskalender auf GitHub Pages. Der Service stellt einen gemeinsamen Teamzugang und eine anonyme Sammlung aus einem bis fünf freiwilligen Gedanken bereit.
 
 - `POST /api/login`: gemeinsamer Teamzugang, signiertes Token für acht Stunden.
-- `POST /api/responses`: einen bis fünf Gedanken speichern oder mit derselben zufälligen Einsendungs-ID ersetzen. Leere Felder werden weggelassen. Ab 23. Dezember geschlossen.
-- `GET /api/responses`: Team-Login erforderlich. Freigabe erst am 23. Dezember 2026 nach Serverzeit in `Europe/Zurich`. Vorher wird die Tabelle nicht gelesen.
+- `POST /api/responses`: einen bis fünf Gedanken speichern oder mit derselben zufälligen Einsendungs-ID ersetzen. Leere Felder werden weggelassen.
+- `GET /api/responses`: Team-Login erforderlich. Die Sammlung ist nach dem Login über den normalen Tageslink erreichbar, ohne Datumssperre.
 - `DELETE /api/responses`: eigene Einsendung mit der nur im ursprünglichen Browser-Tab vorhandenen zufälligen Einsendungs-ID zurückziehen. Team-Login erforderlich.
 - `GET /api/health`: einfacher Verfügbarkeitscheck ohne Beiträge.
 
@@ -14,7 +14,7 @@ Die Website darf öffentlich auf GitHub Pages liegen. Die API benötigt für den
 
 `TEAM_PASSWORD` und `SESSION_SECRET` werden ausschliesslich als Sites-Runtime-Secrets eingerichtet. Geheimnisse gehören weder in Git noch in Browser-Code. Lokale `.env*`- und `.dev.vars*`-Dateien sind ausgeschlossen. Die Datenbankbindung heisst `DB`.
 
-Der Client darf ein Vorschau-Datum für das Dorf verwenden. Der Server übernimmt weder dieses Datum noch Datumsparameter aus HTTP-Anfragen. Ein vorzeitiger Rückblick ist damit ausgeschlossen.
+Die offizielle Website verwendet einen festen Link pro Tag. Der Tageslink bestimmt den Dorfstand. Es gibt keine Vorschau-Parameter und keine kalendarische Lese- oder Schreibsperre. Sitzungsgültigkeit, Eingabeprüfung und Authentifizierung bleiben serverseitig wirksam. Diese Änderung folgt der Nutzerentscheidung vom 12. November 2026.
 
 Tests: `node --test server/api.test.mjs`. Datenbankschema: `db/schema.ts`, generierte Migrationen unter `drizzle`. Bestehende Migrationen nicht verändern. Neue Migrationen mit `npm run db:generate` erzeugen. Veröffentlichung erfolgt über den Sites-Workflow. Website und Quellkopie dieses Dienstes liegen zusätzlich im lokalen GitHub-Repository `Visio_Advent_26`.
 

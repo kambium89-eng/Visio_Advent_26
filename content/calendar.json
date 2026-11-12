@@ -1,0 +1,194 @@
+[
+  {
+    "day": 1,
+    "title": "Fünf Dinge, auf die du stolz bist",
+    "format": "Formular",
+    "description": "Fünf persönliche Erfolge oder Stärken aufschreiben. Die anonymen Beiträge werden für den gemeinsamen Rückblick am 23. Dezember gespeichert.",
+    "house": "house-01",
+    "type": "form"
+  },
+  {
+    "day": 2,
+    "title": "Eine herzerwärmende Weihnachtsgeschichte",
+    "format": "Geschichte",
+    "description": "Eine kurze Weihnachtsgeschichte über Wärme, Hoffnung und menschliche Nähe lesen.",
+    "house": "house-02",
+    "type": "placeholder"
+  },
+  {
+    "day": 3,
+    "title": "Heute ein ehrliches Kompliment",
+    "format": "Challenge",
+    "description": "Einem Menschen bewusst ein ehrliches, wertschätzendes Kompliment machen.",
+    "house": "house-03",
+    "type": "placeholder"
+  },
+  {
+    "day": 4,
+    "title": "Weihnachtswissen zum Weiterdrehen",
+    "format": "Wissenswertes",
+    "description": "Kuriose Weihnachtsfakten auf drehbaren Textkarten entdecken.",
+    "house": "house-04",
+    "type": "placeholder"
+  },
+  {
+    "day": 5,
+    "title": "Die zwei Wölfe",
+    "format": "Geschichte",
+    "description": "Die Parabel lesen und anschliessend zwischen Geschichte und Erklärung hin- und herdrehen.",
+    "house": "house-05",
+    "type": "story"
+  },
+  {
+    "day": 6,
+    "title": "Samichlaus mit Otto",
+    "format": "YouTube-Video",
+    "description": "Zum Samichlaus einen kurzen Weihnachtsclip von Otto und dem Weihnachtsmann anschauen.",
+    "house": "house-06",
+    "type": "video"
+  },
+  {
+    "day": 7,
+    "title": "Farbjagd beim achtsamen Spaziergang",
+    "format": "Achtsamkeit",
+    "description": "Bei einem achtsamen Spaziergang Farben und kleine Details in der Umgebung bewusst wahrnehmen.",
+    "house": "house-07",
+    "type": "hunt"
+  },
+  {
+    "day": 8,
+    "title": "Weihnachtsguetzli zum Nachbacken",
+    "format": "PDF-Rezept",
+    "description": "Ein einfaches Guetzlirezept entdecken und als PDF herunterladen.",
+    "house": "house-08",
+    "type": "placeholder"
+  },
+  {
+    "day": 9,
+    "title": "Weihnachtscomic mit Calvin und Hobbes",
+    "format": "Bild",
+    "description": "Einen kurzen Weihnachtscomic als leichte Überraschung anschauen.",
+    "house": "house-09",
+    "type": "image"
+  },
+  {
+    "day": 10,
+    "title": "Drei Minuten zum Durchatmen",
+    "format": "Video-Übung",
+    "description": "Eine kurze angeleitete Atemübung als bewusste Pause kennenlernen.",
+    "house": "house-10",
+    "type": "placeholder"
+  },
+  {
+    "day": 11,
+    "title": "Weihnachtliches Kreuzworträtsel",
+    "format": "Rätsel",
+    "description": "Weihnachtsbegriffe in einem Kreuzworträtsel suchen und die Lösung anschliessend prüfen.",
+    "house": "house-11",
+    "type": "placeholder"
+  },
+  {
+    "day": 12,
+    "title": "Eine kleine Geschenkidee zum Selbermachen",
+    "format": "DIY-Anleitung",
+    "description": "Eine einfache, persönliche Geschenkidee anhand einer kurzen Anleitung ausprobieren.",
+    "house": "house-12",
+    "type": "placeholder"
+  },
+  {
+    "day": 13,
+    "title": "Die Magie der kleinen Dinge",
+    "format": "Geschichte",
+    "description": "Eine Geschichte über die Bedeutung kleiner Gesten und unscheinbarer Glücksmomente lesen.",
+    "house": "house-13",
+    "type": "placeholder"
+  },
+  {
+    "day": 14,
+    "title": "Ein freundlicher Brief für schlechte Tage",
+    "format": "Schreibübung",
+    "description": "Sich selbst einen ermutigenden Brief wie an einen guten Freund schreiben und für einen schwierigen Tag aufbewahren.",
+    "house": "house-14",
+    "type": "placeholder"
+  },
+  {
+    "day": 15,
+    "title": "Welcher Weihnachtsfilm ist gesucht?",
+    "format": "Film-Rätsel",
+    "description": "Einen Weihnachtsfilm anhand von Hinweisen erraten und die Auflösung aufdecken.",
+    "house": "house-15",
+    "type": "placeholder"
+  },
+  {
+    "day": 16,
+    "title": "Eine winterliche DIY-Idee",
+    "format": "DIY-Video",
+    "description": "Eine kleine winterliche Bastelidee mithilfe eines ausgewählten Videos umsetzen.",
+    "house": "house-16",
+    "type": "placeholder"
+  },
+  {
+    "day": 17,
+    "title": "Zeit für etwas, das dir Freude macht",
+    "format": "Challenge",
+    "description": "Heute bewusst etwas Zeit für eine Tätigkeit einplanen, die Freude bereitet.",
+    "house": "house-17",
+    "type": "placeholder"
+  },
+  {
+    "day": 18,
+    "title": "Weihnachtsfilme für die Feiertage",
+    "format": "Filmempfehlungen",
+    "description": "Eine kleine Auswahl an Weihnachtsfilmen mit eigener Kurzbeschreibung und Links zu Trailern entdecken.",
+    "house": "house-18",
+    "type": "placeholder"
+  },
+  {
+    "day": 19,
+    "title": "Ein kleiner Ort zum Wohlfühlen",
+    "format": "Challenge",
+    "description": "Einen überschaubaren Ort aufräumen oder gestalten, damit er sich wieder angenehm anfühlt.",
+    "house": "house-19",
+    "type": "placeholder"
+  },
+  {
+    "day": 20,
+    "title": "Noch ein Weihnachtsvideo zum Schmunzeln",
+    "format": "YouTube-Video",
+    "description": "Einen zweiten lustigen Weihnachtsclip als kurze Pause geniessen.",
+    "house": "house-20",
+    "type": "placeholder"
+  },
+  {
+    "day": 21,
+    "title": "Drei Wünsche für das kommende Jahr",
+    "format": "Reflexion",
+    "description": "Drei Dinge aufschreiben, die man im nächsten Jahr gerne erleben möchte.",
+    "house": "house-21",
+    "type": "placeholder"
+  },
+  {
+    "day": 22,
+    "title": "Weihnachtsgedanken und Zitate",
+    "format": "Zitate",
+    "description": "Eine kleine Sammlung ausgewählter Weihnachtszitate und Gedanken mit Quellenangaben lesen.",
+    "house": "house-22",
+    "type": "placeholder"
+  },
+  {
+    "day": 23,
+    "title": "Darauf sind wir stolz",
+    "format": "Rückblick",
+    "description": "Nach dem gemeinsamen Team-Login die anonymen Beiträge aus dem Formular von Tag 1 als gemeinsame Sammlung ansehen.",
+    "house": "house-23",
+    "type": "reveal"
+  },
+  {
+    "day": 24,
+    "title": "Unser vollständiges Weihnachtsdorf",
+    "format": "Finale",
+    "description": "Das Dorf mit allen 24 Häuschen und einen abschliessenden Weihnachtsgruss entdecken.",
+    "house": "house-24",
+    "type": "placeholder"
+  }
+]

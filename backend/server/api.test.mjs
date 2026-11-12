@@ -25,7 +25,7 @@ test('login, authorization, CORS and cache controls',async()=>{
   assert.equal((await f.request('/login','POST',{username:'Wichtel',password:'wrong'})).status,401);
   const token=await f.login();
   const result=await f.request('/responses','GET',undefined,token);
-  assert.equal(result.status,403);assert.equal((await result.json()).locked,true);
+  assert.equal(result.status,200);assert.deepEqual((await result.json()).answers,[]);
   assert.equal(result.headers.get('Cache-Control'),'no-store, private');
   assert.equal((await f.request('/responses','GET',undefined,token,undefined,{Origin:'https://untrusted.example'})).status,403);
   assert.equal((await f.request('/responses','GET',undefined,token+'bad')).status,401);
@@ -48,17 +48,20 @@ test('one to five bounded answers; safe upsert without identities',async()=>{
   assert.equal((await f.request('/responses','POST',{submissionId:id,answers:[' ','','  One thought in the third field  ','','']},token)).status,201);
   assert.deepEqual(JSON.parse(f.sqlite.prepare('SELECT answers_json FROM pride_responses WHERE id = ?').get(id).answers_json),['One thought in the third field']);
 });
-test('real Zurich midnight controls release; preview parameters cannot release answers',async()=>{
-  const f=fixture(),before='2026-12-22T22:59:59Z',after='2026-12-22T23:00:00Z';
-  const token=await f.login(before);
-  const answers=['A','B','C','D','E'];
-  assert.equal((await f.request('/responses','POST',{submissionId:randomUUID(),answers},token,before)).status,201);
-  const locked=await f.request('/responses?vorschau=24&date=2026-12-24','GET',undefined,token,before);
-  assert.equal(locked.status,403);assert.equal((await locked.json()).answers,undefined);
-  const released=await f.request('/responses','GET',undefined,token,after);
-  assert.equal(released.status,200);const data=await released.json();assert.deepEqual(data.answers.sort(),answers);
-  assert.deepEqual(Object.keys(data),['answers']);
-  assert.equal((await f.request('/responses','POST',{submissionId:randomUUID(),answers},token,after)).status,403);
+test('ordinary authenticated day links work in November, on December 23 and after Christmas',async()=>{
+  const f=fixture(),answers=['A','B','C','D','E'];
+  for(const now of ['2026-11-12T12:00:00Z','2026-12-23T12:00:00Z','2027-01-05T12:00:00Z']){
+    const token=await f.login(now),id=randomUUID();
+    assert.equal((await f.request('/responses','POST',{submissionId:id,answers},token,now)).status,201);
+    const response=await f.request('/responses','GET',undefined,token,now);
+    assert.equal(response.status,200);
+    const data=await response.json();
+    assert.deepEqual(Object.keys(data),['answers']);
+    assert.equal(data.answers.length,5);
+    assert.deepEqual(data.answers.sort(),answers);
+    assert.equal((await f.request('/responses','GET',undefined,undefined,now)).status,401);
+    await f.request('/responses','DELETE',{submissionId:id},token,now);
+  }
 });
 test('failed logins are rate-limited, without retaining raw network addresses',async()=>{
   const f=fixture();

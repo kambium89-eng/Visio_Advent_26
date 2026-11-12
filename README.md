@@ -1,52 +1,46 @@
 # Visio Advent 2026
 
-Ein wachsendes Weihnachtsdorf für VisioCoaching. Die Website wird über GitHub Pages veröffentlicht.
+24 feste Tageslinks für VisioCoaching auf GitHub Pages:
+`https://kambium89-eng.github.io/Visio_Advent_26/?tag=N` (N = 1 bis 24).
+Ohne Tagesnummer öffnet sich Tag 1. Es gibt keine Vorschau-Ansicht oder Datumssperre.
 
-## Fertige Tagesinhalte
+## Tagesseiten und Dorf
 
-- [1. Dezember – Fünf Dinge, auf die du stolz bist](https://kambium89-eng.github.io/Visio_Advent_26/?tag=1)
-- [5. Dezember – Die zwei Wölfe](https://kambium89-eng.github.io/Visio_Advent_26/?tag=5)
-- [6. Dezember – Samichlaus mit Otto](https://kambium89-eng.github.io/Visio_Advent_26/?tag=6)
-- [7. Dezember – Farbjagd](https://kambium89-eng.github.io/Visio_Advent_26/?tag=7)
-- [9. Dezember – Calvin und Hobbes](https://kambium89-eng.github.io/Visio_Advent_26/?tag=9)
-- [23. Dezember – Vorschau des Rückblicks](https://kambium89-eng.github.io/Visio_Advent_26/?tag=23&vorschau=23)
+Der Tageslink bestimmt den Inhalt und den Dorfstand. Tag 7 zeigt die Häuser 1–7, Tag 24 alle 24 Häuser. Frühere Häuser und ihre Nummern führen zu ihrem Tageslink. Die Navigation verrät nur die Tagesnummer. Beim Öffnen erscheint das Tageshaus gross und verkleinert sich auf seinen Dorfplatz. Bei reduzierter Bewegung entfällt die Animation. Der Aquarell-Hintergrund und der leichte Schneefall gelten für alle Seiten. Titel und Zahlen verwenden Alex Brush, die übrigen Texte Georgia. Die Gestaltung ist für Computer vorgesehen.
 
-Vor dem 1. Dezember zeigt die erste Version den gekennzeichneten Vorschau-Stand vom 9. Dezember. Ab 1. Dezember verwendet sie automatisch das tatsächliche Datum in `Europe/Zurich`. Für die Gestaltung kann `vorschau=N` einen einzelnen Dorfstand zeigen. Das verändert keine serverseitigen Datensperren. Der normale Tageslink für das E-Mail am 23. Dezember ist `?tag=23`, ohne Vorschau-Parameter.
+## Planung und Inhalte
 
-## Konzept
+Die Excel-Datei `Adventskalender_2026_Links.xlsx`, Blatt `Adventstage`, ist die Inhaltsplanung. `content/calendar.json` übernimmt Titel, Format, Beschreibung und Hauszuordnung. Der Export erfolgt mit:
 
-Das zu einem Tag gehörende Haus erscheint gross und verkleinert sich automatisch auf seinen festen Platz im Dorf am unteren Fensterrand. Danach wird der Tagesinhalt eingeblendet. Frühere fertig vorbereitete Tage sind über ihre Häuser erreichbar. Noch nicht ausgearbeitete Tage erscheinen im Vorschau-Dorf blasser. Zukünftige Häuser fehlen, bis ihr Datum erreicht ist. Bei reduzierter Bewegung wird die Animation übersprungen.
+```sh
+python3 tools/sync-calendar.py /absoluter/Pfad/Adventskalender_2026_Links.xlsx
+```
 
-Die Inhalte bleiben beim Scrollen im Lesebereich, das Dorf bleibt unten sichtbar. Am 24. Dezember enthält es alle 24 Häuser. Das Design ist für Computer gedacht. Titel und Hausnummern verwenden die mitgelieferte Schrift Alex Brush. Alle übrigen Texte verwenden Georgia.
+Tag 1, 5, 6, 7, 9 und 23 haben ausgearbeitete Inhalte. Die übrigen 18 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
 
-Am 23. Dezember bleibt die Überraschung vor dem Login verborgen: Die Häuser führen wie gewohnt zu den fertigen Tagesinhalten. Der Login trägt den Titel «Eine kleine Überraschung wartet auf dich nach dem Login», ohne Inhaltsuntertitel oder Hinweise am unteren Rand. Auch Tabtitel, Hausbeschriftungen und Screenreader-Ansagen nehmen den Rückblick nicht vorweg. Für das ganze Projekt gilt: Künftige Überraschungen nicht durch Navigation oder Hilfstexte verraten.
+- Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
+- Tag 5: Geschichte und Erklärung «Die zwei Wölfe», per Drehung umschaltbar.
+- Tag 6: Otto-Video ohne automatische Wiedergabe.
+- Tag 7: achtsame Farbjagd mit fünf auswählbaren Farben.
+- Tag 9: vorhandener Calvin-und-Hobbes-Comic.
+- Tag 23: geschützter gemeinsamer Rückblick im Dorf.
 
-Nach der Anmeldung und der Freigabe wird das Dorf selbst zum Rückblick. Eine kurze Anleitung verschwindet, sobald das erste Haus berührt oder mit der Tastatur fokussiert wird. Kleine Rauchpuffs und wolkenförmige Georgia-Texte entstehen direkt am Kamin, steigen durch das Fenster und verblassen am oberen Rand. Beim Verweilen über einem Haus kommt alle 7,2 Sekunden ein weiterer Gedanke. Alle Kamine greifen nacheinander auf dieselbe Sammlung zu: Es gibt keine Begrenzung auf die Zahl der Häuser. Bereits aufgestiegene Wolken fliegen nach dem Verlassen des Hauses weiter. Über einer Wolke pausiert die Bewegung zum Lesen. Escape schliesst alle Wolken; jede Wolke hat zusätzlich einen Schliessen-Knopf. Höchstens sechs Gedankenwolken bleiben gleichzeitig im Fenster, um hektische Mausbewegungen abzufangen. Bei reduzierter Bewegung erscheint nur eine ruhende Wolke; Klick oder Enter auf einem Haus zeigen den nächsten Gedanken. Die Wolken enthalten keine Navigation. An anderen Tagen bleibt die Haus-Navigation erhalten.
+## Tag 23
 
-`memory-clouds.js` verwaltet die Wolken und die Kaminpositionen der quadratischen WebP-Bilder. Werden Hausmotive ausgetauscht, müssen ihre normierten Kaminpositionen in `CHIMNEY_ANCHORS` geprüft werden. Private Antworttexte werden als Text ausgegeben und beim Abmelden oder Verlassen des Rückblicks aus der Wolkenansicht entfernt. Der Vorschau-Rundgang verwendet 32 ausdrücklich erfundene Beispielgedanken, ohne Beiträge zu speichern oder die serverseitige Datumssperre zu verändern.
+Der normale Link ist `?tag=23`. Vor der Anmeldung trägt die Seite den neutralen Titel «Eine kleine Überraschung wartet auf dich nach dem Login», ohne Inhaltsuntertitel oder Hinweise am unteren Rand. Die Häuser navigieren normal. Nach dem Team-Login werden die gespeicherten Beiträge geladen. Es gibt keinen zusätzlichen Vorschauknopf und keine Beispielsammlung.
 
-## Bilder und Inhalte
+Die kurze Anleitung verschwindet beim ersten Berühren oder Fokussieren eines Hauses. Wolkenförmige Georgia-Texte wachsen aus den Kaminen, steigen durch das Fenster und verblassen am oberen Rand. Beim Verweilen über einem Haus kommt alle 7,2 Sekunden ein weiterer Gedanke aus der gesamten Sammlung. Die Anzahl der Beiträge ist unabhängig von der Anzahl der Häuser. Über einer Wolke pausiert die Bewegung zum Lesen. Escape oder der Schliessen-Knopf blenden Wolken aus. Sie enthalten keine Navigation. Bei reduzierter Bewegung bleibt eine Wolke ruhig stehen; Klick oder Enter auf dem Haus wechseln den Gedanken.
 
-- `assets/houses/house-01.png` bis `house-24.png`: Original-PNGs für die Tages-E-Mails.
-- `assets/backgrounds`, `assets/decorations`, `assets/fonts`: Hintergrund, Bäume, Schnee und Alex Brush samt Lizenz.
-- `assets/web`: kleinere WebP-Versionen für zügiges Laden. Die Originale bleiben erhalten.
-- `tools/prepare-web-assets.py`: WebP-Versionen mit Pillow erneut erstellen.
-- `content`: Geschichten, Erklärung und Textvorlage zur Farbjagd.
-- `Images/Calvin&Hobbs_Xmas.jpg`: Comic für Tag 9.
-- `vendor`: lokal gespeicherter Markdown-Parser mit Lizenz.
+Ist noch nichts gespeichert, steigt ein ausdrücklich neutraler Dorftext auf. Es werden keine erfundenen Teambeiträge eingesetzt. Abmelden oder Verlassen der Seite entfernt Antworten, Wolken und Timer. Antworten werden ausschliesslich als Text ausgegeben. `CHIMNEY_ANCHORS` in `memory-clouds.js` beschreibt die Kaminpositionen der Hausmotive; beim Motivaustausch müssen sie geprüft werden.
 
-## Formular und Rückblick
+## Speicherung und Veröffentlichung
 
-Tag 1 und 23 verwenden den gemeinsamen Teamzugang. Der Datenspeicher läuft separat über Sites mit einer privaten D1-Datenbank. `backend/` enthält die Quellkopie des Dienstes mit Datenbankschema, Migrationen und Tests. Die Plattform stellt den Dienst separat bereit; ein GitHub-Push veröffentlicht nur die Website.
+GitHub Pages veröffentlicht die Website. Der separat über Sites bereitgestellte Dienst verwendet eine private D1-Datenbank; `backend/` ist seine Quellkopie. Tag 1 und Tag 23 benötigen den gemeinsamen Teamzugang. Jede Antwort-Anfrage wird auf dem Server geprüft. Passwörter und Sitzungsschlüssel stehen ausschliesslich in Runtime-Secrets.
 
-Passwort und Sitzungsschlüssel sind ausschliesslich als Runtime-Secrets hinterlegt. Sie stehen nicht im Repository. Die API prüft jeden Datenzugriff. Gespeichert werden ein bis fünf freiwillige Gedanken, eine zufällige Einsendungs-ID und ein Speicherzeitpunkt, keine Namen oder E-Mail-Adressen. Leere Felder werden weggelassen; ein Gedanke genügt. Wiederholtes Speichern mit derselben Einsendungs-ID ersetzt die frühere Fassung. Im selben Browser-Tab lassen sich eigene Antworten auch zurückziehen. Die Formulierung auf Tag 1 verrät den späteren Rückblick nicht.
+Gemäss der Entscheidung vom 12. November 2026 bestimmt der Tageslink die Ansicht, ohne kalendarische Lese- oder Schreibsperre. Die Anmeldung schützt die Beiträge weiterhin. Gespeichert werden ein bis fünf freiwillige Gedanken, eine zufällige Einsendungs-ID und ein Zeitpunkt, keine Namen oder E-Mail-Adressen. Der Rückblick enthält nur gemischte Texte ohne Personen-, ID- oder Zeitzuordnung.
 
-Die tatsächlichen Beiträge sind serverseitig bis zum 23. Dezember 2026 um 00:00 Uhr Schweizer Zeit gesperrt. Die Vorschau des Rückblicks kann vorher ausdrücklich gekennzeichnete, erfundene Beispieltexte zeigen. Diese Beispiele werden nicht gespeichert. Der echte Rückblick zeigt nur gemischte Antworttexte ohne Zuordnung zu Einsendungen.
+Original-PNGs für E-Mails liegen unter `assets/houses`, optimierte WebP-Häuser unter `assets/web/houses`. Hintergrund, Schrift und Dekorationen bleiben in ihren bisherigen Asset-Ordnern. Planung, Excel, Word-Quellen und Archive liegen im Obsidian-Vault unter `VisioCoaching/Projektwochen/Advent`.
 
-## Lokal starten
+## Lokal
 
-Im Repository: `python3 -m http.server 8765 --bind 127.0.0.1`.
-
-Dann `http://localhost:8765/?tag=5` öffnen. Alle lokalen Dateiverweise sind relativ und funktionieren auch unter dem GitHub-Pages-Unterpfad.
-
-Planung, Excel-Datei, Word-Quellen und Archive liegen im Obsidian-Vault unter `VisioCoaching/Projektwochen/Advent`. Die frühere Website-Version ist dort archiviert.
+`python3 -m http.server 8765 --bind 127.0.0.1` im Repository, dann z. B. `http://localhost:8765/?tag=23` öffnen. Alle lokalen Dateiverweise funktionieren auch unter dem GitHub-Pages-Unterpfad.
