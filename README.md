@@ -8,6 +8,10 @@ Ohne Tagesnummer öffnet sich Tag 1. Es gibt keine Vorschau-Ansicht oder Datumss
 
 Der Tageslink bestimmt den Inhalt und den Dorfstand. Tag 7 zeigt die Häuser 1–7, Tag 24 alle 24 Häuser. Frühere Häuser und ihre Nummern führen zu ihrem Tageslink. Die Navigation verrät nur die Tagesnummer. Beim Öffnen erscheint das Tageshaus gross und verkleinert sich auf seinen Dorfplatz. Bei reduzierter Bewegung entfällt die Animation. Der Aquarell-Hintergrund und der leichte Schneefall gelten für alle Seiten. Titel und Zahlen verwenden Alex Brush, die übrigen Texte Georgia. Die Gestaltung ist für Computer vorgesehen.
 
+Das Dorf hat drei gestaffelte Reihen mit 7, 8 und 9 Hausplätzen. Ein grösserer Schneehügel trägt auch die hinterste Reihe; Schatten und `HOUSE_BASE_GAPS` gleichen den transparenten unteren Bildrand jedes Motivs aus. Die Bäume stehen näher am Fensterrand. Bei einem Motivaustausch sind neben den Kaminpositionen auch diese Basisabstände zu prüfen.
+
+Der Lesebereich hat einen weich auslaufenden Hintergrund. Nur dessen separate Hintergrundebene wird unscharf, der Text bleibt scharf. Der Schneefall verwendet jetzt 33 statt 25 Flocken, also ungefähr 30 Prozent mehr. Die Einstellungen für reduzierte Bewegung gelten weiterhin.
+
 ## Planung und Inhalte
 
 Die Excel-Datei `Adventskalender_2026_Links.xlsx`, Blatt `Adventstage`, ist die Inhaltsplanung. `content/calendar.json` übernimmt Titel, Format, Beschreibung und Hauszuordnung. Der Export erfolgt mit:

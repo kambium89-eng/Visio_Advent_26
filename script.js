@@ -25,14 +25,14 @@ function readTeamToken() {
 }
 function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
 const HOUSE_POSITIONS = [
-    [50,12,145],[40,19,133],[60,15,140],[30,11,132],[70,19,143],[20,14,132],
-    [80,10,142],[10,20,129],[90,13,131],[5,83,96],[95,83,98],[15,98,105],
-    [25,105,105],[35,92,104],[45,108,103],[55,98,104],[65,107,102],[75,92,105],
-    [85,106,102],[21,57,103],[42,54,106],[63,55,105],[83,57,103],[50,145,101]
+    [50,10,136],[36,10,136],[64,10,136],[22,10,136],[78,10,136],[8,10,136],[92,10,136],
+    [43.5,118,114],[56.5,118,114],[31,118,114],[69,118,114],[18.5,118,114],[81.5,118,114],[6,118,114],[94,118,114],
+    [38.75,196,96],[61.25,196,96],[27.5,196,96],[72.5,196,96],[16.25,196,96],[83.75,196,96],[5,196,96],[95,196,96],[50,196,108]
 ];
+// Transparent space below each source motif; its visible base meets its snow shadow.
+const HOUSE_BASE_GAPS = [20,31,39,15,40,28,14,131,50,56,61,63,88,61,22,37,0,58,23,31,15,0,48,54].map(pixels=>pixels/768);
 
 function makeVillage() {
-    document.body.classList.toggle('full-village',selectedDay>9);
     const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23);
     memoryClouds?.beginPage(memoryDay);
     const nav=$("village-houses");nav.replaceChildren();
@@ -41,7 +41,8 @@ function makeVillage() {
         const [left,bottom,width]=HOUSE_POSITIONS[day-1];
         house.className=`village-house${memoryDay?" memory-house":""}`;
         house.dataset.day=day;
-        house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--layer:${bottom<40?5:bottom<80?4:3}`;
+        const houseNumber=Number(DAYS[day].house.slice(-2));
+        house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--base-gap:${HOUSE_BASE_GAPS[houseNumber-1]};--layer:${bottom<50?5:bottom<150?4:3}`;
         house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember`);
         const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
         const url=dayUrl(day);
@@ -122,8 +123,7 @@ function renderPlaceholder(day) {
     const panel=document.createElement("section");panel.className="day-placeholder";
     const label=document.createElement("p");label.className="placeholder-label";label.textContent="Dieses Türchen wird noch gefüllt.";
     const quote=document.createElement("blockquote");quote.textContent=DAYS[day].description;
-    const note=document.createElement("p");note.className="placeholder-note";note.textContent="Das ist für diesen Tag geplant.";
-    panel.append(label,quote,note);body.append(panel);
+    panel.append(label,quote);body.append(panel);
 }
 
 async function selectDay(day,updateUrl=false) {
@@ -280,7 +280,8 @@ async function startCalendar() {
     }
 }
 
-if(!reducedMotion.matches)for(let i=0;i<25;i++){const flake=document.createElement("i");flake.className="snowflake";const size=2+(i%4);flake.style.cssText=`left:${(i*37.7)%100}%;width:${size}px;height:${size}px;--duration:${13+i%11}s;--delay:-${i*.93}s;--opacity:${.25+(i%4)*.1}`;$("snowfall").append(flake);}
+const SNOWFLAKE_COUNT=Math.round(25*1.3);
+if(!reducedMotion.matches)for(let i=0;i<SNOWFLAKE_COUNT;i++){const flake=document.createElement("i");flake.className="snowflake";const size=2+(i%4);flake.style.cssText=`left:${(i*37.7)%100}%;width:${size}px;height:${size}px;--duration:${13+i%11}s;--delay:-${i*.93}s;--opacity:${.25+(i%4)*.1}`;$("snowfall").append(flake);}
 window.addEventListener("popstate",()=>{if(Object.keys(DAYS).length)selectDay(getDayFromUrl());});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)finishArrival?.();});
 startCalendar();
