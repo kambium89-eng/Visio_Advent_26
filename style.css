@@ -18,8 +18,7 @@ a{color:var(--pine);text-underline-offset:4px}
 .brand span{padding:0 10px;color:var(--gold);font-size:16px}
 h1{font:normal 58px/1.06 "Alex Brush",cursive;letter-spacing:0;color:var(--pine);margin:0}
 h1 span{font-size:52px;letter-spacing:0}
-.subtitle{margin:8px 0 0;color:var(--pine-soft);font-size:13px;letter-spacing:.6px}
-.header-ornament{display:flex;align-items:center;justify-content:center;gap:13px;color:var(--gold);font-size:21px;height:34px}
+.header-ornament{display:flex;align-items:center;justify-content:center;gap:13px;color:var(--gold);font-size:21px;height:28px}
 .header-ornament span{width:52px;height:1px;background:linear-gradient(90deg,transparent,#b69a56)}
 .header-ornament span:last-child{transform:rotate(180deg)}
 main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30px}
@@ -29,7 +28,7 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .content-panel::before{content:"";position:absolute;inset:-3px;border-radius:32px;background:#fffdf5f2;filter:blur(14px);z-index:-1;pointer-events:none;transition:opacity .65s ease}
 .day-content.paper{background:transparent;border:0;box-shadow:none}
 .is-arriving .content-panel::before,.memories-started .content-panel::before{opacity:0}
-.day-content{max-width:820px;height:calc(100dvh - var(--village-height) - 210px);max-height:calc(100dvh - var(--village-height) - 210px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#b4c0a9 transparent;margin:0 auto;padding:30px 46px 28px;transition:opacity .65s ease,transform .65s ease}
+.day-content{max-width:820px;height:calc(100dvh - var(--village-height) - 175px);max-height:calc(100dvh - var(--village-height) - 175px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#b4c0a9 transparent;margin:0 auto;padding:30px 46px 28px;transition:opacity .65s ease,transform .65s ease}
 .is-arriving .day-content{opacity:0;transform:translateY(15px);pointer-events:none}
 .content-heading{text-align:center;margin-bottom:24px}
 .eyebrow{text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-size:10px;font-weight:600;margin:0 0 10px}
@@ -48,7 +47,7 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .text-button{background:none;border:0;padding:5px 0;color:var(--pine-soft);font-size:12px;text-decoration:underline;text-underline-offset:4px}
 .day-content[data-type="video"]{max-width:900px;padding:22px 32px}
 .day-content[data-type="video"] .content-heading{margin-bottom:14px}
-.video-frame{width:100%;height:clamp(180px,calc(100dvh - var(--village-height) - 370px),405px);border:0;border-radius:10px;background:#e4e9df;display:block}
+.video-frame{width:100%;height:clamp(180px,calc(100dvh - var(--village-height) - 335px),440px);border:0;border-radius:10px;background:#e4e9df;display:block}
 .media-link{margin:17px 0 0;text-align:center;font-size:12px;color:var(--muted)}
 .media-link a{text-decoration-color:#9baf99}
 .comic{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e2e4d6}
