@@ -7,10 +7,10 @@
     <meta name="description" content="24 Tage voller Überraschungen. Unser Weihnachtsdorf wächst jeden Tag um ein Häuschen – und einen kleinen Moment für dich.">
     <title>Adventskalender 2026 · VisioCoaching</title>
     <link rel="preload" href="assets/fonts/AlexBrush-Regular.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="style.css?v=village-hill-2">
+    <link rel="stylesheet" href="style.css?v=village-scroll-20261116">
     <script src="vendor/marked.umd.js" defer></script>
-    <script src="memory-clouds.js?v=official-1" defer></script>
-    <script src="script.js?v=village-hill-2" defer></script>
+    <script src="memory-clouds.js?v=village-scroll-20261116" defer></script>
+    <script src="script.js?v=village-scroll-20261116" defer></script>
 </head>
 <body class="is-arriving">
     <a class="skip-link" href="#day-content">Zum Tagesinhalt</a>
@@ -40,16 +40,19 @@
 
     <footer class="village" id="village" aria-label="Unser wachsendes Weihnachtsdorf">
         <div class="village-caption"><p>Unser kleines Weihnachtsdorf</p><span id="village-count"></span></div>
-        <div class="village-scene" id="village-scene">
-            <div class="snow-bank snow-bank-back" aria-hidden="true"></div>
-            <img class="village-tree tree-left" src="assets/web/decorations/tree_1.webp" alt="" width="222" height="300">
-            <img class="village-tree tree-right" src="assets/web/decorations/tree_2.webp" alt="" width="227" height="300">
+        <div class="village-scene" id="village-scene" aria-hidden="true">
+            <div class="snow-bank snow-bank-back"></div>
             <img class="snow-patch snow-patch-left" src="assets/web/decorations/snow_1.webp" alt="" width="900" height="900">
             <img class="snow-patch snow-patch-right" src="assets/web/decorations/snow_2.webp" alt="" width="900" height="900">
-            <nav id="village-houses" aria-label="Bereits enthüllte Häuschen"></nav>
             <div class="snow-bank snow-bank-front" aria-hidden="true"></div>
         </div>
-        <p class="village-hint">Jeden Tag ein neues Häuschen. <span>Klicke auf ein Häuschen und schau noch einmal vorbei.</span></p>
+        <button class="village-scroll-button village-previous" id="village-previous" type="button" aria-label="Frühere Häuschen" aria-controls="village-scroll" hidden>‹</button>
+        <div class="village-scroll" id="village-scroll" tabindex="0" role="region" aria-label="Weihnachtsdorf – mit dem Mausrad seitlich scrollen">
+            <nav class="village-row" id="village-houses" aria-label="Bereits enthüllte Häuschen"></nav>
+        </div>
+        <img class="village-tree tree-left" src="assets/web/decorations/tree_1.webp" alt="" width="222" height="300">
+        <img class="village-tree tree-right" src="assets/web/decorations/tree_2.webp" alt="" width="227" height="300">
+        <button class="village-scroll-button village-next" id="village-next" type="button" aria-label="Spätere Häuschen" aria-controls="village-scroll" hidden>›</button>
     </footer>
 
     <div class="arrival" id="arrival" aria-hidden="true" hidden>

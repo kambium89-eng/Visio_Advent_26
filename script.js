@@ -24,11 +24,6 @@ function readTeamToken() {
     writeSession("advent-team-token",null);return "";
 }
 function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
-const HOUSE_POSITIONS = [
-    [50,10,136],[36,10,136],[64,10,136],[22,10,136],[78,10,136],[8,10,136],[92,10,136],
-    [43.5,118,114],[56.5,118,114],[31,118,114],[69,118,114],[18.5,118,114],[81.5,118,114],[6,118,114],[94,118,114],
-    [38.75,196,96],[61.25,196,96],[27.5,196,96],[72.5,196,96],[16.25,196,96],[83.75,196,96],[5,196,96],[95,196,96],[50,196,108]
-];
 // Transparent space below each source motif; its visible base meets its snow shadow.
 const HOUSE_BASE_GAPS = [20,31,39,15,40,28,14,131,50,56,61,63,88,61,22,37,0,58,23,31,15,0,48,54].map(pixels=>pixels/768);
 
@@ -38,11 +33,10 @@ function makeVillage() {
     const nav=$("village-houses");nav.replaceChildren();
     for(let day=1;day<=selectedDay;day++) {
         const house=document.createElement(memoryDay?"button":"a");
-        const [left,bottom,width]=HOUSE_POSITIONS[day-1];
         house.className=`village-house${memoryDay?" memory-house":""}`;
         house.dataset.day=day;
         const houseNumber=Number(DAYS[day].house.slice(-2));
-        house.style.cssText=`--left:${left}%;--bottom:${bottom}px;--width:${width}px;--base-gap:${HOUSE_BASE_GAPS[houseNumber-1]};--layer:${bottom<50?5:bottom<150?4:3}`;
+        house.style.setProperty("--base-gap",HOUSE_BASE_GAPS[houseNumber-1]);
         house.setAttribute("aria-label",memoryDay?`${day}. Häuschen – Stolzmoment anzeigen`:`${day}. Dezember`);
         const openHouse=event=>{if(event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(day!==selectedDay)selectDay(day,true);}};
         const url=dayUrl(day);
@@ -53,17 +47,48 @@ function makeVillage() {
         }
         const image=document.createElement("img");image.src=`assets/web/houses/${DAYS[day].house}.webp`;image.dataset.house=DAYS[day].house.slice(-2);image.alt="";image.width=150;image.height=150;image.draggable=false;
         const number=document.createElement(memoryDay?"button":"a");number.className="house-number village-marker";number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
-        number.dataset.day=day;number.style.cssText=`--left:${left}%;--bottom:${bottom}px`;
+        number.dataset.day=day;
         if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day);}
         else{number.href=house.href;number.tabIndex=-1;number.addEventListener("click",openHouse);}
         if(day===selectedDay){house.setAttribute("aria-current","page");number.setAttribute("aria-current","page");}
-        house.append(image);nav.append(house,number);
+        const plot=document.createElement("div");plot.className="village-plot";
+        house.append(image);plot.append(house,number);nav.append(plot);
     }
     $("village-count").textContent=`${selectedDay} von 24 Häuschen`;
-    const hint=document.querySelector(".village-hint");
-    hint.hidden=selectedDay===23;
-    hint.textContent=selectedDay===23?"":"Jeden Tag ein neues Häuschen. Klicke auf ein Häuschen und schau noch einmal vorbei.";
+    scrollToCurrentHouse();
 }
+
+function updateVillageControls() {
+    const strip=$("village-scroll"),previous=$("village-previous"),next=$("village-next");
+    const maximum=Math.max(0,strip.scrollWidth-strip.clientWidth);
+    previous.hidden=next.hidden=maximum<2;
+    previous.disabled=strip.scrollLeft<2;
+    next.disabled=strip.scrollLeft>maximum-2;
+}
+
+function scrollToCurrentHouse() {
+    const strip=$("village-scroll");
+    strip.scrollTo({left:strip.scrollWidth-strip.clientWidth,behavior:"instant"});
+    updateVillageControls();
+}
+
+$("village").addEventListener("wheel",event=>{
+    const strip=$("village-scroll");
+    if(event.ctrlKey)return;
+    event.preventDefault();
+    if(strip.scrollWidth<=strip.clientWidth+1||document.body.classList.contains("is-arriving"))return;
+    const delta=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.deltaY;
+    const unit=event.deltaMode===1?16:event.deltaMode===2?strip.clientWidth:1;
+    strip.scrollLeft+=delta*unit;
+},{passive:false});
+$("village-scroll").addEventListener("scroll",()=>{
+    updateVillageControls();memoryClouds?.villageMoved();
+},{passive:true});
+for(const [id,direction] of [["village-previous",-1],["village-next",1]]) {
+    $(id).onclick=()=>$("village-scroll").scrollBy({left:direction*$("village-scroll").clientWidth*.75,behavior:reducedMotion.matches?"instant":"smooth"});
+}
+window.addEventListener("resize",scrollToCurrentHouse);
+
 
 async function arrive(day,viewId) {
     const target=document.querySelector(`.village-house[data-day="${day}"]`);

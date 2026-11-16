@@ -78,7 +78,12 @@ class MemoryClouds {
                 this.hoverTimer = setTimeout(() => this.open(day), 280);
             });
             target.addEventListener("pointerleave", event => { clearTimeout(this.hoverTimer);this.leave(event); });
-            target.addEventListener("focusin", () => { clearTimeout(this.hoverTimer);if (!this.suppressFocus) this.open(day); });
+            target.addEventListener("focusin", () => {
+                clearTimeout(this.hoverTimer);
+                if(this.suppressFocus)return;
+                house.closest(".village-plot")?.scrollIntoView({block:"nearest",inline:"nearest",behavior:"instant"});
+                this.open(day);
+            });
             target.addEventListener("focusout", event => this.leave(event));
             target.addEventListener("click", () => this.open(day, true));
         }
@@ -106,18 +111,43 @@ class MemoryClouds {
         });
     }
 
+    villageMoved() {
+        if(!this.enabled)return;
+        clearTimeout(this.hoverTimer);clearTimeout(this.scrollTimer);this.stopEmitter();
+        // Existing clouds float freely; only a visible chimney starts the next one.
+        this.scrollTimer=setTimeout(()=>{
+            if(!this.enabled||!this.ready)return;
+            const hovered=document.querySelector(".memory-house:hover,.village-marker:hover");
+            const day=this.houseFor(hovered||document.activeElement);
+            if(day)this.open(day);
+        },220);
+    }
+
+    originFor(day) {
+        const house=this.houses.get(day)?.house;
+        if(!house)return null;
+        const image=house.querySelector("img"),rect=image.getBoundingClientRect();
+        const [anchorX,anchorY]=CHIMNEY_ANCHORS[(Number(image.dataset.house)||day)-1];
+        const x=rect.left+rect.width*anchorX,y=rect.top+rect.height*anchorY;
+        const clip=house.closest(".village-scroll")?.getBoundingClientRect();
+        if(clip&&(x<clip.left+2||x>clip.right-2||y<clip.top||y>clip.bottom))return null;
+        return {house,x,y};
+    }
+
     open(day, advance = false) {
         if (!this.enabled || !this.ready || !this.answers.length || !this.houses.has(day) || document.body.classList.contains("is-arriving")) return;
         if (this.activeDay === day && !advance) return;
         // A click also focuses its house; that single gesture should release one cloud.
         if (this.activeDay === day && advance && performance.now() - this.lastEmission < 350) return;
+        if(advance)this.houses.get(day).house.closest(".village-plot")?.scrollIntoView({block:"nearest",inline:"nearest",behavior:"instant"});
         this.stopEmitter();
         this.activeDay = day;
         const {house, marker} = this.houses.get(day);
         house.classList.add("is-smoking");
         marker.classList.add("is-smoking");
+        const flight=this.emit(day);
+        if(!flight){this.stopEmitter();return;}
         document.body.classList.add("memories-started");
-        this.emit(day);
         this.schedule(day);
     }
 
@@ -134,6 +164,8 @@ class MemoryClouds {
 
     emit(day) {
         if (!this.ready || !this.answers.length) return null;
+        const origin=this.originFor(day);
+        if(!origin)return null;
         if (this.motion.matches) {
             for (const flight of [...this.flights]) this.remove(flight);
         } else if (this.flights.size >= 6) {
@@ -146,7 +178,7 @@ class MemoryClouds {
         this.lastEmission = performance.now();
         // One shared queue: every chimney can reveal the entire collection, of any size.
         this.cursor = (this.cursor + 1) % this.answers.length;
-        const {house} = this.houses.get(day);
+        const {house,x,y} = origin;
         const cloud = document.createElement("section");
         cloud.className = "memory-cloud";
         cloud.setAttribute("aria-label", "Ein Stolzmoment aus unserem Dorf");
@@ -175,10 +207,6 @@ class MemoryClouds {
         cloud.addEventListener("pointerleave", resume);
         cloud.addEventListener("focusin", pause);
         cloud.addEventListener("focusout", () => queueMicrotask(resume));
-        const image = house.querySelector("img"),rect = image.getBoundingClientRect();
-        const [anchorX, anchorY] = CHIMNEY_ANCHORS[(Number(image.dataset.house) || day) - 1];
-        const x = rect.left + rect.width * anchorX;
-        const y = rect.top + rect.height * anchorY;
         const width = Math.min(370, innerWidth - 48);
         const left = Math.max(24, Math.min(x - width / 2, innerWidth - width - 24));
         cloud.style.width = `${width}px`;
@@ -232,6 +260,7 @@ class MemoryClouds {
 
     close() {
         clearTimeout(this.hoverTimer);
+        clearTimeout(this.scrollTimer);
         this.stopEmitter();
         for (const flight of [...this.flights]) this.remove(flight, true);
         this.layer.getAnimations({subtree:true}).forEach(animation => animation.cancel());
