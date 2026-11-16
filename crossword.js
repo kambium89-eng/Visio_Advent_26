@@ -14,6 +14,7 @@ function createChristmasCrossword(host) {
         let activeWord = words[0];
         let activeKey = '0,0';
         let isComplete = false;
+        let readyToCelebrate = false, hasCelebrated = false, celebrationLayer, celebrationTimer;
         const keyFor = (row, col) => row + ',' + col;
         const normalise = value => value.toUpperCase().replace(/Ä/g, 'AE').replace(/Ö/g, 'OE').replace(/Ü/g, 'UE').replace(/ẞ|ß/g, 'SS').replace(/[^A-Z]/g, '');
         const revealLimit = word => Math.max(1, Math.min(3, Math.round(word.answer.length / 4)));
@@ -149,11 +150,54 @@ function createChristmasCrossword(host) {
           select(activeWord, next || fromKey);
         }
 
+        function clearCelebration() {
+          clearTimeout(celebrationTimer);
+          celebrationLayer?.remove();
+          celebrationLayer = null;
+        }
+
+        function celebrate() {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          clearCelebration();
+          const bounds = find('cw-grid').getBoundingClientRect();
+          const layer = document.createElement('div');
+          celebrationLayer = layer;
+          layer.className = 'cw-celebration';
+          layer.setAttribute('aria-hidden', 'true');
+          layer.style.setProperty('--cw-magic-x', (bounds.left + bounds.width / 2) + 'px');
+          layer.style.setProperty('--cw-magic-y', (bounds.top + bounds.height / 2) + 'px');
+          const greeting = document.createElement('div');
+          greeting.className = 'cw-magic-greeting';
+          greeting.innerHTML = '<span class="cw-magic-star">✧</span><span>Frohe Weihnachten!</span>';
+          layer.append(greeting);
+          for (let i = 0; i < 32; i++) {
+            const sparkle = document.createElement('span');
+            sparkle.className = 'cw-magic-sparkle';
+            sparkle.textContent = i % 4 === 0 ? '❄' : '✦';
+            const angle = i * Math.PI * (3 - Math.sqrt(5));
+            const distance = 95 + (i % 7) * 24;
+            sparkle.style.setProperty('--cw-dx', Math.cos(angle) * distance + 'px');
+            sparkle.style.setProperty('--cw-dy', Math.sin(angle) * distance - 45 + 'px');
+            sparkle.style.setProperty('--cw-turn', (i % 2 ? 100 : -100) + 'deg');
+            sparkle.style.setProperty('--cw-delay', (i % 8) * 45 + 'ms');
+            sparkle.style.setProperty('--cw-size', (i % 4 === 0 ? 15 : 7 + i % 5 * 2) + 'px');
+            layer.append(sparkle);
+          }
+          document.body.append(layer);
+          celebrationTimer = setTimeout(clearCelebration, 4300);
+        }
+
         function updateProgress() {
           const filled = [...cells.values()].filter(cell => cell.value).length;
           find('cw-grid').setAttribute('aria-label', 'Kreuzworträtsel, 12 Spalten und 10 Zeilen. ' + filled + ' von ' + cells.size + ' Feldern ausgefüllt.');
           const complete = [...cells.values()].every(cell => cell.value === cell.answer);
-          if (complete && !isComplete) message('Geschafft! Frohe Weihnachten! ✧', 'success');
+          if (complete && !isComplete) {
+            message('Geschafft! Frohe Weihnachten! ✧', 'success');
+            if (readyToCelebrate && !hasCelebrated) {
+              hasCelebrated = true;
+              celebrate();
+            }
+          }
           isComplete = complete;
           updateRevealButton();
           save();
@@ -329,6 +373,8 @@ function createChristmasCrossword(host) {
         find('cw-reset').addEventListener('click', () => resetDialog.showModal());
         find('cw-reset-no').addEventListener('click', () => resetDialog.close());
         find('cw-reset-yes').addEventListener('click', () => {
+          clearCelebration();
+          hasCelebrated = false;
           for (const cell of cells.values()) {
             cell.value = '';
             cell.revealed = false;
@@ -349,7 +395,10 @@ function createChristmasCrossword(host) {
 
         select(activeWord, activeKey, false);
         updateProgress();
+        readyToCelebrate = true;
+        hasCelebrated = isComplete;
       return () => {
+          clearCelebration();
           if (clueDialog.open) clueDialog.close();
           if (resetDialog.open) resetDialog.close();
           root.remove();

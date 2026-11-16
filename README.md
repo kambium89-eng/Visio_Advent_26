@@ -25,6 +25,7 @@ Tag 1, 5, 6, 7, 9, 11 und 23 haben ausgearbeitete Inhalte. Die übrigen 17 Seite
 - Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
 - Tag 5: Geschichte und Erklärung «Die zwei Wölfe», per Drehung umschaltbar.
 - Tag 6: interaktives Weihnachtskreuzworträtsel mit zehn Begriffen, Hinweisen per Zahlen-Popup und lokaler Fortschrittsspeicherung. Auswahl in Altrosa (`#c7a491` aus der skandinavischen Palette), richtige Einträge in Salbeigrün. Pro Wort lassen sich rund 25 Prozent der Buchstaben aufdecken (gerundet, maximal drei); Hilfsbuchstaben stehen nicht direkt nebeneinander, Kreuzungsfelder zählen für beide Wörter.
+  Nach der vollständigen Lösung erscheint einmal kurz ein warmer Sternenglanz mit «Frohe Weihnachten!». Die Animation ist lautlos, blockiert keine Eingabe und entfällt bei reduzierter Bewegung.
 - Tag 7: achtsame Farbjagd mit fünf auswählbaren Farben.
 - Tag 9: vorhandener Calvin-und-Hobbes-Comic.
 - Tag 11: «Otto und der Weihnachtsmann», ohne automatische Wiedergabe.
