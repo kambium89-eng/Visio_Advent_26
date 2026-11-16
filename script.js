@@ -5,7 +5,8 @@ let DAYS = {};
 const DAY_INTROS = {
     1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
     5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
-    6: "Ein bisschen Schalk zum Samichlaus. Mach es dir gemütlich.",
+    6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
+    11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
     7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
     9: "Ein Weihnachtswunsch kommt selten allein."
 };
@@ -15,7 +16,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
 let token = readTeamToken();
-let storyPromise;
+let storyPromise, disposeCrossword;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
 function readTeamToken() {
@@ -152,7 +153,7 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
-    finishArrival?.();generation++;const viewId=generation;selectedDay=day;
+    finishArrival?.();disposeCrossword?.();disposeCrossword=null;generation++;const viewId=generation;selectedDay=day;
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
@@ -165,6 +166,7 @@ async function selectDay(day,updateUrl=false) {
     document.body.classList.add("is-arriving");
     switch(DAYS[day].type){
         case "story":await renderStory(viewId);break;
+        case "crossword":disposeCrossword=createChristmasCrossword(body);break;
         case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
         case "image":body.innerHTML='<img class="comic" src="Images/Calvin&amp;Hobbs_Xmas.jpg" width="900" height="632" alt="Weihnachtscomic mit Calvin und Hobbes: Calvin träumt von einem Brief des Weihnachtsmanns mit umgekehrten Weihnachtsregeln."><p class="media-link"><a href="Images/Calvin&amp;Hobbs_Xmas.jpg" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
         case "hunt":renderHunt();break;
@@ -173,7 +175,7 @@ async function selectDay(day,updateUrl=false) {
     }
     if(viewId!==generation)return;
     await arrive(day,viewId);
-    if(viewId===generation&&day===6){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/NpBb5qFIaIY?hl=de&playsinline=1";}
+    if(viewId===generation&&DAYS[day].type==="video"){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/NpBb5qFIaIY?hl=de&playsinline=1";}
 }
 
 async function renderStory(viewId) {

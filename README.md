@@ -20,13 +20,14 @@ Die Excel-Datei `Adventskalender_2026_Links.xlsx`, Blatt `Adventstage`, ist die 
 python3 tools/sync-calendar.py /absoluter/Pfad/Adventskalender_2026_Links.xlsx
 ```
 
-Tag 1, 5, 6, 7, 9 und 23 haben ausgearbeitete Inhalte. Die übrigen 18 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
+Tag 1, 5, 6, 7, 9, 11 und 23 haben ausgearbeitete Inhalte. Die übrigen 17 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
 
 - Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
 - Tag 5: Geschichte und Erklärung «Die zwei Wölfe», per Drehung umschaltbar.
-- Tag 6: Otto-Video ohne automatische Wiedergabe.
+- Tag 6: interaktives Weihnachtskreuzworträtsel mit zehn Begriffen, Hinweisen per Zahlen-Popup und lokaler Fortschrittsspeicherung. Auswahl in Altrosa (`#c7a491` aus der skandinavischen Palette), richtige Einträge in Salbeigrün. Pro Wort lassen sich rund 25 Prozent der Buchstaben aufdecken (gerundet, maximal drei); Hilfsbuchstaben stehen nicht direkt nebeneinander, Kreuzungsfelder zählen für beide Wörter.
 - Tag 7: achtsame Farbjagd mit fünf auswählbaren Farben.
 - Tag 9: vorhandener Calvin-und-Hobbes-Comic.
+- Tag 11: «Otto und der Weihnachtsmann», ohne automatische Wiedergabe.
 - Tag 23: geschützter gemeinsamer Rückblick im Dorf.
 
 ## Tag 23

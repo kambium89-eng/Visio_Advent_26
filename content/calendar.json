@@ -41,11 +41,11 @@
   },
   {
     "day": 6,
-    "title": "Samichlaus mit Otto",
-    "format": "YouTube-Video",
-    "description": "Zum Samichlaus einen kurzen Weihnachtsclip von Otto und dem Weihnachtsmann anschauen.",
+    "title": "Weihnachtliches Kreuzworträtsel",
+    "format": "Rätsel",
+    "description": "Zehn Weihnachtsbegriffe im interaktiven Kreuzworträtsel lösen. Hinweise über die Zahlen öffnen, Antworten prüfen und bei Bedarf einzelne Buchstaben aufdecken.",
     "house": "house-06",
-    "type": "video"
+    "type": "crossword"
   },
   {
     "day": 7,
@@ -81,11 +81,11 @@
   },
   {
     "day": 11,
-    "title": "Weihnachtliches Kreuzworträtsel",
-    "format": "Rätsel",
-    "description": "Weihnachtsbegriffe in einem Kreuzworträtsel suchen und die Lösung anschliessend prüfen.",
+    "title": "Otto und der Weihnachtsmann",
+    "format": "YouTube-Video",
+    "description": "Einen kurzen Weihnachtsclip von Otto und dem Weihnachtsmann anschauen.",
     "house": "house-11",
-    "type": "placeholder"
+    "type": "video"
   },
   {
     "day": 12,

@@ -1,0 +1,97 @@
+#christmas-crossword { --pine: #294c40; --pine-soft: #567260; --gold: #a58039; --ink: #303e35; --muted: #68756a; --paper: #fffdf7; --line: #dce2d3; --selected: #c7a491; --active: #c7a491; --correct: #c8cfbf; --wrong: #f0d1c9; padding: 0; }
+#christmas-crossword, #christmas-crossword *, #christmas-crossword *::before, #christmas-crossword *::after { box-sizing: border-box; }
+#christmas-crossword [hidden] { display: none !important; }
+#christmas-crossword button, #christmas-crossword input { font: inherit; }
+#christmas-crossword button { cursor: pointer; touch-action: manipulation; }
+#christmas-crossword button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+#christmas-crossword button:disabled { cursor: default; opacity: .5; }
+#christmas-crossword .cw-shell { max-width: 540px; margin: auto; }
+#christmas-crossword .cw-intro { margin-bottom: 20px; text-align: center; }
+#christmas-crossword h1 { margin: 0; color: var(--pine); font-size: clamp(25px, 4.6vw, 34px); font-weight: 400; letter-spacing: -.04em; line-height: 1.2; }
+#christmas-crossword .cw-description { margin: 10px 0 0; color: var(--pine-soft); font-size: 13px; line-height: 1.65; }
+#christmas-crossword .cw-board-card { padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); box-shadow: 0 8px 30px #294c4008; }
+#christmas-crossword .cw-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1px; width: 100%; padding: 6px; border-radius: 4px; background: var(--pine); }
+#christmas-crossword .cw-cell, #christmas-crossword .cw-block { position: relative; min-width: 0; aspect-ratio: 1; }
+#christmas-crossword .cw-block { background: var(--pine); }
+#christmas-crossword .cw-cell { background: var(--paper); }
+#christmas-crossword .cw-cell input { position: absolute; inset: 0; width: 100%; min-width: 0; height: 100%; padding: 8px 0 0; border: 0; border-radius: 0; outline: none; background: transparent; color: var(--ink); text-align: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: clamp(16px, 3.4vw, 23px); font-weight: 600; line-height: 1; caret-color: var(--pine); appearance: none; -webkit-appearance: none; }
+#christmas-crossword .cw-cell-number { position: absolute; left: 0; top: 0; z-index: 4; display: grid; place-items: center; width: 19px; height: 18px; padding: 0; border: 0; border-radius: 0 0 4px 0; background: #fffdf7ad; color: var(--pine); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 10px; font-weight: 700; line-height: 1; text-decoration: underline; text-decoration-color: #a5803970; text-underline-offset: 2px; }
+#christmas-crossword .cw-cell-number:hover { background: var(--active); }
+#christmas-crossword .cw-cell-number:focus-visible { outline-offset: 0; }
+#christmas-crossword .cw-cell.is-word { background: var(--selected); }
+#christmas-crossword .cw-cell.is-active { background: var(--active); box-shadow: inset 0 0 0 2px var(--pine); }
+#christmas-crossword .cw-cell.is-correct { background: var(--correct); }
+#christmas-crossword .cw-cell.is-correct.is-word { box-shadow: inset 0 0 0 2px var(--selected); }
+#christmas-crossword .cw-cell.is-wrong { background: var(--wrong); box-shadow: inset 0 -3px #9b5546; }
+#christmas-crossword .cw-cell:focus-within { z-index: 3; outline: 2px solid var(--pine); outline-offset: -2px; }
+#christmas-crossword .cw-cell.is-revealed::after { position: absolute; right: 3px; bottom: 3px; width: 4px; height: 4px; border-radius: 50%; background: var(--pine-soft); content: ""; pointer-events: none; }
+#christmas-crossword .cw-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+#christmas-crossword .cw-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 9px 12px; border: 1px solid #bdc9b7; border-radius: 5px; background: transparent; color: var(--pine); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; font-weight: 550; line-height: 1.4; }
+#christmas-crossword .cw-button:hover:not(:disabled) { border-color: var(--pine-soft); background: #edf2e7; }
+#christmas-crossword .cw-button svg { flex-shrink: 0; width: 14px; height: 14px; }
+#christmas-crossword .cw-button-primary { border-color: var(--pine); background: var(--pine); color: var(--paper); }
+#christmas-crossword .cw-button-primary:hover:not(:disabled) { border-color: #3f6651; background: #3f6651; }
+#christmas-crossword .cw-reveal-count { font-size: 10px; font-variant-numeric: tabular-nums; opacity: .8; }
+#christmas-crossword .cw-reset { width: 36px; min-height: 40px; margin-left: auto; padding: 8px; border: 0; }
+#christmas-crossword .cw-reset svg { width: 18px; height: 18px; }
+#christmas-crossword .cw-message { margin: 11px 2px 1px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+#christmas-crossword .cw-message:empty { display: none; }
+#christmas-crossword .cw-message[data-tone="error"] { color: #8e493c; }
+#christmas-crossword .cw-message[data-tone="success"] { color: var(--pine); }
+#christmas-crossword .cw-dialog { width: min(390px, calc(100vw - 32px)); max-height: calc(100svh - 40px); padding: 24px; border: 1px solid #c6d0bb; border-radius: 12px; background: var(--paper); color: var(--ink); box-shadow: 0 20px 75px #20392c30; }
+#christmas-crossword .cw-dialog::backdrop { background: #263d3359; backdrop-filter: blur(3px); }
+#christmas-crossword .cw-dialog h2 { margin: 0 32px 15px 0; color: var(--pine); font-size: 24px; font-weight: 400; line-height: 1.25; }
+#christmas-crossword .cw-dialog-close { position: absolute; right: 13px; top: 12px; display: grid; place-items: center; width: 34px; height: 34px; padding: 5px; border: 0; border-radius: 50%; background: none; color: var(--pine-soft); font-family: sans-serif; font-size: 24px; line-height: 1; }
+#christmas-crossword .cw-dialog-close:hover { background: #edf2e7; }
+#christmas-crossword .cw-dialog-directions { display: flex; gap: 8px; margin: 0 0 17px; }
+#christmas-crossword .cw-dialog-directions .cw-button { min-height: 35px; padding: 7px 10px; font-size: 11px; }
+#christmas-crossword .cw-dialog-directions [aria-pressed="true"] { border-color: var(--pine); background: var(--selected); }
+#christmas-crossword .cw-dialog-clue { margin: 0; font-size: 17px; line-height: 1.65; }
+#christmas-crossword .cw-dialog-length { margin: 9px 0 20px; color: var(--muted); font-size: 11px; }
+#christmas-crossword .cw-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+#christmas-crossword .cw-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 460px) {
+#christmas-crossword { padding: 0; }
+#christmas-crossword .cw-intro { margin-bottom: 16px; }
+#christmas-crossword h1 { font-size: 29px; }
+#christmas-crossword .cw-description { font-size: 12px; }
+#christmas-crossword .cw-board-card { padding: 9px; }
+#christmas-crossword .cw-grid { padding: 4px; }
+#christmas-crossword .cw-cell input { padding-top: 6px; font-size: 18px; }
+#christmas-crossword .cw-cell-number { width: 16px; height: 15px; font-size: 9px; }
+#christmas-crossword .cw-button { min-height: 44px; padding: 9px; font-size: 11px; }
+#christmas-crossword .cw-reset { width: 32px; padding: 5px; }
+#christmas-crossword .cw-toolbar { gap: 6px; margin-top: 10px; }
+#christmas-crossword .cw-dialog-actions .cw-button { min-height: 40px; }
+}
+@media (max-width: 350px) {
+#christmas-crossword h1 { font-size: 26px; }
+#christmas-crossword .cw-description { font-size: 11px; }
+#christmas-crossword .cw-button { gap: 5px; padding: 8px; }
+#christmas-crossword .cw-cell input { font-size: 16px; }
+}
+
+/* Keep the whole puzzle within the calendar's existing content area. */
+body:has(.day-content[data-type="crossword"]) .page-header{padding-top:12px;padding-bottom:4px}
+body:has(.day-content[data-type="crossword"]) .page-header .brand{margin-bottom:4px}
+body:has(.day-content[data-type="crossword"]) .page-header h1{font-size:46px}
+body:has(.day-content[data-type="crossword"]) .page-header h1 span{font-size:42px}
+body:has(.day-content[data-type="crossword"]) .header-ornament{height:20px}
+.day-content[data-type="crossword"]{height:calc(100dvh - var(--village-height) - 120px);max-height:calc(100dvh - var(--village-height) - 120px);padding:10px 24px 12px}
+.day-content[data-type="crossword"] .content-heading{margin-bottom:12px}
+.day-content[data-type="crossword"] .eyebrow{display:none}
+.day-content[data-type="crossword"] .content-heading h2{font-size:38px}
+.day-content[data-type="crossword"] .day-intro{margin-top:5px;font-size:12px;line-height:1.5;white-space:pre-line}
+#christmas-crossword .cw-shell{width:min(100%,max(320px,calc((100dvh - var(--village-height) - 310px)*1.2)))}
+#christmas-crossword .cw-grid{width:min(100%,max(264px,calc((100dvh - var(--village-height) - 310px)*1.2)));margin-inline:auto}
+#christmas-crossword .cw-board-card{padding:0;border:0;background:transparent;box-shadow:none}
+#christmas-crossword .cw-cell-number{width:16px;height:15px;font-size:9px}
+#christmas-crossword .cw-cell input{font-size:clamp(16px,2.2vh,23px)}
+#christmas-crossword .cw-dialog{margin:auto}
+#christmas-crossword .cw-dialog-close{font-family:Arial,sans-serif}
+@media(max-height:800px){
+  .day-content[data-type="crossword"]{padding-top:8px;padding-bottom:8px}
+  .day-content[data-type="crossword"] .content-heading{margin-bottom:8px}
+  .day-content[data-type="crossword"] .content-heading h2{font-size:34px}
+  .day-content[data-type="crossword"] .day-intro{margin-top:4px;font-size:11px;line-height:1.4}
+}
