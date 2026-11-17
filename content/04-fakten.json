@@ -1,0 +1,136 @@
+{
+  "researchDate": "17. November 2026",
+  "facts": [
+    {
+      "id": "wintergruen",
+      "label": "Wintergrün",
+      "symbol": "leaf",
+      "title": "Woher kommt der Brauch vom Weihnachtsbaum?",
+      "question": "Warum steht mitten im Winter ein Stück Wald im Wohnzimmer?",
+      "paragraphs": [
+        "Warum steht mitten im Winter eigentlich ein Stück Wald in unserem Wohnzimmer? Eine verbreitete Ursprungstheorie sieht darin ein Echo vorchristlicher Winterbräuche: Immergrüne Zweige verkörperten fortdauerndes Leben und die Hoffnung auf den Frühling. Zum keltischen Erbe gehört die heilige Mistel, der gallische Druiden laut dem römischen Autor Plinius heilende und fruchtbarkeitsfördernde Kräfte zuschrieben.",
+        "Grün ins Haus zu holen lässt sich in dieser Deutung als Versuch verstehen, die «Lebensessenz» der Natur durch den Winter ins neue Jahr zu tragen. Eine weitere Erklärung verbindet den geschmückten Baum mit mittelalterlichen Paradiesspielen, bei denen Äpfel am Baum an Adam und Eva erinnerten. Unser Weihnachtsbaum könnte also mehrere Geschichten in seinen Zweigen tragen: die alte Hoffnung auf weiterlebende Natur und das christliche Bild vom Paradies."
+      ],
+      "sources": [
+        {
+          "id": "1",
+          "title": "Natural History Museum: Christmas plants and flowers – The traditions and science of festive flora",
+          "url": "https://www.nhm.ac.uk/discover/christmas-plants-traditions-science-festive-flora.html",
+          "note": "Abschnitt «Christmas trees – rooted in pagan celebrations»: winterliche Lebenssymbolik von Immergrün und Übernahme älterer Bräuche ins Christentum."
+        },
+        {
+          "id": "2",
+          "title": "Museum of New Zealand Te Papa Tongarewa: Christmas trees",
+          "url": "https://collections.tepapa.govt.nz/category/322398",
+          "note": "Übersicht: ältere Lebenssymbolik, Fortleben skandinavischer und deutscher Wintergrünbräuche nach der Christianisierung und Erklärung über den Paradiesbaum."
+        },
+        {
+          "id": "3",
+          "title": "Plinius der Ältere: Naturalis historia, Buch XVI, Abschnitte 249–251",
+          "url": "https://penelope.uchicago.edu/thayer/l/roman/texts/pliny_the_elder/16%2A.html",
+          "note": "antiker lateinischer Text bei LacusCurtius, University of Chicago: gallische Druiden, Eiche, Mistelritual und zugeschriebene Kräfte."
+        }
+      ]
+    },
+    {
+      "id": "nikolaus",
+      "label": "Samichlaus",
+      "symbol": "star",
+      "title": "Nikolaus",
+      "question": "Wie kam der Samichlaus aus der heutigen Türkei in die Schweiz?",
+      "paragraphs": [
+        "Wie kommt ein Bischof aus der heutigen Türkei in unsere Schweizer Adventsstuben? Hinter dem Samichlaus steht Nikolaus von Myra, der Überlieferung nach ein Bischof des vierten Jahrhunderts. Eine seiner bekanntesten Legenden erzählt, wie er einer armen Familie heimlich Gold für ihre drei Töchter schenkte.",
+        "Seine Superkraft war also Grosszügigkeit: helfen, ohne dafür Applaus zu verlangen. Sein Gedenktag am sechsten Dezember erklärt den Besuch im Advent; in der Zentralschweiz kommen je nach Ort Schmutzli, Glockengruppen oder leuchtende Iffelen dazu. Vielleicht ist die schönste Samichlaus-Überraschung deshalb eine gute Tat, bei der niemand merkt, wer dahintersteckt."
+      ],
+      "sources": [
+        {
+          "id": "1",
+          "title": "Erzbistum Köln: Nikolaus von Myra – Drei Geschichten aus dem Leben des Heiligen",
+          "url": "https://www.erzbistum-koeln.de/presse_und_medien/magazin/Nikolaus-von-Myra-Drei-Geschichten-aus-dem-Leben-des-Heiligen/",
+          "note": "12. November 2025: Herkunft, Gedenktag und Goldlegende."
+        },
+        {
+          "id": "2",
+          "title": "Bundesamt für Kultur, Lebendige Traditionen: Sankt-Nikolaus-Brauchtum in der Zentralschweiz",
+          "url": "https://www.lebendige-traditionen.ch/de/sankt-nikolaus-brauchtum-in-der-zentralschweiz",
+          "note": "Besuche und örtlich unterschiedliche Begleitfiguren."
+        }
+      ]
+    },
+    {
+      "id": "sonnenwende",
+      "label": "Sonnenwende",
+      "symbol": "sun",
+      "title": "Weihnachten und Wintersonnenwende",
+      "question": "Warum ausgerechnet der fünfundzwanzigste Dezember?",
+      "paragraphs": [
+        "Warum feiern wir Jesu Geburtstag am fünfundzwanzigsten Dezember, wenn die Bibel gar kein Datum nennt? Eine bekannte Theorie lautet: Die Nähe zu vertrauten Winterfesten sollte Menschen mit älteren Religionen den Wechsel zum Christentum erleichtern. Das passte zur römischen Kalendertradition, die den fünfundzwanzigsten Dezember als Sonnenwende und damit als Rückkehr des Lichts verstand.",
+        "Im Rom des vierten Jahrhunderts sind an diesem Datum sowohl Jesu Geburt als auch ein Fest des «Unbesiegten», gewöhnlich als Sonnengott Sol gedeutet, verzeichnet. Eine andere Theorie rechnet vom angenommenen Empfängnistag Jesu am fünfundzwanzigsten März einfach neun Monate weiter. Ob also ältere Feste oder christliche Kalenderrechnung den Ausschlag gaben, bleibt umstritten – die Hoffnung auf Licht mitten im Winter passt jedenfalls bestens zur Weihnachtsgeschichte."
+      ],
+      "sources": [
+        {
+          "id": "1",
+          "title": "Andrew McGowan: How December 25 Became Christmas, Biblical Archaeology Society",
+          "url": "https://www.biblicalarchaeology.org/daily/people-cultures-in-the-bible/jesus-historical-jesus/how-december-25-became-christmas/",
+          "note": "Originalbeitrag 2002, Onlinefassung aktualisiert am 25. Juni 2026: fehlendes biblisches Datum und die beiden Erklärungstheorien."
+        },
+        {
+          "id": "2",
+          "title": "C. P. E. Nothaft: The Origins of the Christmas Date – Some Recent Trends in Historical Research",
+          "url": "https://rjtx.hopto.org/computo/Nothaft_The%20Origins%20of%20the%20Christmas%20Date.pdf",
+          "note": "*Church History* 81/4 (2012), Seiten 903–911, DOI 10.1017/S0009640712001941: römische Kalendertradition, Chronograph von 354 und Forschungsdebatte."
+        }
+      ]
+    },
+    {
+      "id": "island",
+      "label": "Island",
+      "symbol": "mountain",
+      "title": "Weihnachten in Island",
+      "question": "Wer schleicht in Islands Dezembernächten aus den Bergen?",
+      "paragraphs": [
+        "Wer schleicht in Islands Dezembernächten aus den Bergen, während die Kinder schlafen? Der Überlieferung nach wohnen dort die Trollfrau Grýla und ihre dreizehn Söhne, die Jólasveinar, von denen ab dem zwölften Dezember jede Nacht einer zu den Menschen kommt. Diese Weihnachtsgesellen haben eigenartige Vorlieben: Einer leckt Löffel ab, einer knallt Türen, und einer stibitzt Würste.",
+        "Kinder stellen einen Schuh ans Fenster, in dem morgens eine kleine Gabe oder bei schlechtem Benehmen eine Kartoffel wartet. Am Heiligabend erscheint als letzter Bruder der Kerzenschnorrer Kertasníkir, bevor die Gesellen nach und nach wieder in die Berge ziehen. Am sechsten Januar kehrt auch der letzte heim – und die Menschen haben ihre Löffel, Würste und Kerzen wieder ganz für sich."
+      ],
+      "sources": [
+        {
+          "id": "1",
+          "title": "Visit Iceland: Meet the Icelandic yule troll family",
+          "url": "https://www.visiticeland.com/article/meet-the-icelandic-yule-troll-family/",
+          "note": "offizielle Tourismusinformation: Trollfamilie, dreizehn Besucher, Streiche, Schuhbrauch und Rückkehr bis zum sechsten Januar."
+        },
+        {
+          "id": "2",
+          "title": "National Museum of Iceland: The Yule lads visit the museum!",
+          "url": "https://www.thjodminjasafn.is/en/vidburdir/jolasveinarnir-heimsaekja-safnid",
+          "note": "Museumsdarstellung mit Namen, Eigenheiten und Ankunftstagen vom zwölften bis vierundzwanzigsten Dezember; Veranstaltungsprogramm 2025 als Kulturquelle."
+        }
+      ]
+    },
+    {
+      "id": "adventskranz",
+      "label": "Adventskranz",
+      "symbol": "wreath",
+      "title": "Woher kommt der Adventskranz?",
+      "question": "Warum hatte der Adventskranz ursprünglich mehr als vier Kerzen?",
+      "paragraphs": [
+        "Warum hatte der Adventskranz ursprünglich viel mehr als vier Kerzen? 1839 stellte Johann Hinrich Wichern im Hamburger Rauhen Haus ein hölzernes Wagenrad mit Kerzen auf, um den Kindern das Warten auf Weihnachten zu erleichtern. Grosse weisse Kerzen markierten die Adventssonntage, kleine rote die übrigen Tage bis Heiligabend.",
+        "Jeden Tag wurde ein weiteres Licht angezündet, sodass die Kinder sehen konnten, wie Weihnachten näher rückte. Das Tannengrün kam erst später hinzu, und beim heute üblichen Kranz blieben die vier Sonntagskerzen übrig. Unser Adventskranz begann also als leuchtender Countdown für ungeduldige Weihnachtsfans."
+      ],
+      "sources": [
+        {
+          "id": "1",
+          "title": "Das Rauhe Haus: Geschichte des Rauhen Hauses",
+          "url": "https://www.rauheshaus.de/ueber-uns/geschichte-des-rauhen-hauses/",
+          "note": "Abschnitt zum Adventskranz: Wichern, Hamburg, 1839 sowie grosse weisse Sonntagskerzen und kleine rote Kerzen für die übrigen Tage."
+        },
+        {
+          "id": "2",
+          "title": "Diakonie Deutschland: Traditioneller Wichern-Adventskranz für den Bundestag",
+          "url": "https://www.diakonie.de/informieren/infothek/2023/november/traditioneller-wichern-adventskranz-fuer-den-bundestag-175-jahre-diakonie-ausliebe",
+          "note": "2023: hölzernes Wagenrad, tägliches Anzünden, späteres Tannengrün und Entwicklung zum Kranz mit vier Kerzen."
+        }
+      ]
+    }
+  ]
+}

@@ -29,7 +29,7 @@
     "format": "Wissenswertes",
     "description": "Kuriose Weihnachtsfakten auf drehbaren Textkarten entdecken.",
     "house": "house-04",
-    "type": "placeholder"
+    "type": "facts"
   },
   {
     "day": 5,

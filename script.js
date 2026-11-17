@@ -4,6 +4,7 @@ const API_BASE = "https://visio-advent-2026-api.inventivetoast1.chatgpt.site";
 let DAYS = {};
 const DAY_INTROS = {
     1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
+    4: "Fünf Fragen. Wähle ein Thema und entdecke die Geschichte dahinter.",
     5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
     6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
     11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
@@ -16,7 +17,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
 let token = readTeamToken();
-let storyPromise, disposeCrossword;
+let storyPromise, disposeCrossword, disposeFacts;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
 function readTeamToken() {
@@ -153,7 +154,7 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
-    finishArrival?.();disposeCrossword?.();disposeCrossword=null;generation++;const viewId=generation;selectedDay=day;
+    finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;generation++;const viewId=generation;selectedDay=day;
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
@@ -165,6 +166,11 @@ async function selectDay(day,updateUrl=false) {
     content.dataset.type=DAYS[day].type;
     document.body.classList.add("is-arriving");
     switch(DAYS[day].type){
+        case "facts":{
+            const cleanup=await createChristmasFacts(body,{isCurrent:()=>viewId===generation,reducedMotion:reducedMotion.matches});
+            if(viewId===generation)disposeFacts=cleanup;else cleanup?.();
+            break;
+        }
         case "story":await renderStory(viewId);break;
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
         case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
