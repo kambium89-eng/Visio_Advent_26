@@ -7,7 +7,7 @@ const DAY_INTROS = {
     4: "Fünf Fragen. Wähle ein Thema und entdecke die Geschichte dahinter.",
     5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
     6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
-    11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
+    11: "Ein Weihnachtsclip zum Schmunzeln. Mach es dir gemütlich.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     17: "Nimm dir fünf bis zehn Minuten nur für dich.",
     7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
@@ -180,7 +180,7 @@ async function selectDay(day,updateUrl=false) {
         }
         case "story":await renderStory(viewId);break;
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
-        case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
+        case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Bullyparade: Weihnachten auf dem (T)Raumschiff" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=kq3sYEPdvdM" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
         case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
         case "joy":{
             const cleanup=await createJoyMoment(body,{isCurrent:()=>viewId===generation});
@@ -193,7 +193,7 @@ async function selectDay(day,updateUrl=false) {
     }
     if(viewId!==generation)return;
     await arrive(day,viewId);
-    if(viewId===generation&&DAYS[day].type==="video"){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/NpBb5qFIaIY?hl=de&playsinline=1";}
+    if(viewId===generation&&DAYS[day].type==="video"){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/kq3sYEPdvdM?hl=de&playsinline=1";}
 }
 
 async function renderStory(viewId) {
