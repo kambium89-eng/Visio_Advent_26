@@ -1,0 +1,49 @@
+/* Let the film set the paper's height, with the village behind the large view. */
+.video-day .page-header{padding:12px 24px 4px}
+.video-day .brand{margin-bottom:4px}
+.video-day h1{font-size:48px}
+.video-day h1 span{font-size:44px}
+.video-day .header-ornament{height:22px}
+.video-day main{max-width:none;width:100%;padding:0 24px;z-index:6}
+.video-day .content-panel{
+    --video-width:min(1120px,calc(60dvh * 16 / 9),calc((100dvh - 260px) * 16 / 9));
+}
+.video-day .content-panel:has(.day-content[data-type="video"]){
+    width:100%;max-width:calc(var(--video-width) + 40px);
+}
+.video-day .content-panel::before{background:#fffdf7fa;filter:blur(8px)}
+.video-day .day-content[data-type="video"]{
+    position:relative;max-width:none;height:auto;max-height:none;overflow:visible;
+    padding:16px 20px 14px;
+}
+.video-day .content-heading{padding:0 44px;margin-bottom:12px}
+.video-day .content-heading .eyebrow{margin-bottom:5px}
+.video-day .content-heading h2{font-size:36px;line-height:1.1}
+.video-day .day-intro{margin-top:6px;font-size:12px}
+.video-day .video-frame{width:100%;height:auto;aspect-ratio:16/9;background:#111;border-radius:10px}
+.video-day .media-link{margin-top:8px;font-size:11px}
+.video-zoom{
+    position:absolute;top:12px;right:12px;display:grid;place-items:center;
+    width:42px;height:42px;padding:9px;border:1px solid #c5cfba;border-radius:50%;
+    color:var(--pine);background:var(--paper);box-shadow:0 2px 8px #294c4012;z-index:2;
+}
+.video-zoom:hover{background:#edf2e4;border-color:#8d9e7b}
+.video-zoom svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.video-expanded .video-zoom-plus{display:none}
+.video-day:not(.video-expanded) main{z-index:3}
+.video-day:not(.video-expanded) .content-panel{
+    --video-width:min(620px,calc(max(180px,100dvh - var(--village-height) - 280px) * 16 / 9));
+}
+.video-day:not(.video-expanded) .content-heading h2{font-size:28px}
+.video-day:not(.video-expanded) .day-intro{display:none}
+@media(max-height:650px){
+    .video-day .page-header{padding-top:8px}
+    .video-day h1{font-size:38px}
+    .video-day h1 span{font-size:36px}
+    .video-day .header-ornament{height:16px}
+    .video-day .content-heading h2{font-size:30px}
+    .video-day .day-intro{display:none}
+    .video-day:not(.video-expanded) .content-heading{padding:0 44px;margin-bottom:8px}
+    .video-day:not(.video-expanded) .content-heading h2{font-size:22px}
+    .video-day:not(.video-expanded) .content-heading .eyebrow{display:none}
+}

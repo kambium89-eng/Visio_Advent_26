@@ -157,6 +157,8 @@ function renderPlaceholder(day) {
 
 async function selectDay(day,updateUrl=false) {
     finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;disposeJoy?.();disposeJoy=null;generation++;const viewId=generation;selectedDay=day;
+    document.body.classList.toggle("video-day",DAYS[day].type==="video");
+    document.body.classList.remove("video-expanded");
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
@@ -180,7 +182,7 @@ async function selectDay(day,updateUrl=false) {
         }
         case "story":await renderStory(viewId);break;
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
-        case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Bullyparade: Weihnachten auf dem (T)Raumschiff" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=kq3sYEPdvdM" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
+        case "video":renderVideo();break;
         case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
         case "joy":{
             const cleanup=await createJoyMoment(body,{isCurrent:()=>viewId===generation});
@@ -194,6 +196,19 @@ async function selectDay(day,updateUrl=false) {
     if(viewId!==generation)return;
     await arrive(day,viewId);
     if(viewId===generation&&DAYS[day].type==="video"){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/kq3sYEPdvdM?hl=de&playsinline=1";}
+}
+
+function renderVideo() {
+    body.innerHTML='<button class="video-zoom" id="video-zoom" type="button" aria-controls="christmas-video" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M7.5 10.5h6"/><path class="video-zoom-plus" d="M10.5 7.5v6"/></svg></button><iframe class="video-frame" id="christmas-video" title="Bullyparade: Weihnachten auf dem (T)Raumschiff" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=kq3sYEPdvdM" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';
+    const zoom=$("video-zoom");
+    const setExpanded=expanded=>{
+        document.body.classList.toggle("video-expanded",expanded);
+        zoom.setAttribute("aria-expanded",String(expanded));
+        const label=expanded?"Video verkleinern und Häuschen anzeigen":"Video vergrössern";
+        zoom.setAttribute("aria-label",label);zoom.title=label;
+    };
+    zoom.addEventListener("click",()=>setExpanded(!document.body.classList.contains("video-expanded")));
+    setExpanded(true);
 }
 
 async function renderStory(viewId) {
