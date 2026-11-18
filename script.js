@@ -9,6 +9,7 @@ const DAY_INTROS = {
     6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
     11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
+    17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst.",
     7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
     9: "Ein kleiner Weihnachtsgruss zum Schmunzeln."
 };
@@ -181,6 +182,7 @@ async function selectDay(day,updateUrl=false) {
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
         case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
         case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
+        case "joy":await createJoyMoment(body,{isCurrent:()=>viewId===generation});break;
         case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
         default:renderPlaceholder(day);break;

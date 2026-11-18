@@ -1,0 +1,27 @@
+.day-content[data-type="joy"] .content-heading{margin-bottom:22px}
+.day-content[data-type="joy"] .content-heading h2{max-width:650px;margin-inline:auto}
+.day-content[data-type="joy"] .day-intro{max-width:590px;font-size:14px}
+.joy-moment{max-width:640px;margin:0 auto}
+.joy-invitation{margin:0 0 16px;padding:17px 23px;border-block:1px solid #d7decf;color:var(--pine);text-align:center;font-size:18px;line-height:1.65}
+.joy-copy{margin:0 0 14px;font-size:14px;line-height:1.8}
+.joy-choices{border:0;margin:24px 0 0;padding:0;min-width:0}
+.joy-choices legend{padding:0;margin:0 0 12px;color:var(--pine);font-size:16px}
+.joy-choices legend span{font-size:12px;color:var(--muted)}
+.joy-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.joy-choice{display:flex;align-items:center;gap:11px;min-height:52px;padding:12px 15px;border:1px solid #cbd5c5;border-radius:9px;background:#ffffff70;font-size:13px;line-height:1.5;cursor:pointer}
+.joy-choice:hover{border-color:var(--pine-soft);background:#f2f4e9}
+.joy-choice:has(input:checked){border-color:var(--pine);background:#e5eddc;color:var(--pine)}
+.joy-choice:has(input:focus-visible){outline:3px solid #a77d35;outline-offset:3px}
+.joy-choice input{flex:0 0 auto;accent-color:var(--pine);width:16px;height:16px;margin:0}
+.joy-choice-footer{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:10px}
+.joy-privacy{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
+.joy-clear{flex:0 0 auto;font-size:11px;padding:5px 0;white-space:nowrap}
+.joy-reflection{margin:24px 0 20px;padding-left:17px;border-left:2px solid #b59b5a;font-size:14px;line-height:1.8;color:var(--pine-soft)}
+.joy-ending{text-align:center;padding-bottom:4px}
+.joy-confirm{font-size:13px;max-width:100%;white-space:normal}
+.joy-closing{font:normal 32px/1.3 "Alex Brush",cursive;color:var(--pine);margin:17px 0 0}
+.joy-closing:empty{display:none}
+@media (max-width:600px){
+    .joy-options{grid-template-columns:1fr}
+    .joy-choice-footer{align-items:flex-start;flex-direction:column;gap:0}
+}

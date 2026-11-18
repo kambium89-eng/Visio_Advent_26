@@ -1,0 +1,15 @@
+{
+  "invitation": "Deine heutige Einladung: Nimm dir fünf bis zehn Minuten für etwas, das dir Freude macht.",
+  "examples": "Vielleicht hörst du dein Lieblingslied, zeichnest ein paar Linien, liest eine Seite, gehst kurz an die frische Luft oder geniesst in Ruhe ein warmes Getränk. Es muss nichts Besonderes sein und nichts kosten.",
+  "plan": "Wähle eine Sache, die heute für dich passt, und überlege, wann du ihr einen kleinen Moment geben möchtest. Auch zwei Minuten sind ein guter Anfang.",
+  "choices": [
+    "Musik hören",
+    "Etwas Kreatives machen",
+    "Lesen",
+    "Kurz nach draussen gehen",
+    "Ein Getränk geniessen",
+    "Etwas Eigenes"
+  ],
+  "reflection": "Wenn du magst, halte danach kurz inne: Was hat dir an diesem Moment gefallen? Die Antwort ist nur für dich.",
+  "closing": "Schön, dass du dir einen Moment genommen hast."
+}
