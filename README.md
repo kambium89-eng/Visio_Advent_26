@@ -20,7 +20,7 @@ Die Excel-Datei `Adventskalender_2026_Links.xlsx`, Blatt `Adventstage`, ist die 
 python3 tools/sync-calendar.py /absoluter/Pfad/Adventskalender_2026_Links.xlsx
 ```
 
-Tag 1, 4, 5, 6, 7, 9, 11 und 23 haben ausgearbeitete Inhalte. Die übrigen 16 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
+Tag 1, 4, 5, 6, 7, 9, 11, 15 und 23 haben ausgearbeitete Inhalte. Die übrigen 15 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
 
 - Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
 - Tag 4: fünf frei wählbare Fragen mit drehbarer Textkarte zu Wintergrün, Samichlaus, Sonnenwende, Island und Adventskranz. Jede Antwort hat sechs Sätze in zwei Absätzen; die Quellen lassen sich separat aufklappen. Themenwechsel starten auf der Frageseite; die kurze Drehung entfällt bei reduzierter Bewegung. Die freigegebenen Vault-Texte werden mit `python3 tools/sync-facts.py /absoluter/Pfad/zum/Advent-Projekt` nach `content/04-fakten.json` übernommen.
@@ -30,6 +30,7 @@ Tag 1, 4, 5, 6, 7, 9, 11 und 23 haben ausgearbeitete Inhalte. Die übrigen 16 Se
 - Tag 7: achtsame Farbjagd mit fünf auswählbaren Farben.
 - Tag 9: vorhandener Calvin-und-Hobbes-Comic.
 - Tag 11: «Otto und der Weihnachtsmann», ohne automatische Wiedergabe.
+- Tag 15: Filmpuzzle mit neun zusammenpassenden Teilen. Jede Weihnachtsfilmfrage hat drei Antworten; eine richtige Antwort deckt ein Teil auf. Zehn Filmtitel stehen jederzeit zur Wahl. Fortschritt bleibt im Browser. Nach dem richtigen Filmtipp erscheint genau eine stille Feier: Santa mit wenigen Hilfen, ein springendes Tageshaus bei mittlerer Hilfe, Sterne bei mehr Hilfe. Die Bereiche berücksichtigen aufgedeckte Teile sowie falsche Quiz- und Filmtipps; es gibt keine Rangliste oder Ergebnisübermittlung. Reduzierte Bewegung verwendet eine ruhige Textkarte. Verlassen der Tagesseite entfernt Animationen und stellt das Dorfhaus wieder her. Inhalt: `content/15-film-quiz.json`; Prüfungen: `node tools/verify-film-quiz.cjs`.
 - Tag 23: geschützter gemeinsamer Rückblick im Dorf.
 
 ## Tag 23
