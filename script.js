@@ -10,7 +10,6 @@ const DAY_INTROS = {
     11: "Ein Weihnachtsclip zum Schmunzeln. Mach es dir gemütlich.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst. Such dir eine Tätigkeit aus und gönn dir dafür fünf bis zehn Minuten. Wenn du magst, begleitet dich dabei ein Timer.",
-    7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
     9: "Ein kleiner Weihnachtsgruss zum Schmunzeln."
 };
 const $ = id => document.getElementById(id);
@@ -139,12 +138,13 @@ function setHeading(day) {
     const info=DAYS[day],surpriseLogin=day===23&&!token;
     $("day-eyebrow").textContent=`${day}. Dezember`;
     $("day-title").textContent=surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":info.title;
+    $("day-title").hidden=day===7;
     $("day-intro").textContent=DAY_INTROS[day]||"";
     $("day-intro").hidden=surpriseLogin||!DAY_INTROS[day];
     const guidance=$("day-guidance");
     guidance.hidden=day!==1;
     guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";
-    document.title=`${day}. Dezember · ${surpriseLogin?"Eine kleine Überraschung":info.title}`;
+    document.title=day===7?"7. Dezember · Adventskalender 2026":`${day}. Dezember · ${surpriseLogin?"Eine kleine Überraschung":info.title}`;
     $("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;
 }
 
@@ -190,7 +190,6 @@ async function selectDay(day,updateUrl=false) {
             break;
         }
         case "text":await renderText(day,viewId);break;
-        case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
         default:renderPlaceholder(day);break;
     }
@@ -241,7 +240,7 @@ async function renderText(day,viewId) {
         const markdown=await response.text();
         if(viewId!==generation)return;
         const reading=document.createElement("div");
-        reading.className="reading daily-reading";
+        reading.className=day===7?"reading":"reading daily-reading";
         reading.innerHTML=marked.parse(markdown);
         body.append(reading);
     }catch{
@@ -249,14 +248,6 @@ async function renderText(day,viewId) {
     }
 }
 
-function renderHunt(){
-    body.innerHTML='<p class="color-intro">Nimm dir einen kleinen Moment draussen. Du brauchst kein Ziel. Schau dich einfach um: Welche Farben findest du?</p><div class="hunt-steps"><section><span class="hunt-step-number">1.</span><h3>Komm kurz an.</h3><p>Bleib einen Augenblick stehen. Spüre den Boden unter deinen Füssen und nimm deine Umgebung wahr.</p></section><section><span class="hunt-step-number">2.</span><h3>Entdecke fünf Farben.</h3><p>Ein Blatt, ein Fenster, ein Schal. Halte nach den fünf Farben Ausschau – ähnliche Farbtöne zählen auch.</p></section><section><span class="hunt-step-number">3.</span><h3>Nimm einen Moment mit.</h3><p>Welches kleine Detail hat dich überrascht? Schenke ihm noch einen Augenblick Aufmerksamkeit.</p></section></div><fieldset class="color-list"><legend class="sr-only">Welche Farben hast du entdeckt?</legend></fieldset><p class="hunt-progress" role="status"></p><button class="text-button hunt-reset" type="button">Auswahl zurücksetzen</button>';
-    const colors=[["Tannengrün","#52775c"],["Winterweiss","#f8f5e8"],["Goldgelb","#d4ae58"],["Beerenrot","#a65e59"],["Himmelblau","#9bbcc5"]];
-    const list=body.querySelector(".color-list"),progress=body.querySelector(".hunt-progress");
-    for(const [name,color]of colors){const label=document.createElement("label");label.className="color-choice";label.innerHTML=`<input type="checkbox"><span class="color-dot" style="--swatch:${color}" aria-hidden="true"></span><span>${name}</span>`;list.append(label);}
-    const update=()=>{const count=list.querySelectorAll(":checked").length;progress.textContent=count===5?"Fünf Farben, fünf kleine Entdeckungen. Schön, dass du dir Zeit genommen hast.":`${count} von 5 Farben entdeckt. Deine Auswahl bleibt auf dieser Seite.`;};
-    list.addEventListener("change",update);body.querySelector(".hunt-reset").addEventListener("click",()=>{list.querySelectorAll("input").forEach(i=>i.checked=false);update();});update();
-}
 
 async function api(path,options={}) {
     let response;
