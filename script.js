@@ -235,7 +235,7 @@ async function renderStory(viewId) {
 
 async function renderText(day,viewId) {
     try{
-        const response=await fetch(`content/${String(day).padStart(2,"0")}-tagesinhalt.md`);
+        const response=await fetch(`content/${String(day).padStart(2,"0")}-tagesinhalt.md?v=day19-wording-20261118`,{cache:"no-cache"});
         if(!response.ok)throw new Error("text");
         const markdown=await response.text();
         if(viewId!==generation)return;
