@@ -50,7 +50,12 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .video-frame{width:100%;height:clamp(180px,calc(100dvh - var(--village-height) - 335px),440px);border:0;border-radius:10px;background:#e4e9df;display:block}
 .media-link{margin:17px 0 0;text-align:center;font-size:12px;color:var(--muted)}
 .media-link a{text-decoration-color:#9baf99}
-.comic{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e2e4d6}
+.comic{
+    display:block;width:100%;height:auto;border:0;border-radius:0;
+    --comic-edge-mask:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent),linear-gradient(0deg,transparent,#000 10px,#000 calc(100% - 10px),transparent);
+    -webkit-mask-image:var(--comic-edge-mask);-webkit-mask-composite:source-in;
+    mask-image:var(--comic-edge-mask);mask-composite:intersect;
+}
 .color-intro{max-width:650px;margin:0 auto 20px;font:17px/1.7 Georgia,serif;text-align:center}
 .hunt-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:23px;border-top:1px solid var(--line);padding-top:20px;margin:0 0 24px}
 .hunt-step-number{font:34px/1 "Alex Brush",cursive;color:var(--gold)}
