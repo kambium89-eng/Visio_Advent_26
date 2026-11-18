@@ -1,0 +1,96 @@
+.content-panel:has(.day-content[data-type="filmquiz"]){max-width:1080px}
+.day-content[data-type="filmquiz"]{max-width:1080px;padding:18px 28px 24px}
+.day-content[data-type="filmquiz"] .content-heading{margin-bottom:18px}
+#christmas-film-quiz{--soft:var(--muted);color:var(--ink);font:14px/1.6 Georgia,serif}
+#christmas-film-quiz h2{font:normal 22px/1.35 Georgia,serif;color:var(--pine);margin:0}
+#christmas-film-quiz h3{font:normal 20px/1.4 Georgia,serif;color:var(--pine)}
+#christmas-film-quiz .step-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
+#christmas-film-quiz .question-card .primary-button{margin-top:14px;width:100%}
+#christmas-film-quiz .answer-option:disabled{cursor:default}
+#christmas-film-quiz #reset-dialog{width:min(430px,calc(100% - 32px));padding:28px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:15px;box-shadow:0 15px 100px #162e2940}
+#christmas-film-quiz #reset-dialog::backdrop{background:#18372e66;backdrop-filter:blur(4px)}
+#christmas-film-quiz #reset-dialog p{font-size:14px;color:var(--muted)}
+#christmas-film-quiz #reset-dialog form{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+#christmas-film-quiz .secondary-button{border:1px solid var(--pine);border-radius:7px;background:none;color:var(--pine);font:13px Georgia,serif;padding:11px 20px;cursor:pointer}
+.film-quiz-house-away{visibility:hidden!important}
+#christmas-film-quiz .section-heading{display:flex;justify-content:space-between;gap:20px;align-items:center}
+#christmas-film-quiz .section-heading h2{font-size:20px}
+#christmas-film-quiz .progress-count{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;line-height:1.35}
+#christmas-film-quiz .progress-count strong{font-size:24px;font-weight:normal;color:var(--pine);font-variant-numeric:tabular-nums}
+#christmas-film-quiz .progress-count span{font-size:10px;color:var(--muted)}
+#christmas-film-quiz .progress-track{height:3px;background:#e8e9db;border-radius:10px;overflow:hidden;margin:17px 0 24px}
+#christmas-film-quiz .progress-track>span{display:block;width:0;height:100%;background:var(--gold);transition:width .5s ease}
+#christmas-film-quiz .game-layout{display:grid;grid-template-columns:minmax(0,1.67fr) minmax(280px,1fr);gap:25px;align-items:start}
+#christmas-film-quiz .board-frame{padding:10px;background:#e6e9db;border-radius:13px;box-shadow:inset 0 0 0 1px #c7cfb8,0 8px 22px #294c400a}
+#christmas-film-quiz #puzzle-board{display:block;width:100%;height:auto;border-radius:6px;overflow:visible;background:#d9dfcf}
+#christmas-film-quiz .puzzle-piece{cursor:pointer;outline:none}
+#christmas-film-quiz .piece-cover{fill:url(#piece-paper);stroke:none;transition:opacity .65s ease,fill .2s}
+#christmas-film-quiz .piece-outline{fill:none;stroke:#9dab907d;stroke-width:1.5;pointer-events:none;transition:stroke .2s}
+#christmas-film-quiz .piece-image{opacity:0;transition:opacity .65s ease;pointer-events:none}
+#christmas-film-quiz .piece-number{font:54px "Alex Brush",cursive;fill:#65755c;pointer-events:none;transition:opacity .3s}
+#christmas-film-quiz .piece-dots{fill:#9ca88d;pointer-events:none;transition:opacity .3s}
+#christmas-film-quiz .puzzle-piece:hover .piece-cover{fill:#dce3cc}
+#christmas-film-quiz .puzzle-piece:hover .piece-outline{stroke:#718168;stroke-width:2.5}
+#christmas-film-quiz .puzzle-piece.is-active .piece-cover{fill:#ece6d4}
+#christmas-film-quiz .puzzle-piece.is-active .piece-outline{stroke:var(--gold);stroke-width:3.5}
+#christmas-film-quiz .puzzle-piece:focus-visible .piece-outline{stroke:var(--pine);stroke-width:5}
+#christmas-film-quiz .puzzle-piece.is-solved .piece-cover,#christmas-film-quiz .puzzle-piece.is-solved .piece-number,#christmas-film-quiz .puzzle-piece.is-solved .piece-dots{opacity:0;pointer-events:none}
+#christmas-film-quiz .puzzle-piece.is-solved .piece-image{opacity:1}
+#christmas-film-quiz .puzzle-piece.is-solved .piece-outline{stroke:#fffdf76b;stroke-width:1.5}
+#christmas-film-quiz .puzzle-piece.is-solved.is-active .piece-outline{stroke:#fffdf7;stroke-width:3}
+#christmas-film-quiz .board-hint{text-align:center;color:var(--soft);font-size:11px;margin:12px 0 0}
+#christmas-film-quiz .image-credit{text-align:center;color:#7a8070;font-size:9px;margin:5px 0 0}
+#christmas-film-quiz .question-card{background:#f3f2e7;border:1px solid #dedfce;border-radius:13px;padding:21px;min-height:344px}
+#christmas-film-quiz .question-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#christmas-film-quiz .question-top p{font-size:11px;color:var(--soft);margin:0}
+#christmas-film-quiz .category{color:#78633d;border:1px solid #d9cfb7;padding:2px 8px;border-radius:20px;font-size:9px;white-space:nowrap}
+#christmas-film-quiz .question-card h3{margin:16px 0 17px;font-size:20px;line-height:1.4}
+#christmas-film-quiz .answer-list{display:flex;flex-direction:column;gap:9px}
+#christmas-film-quiz .answer-option{width:100%;display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;min-height:45px;color:var(--ink);background:#fffdf7;border:1px solid #d3d8c9;border-radius:7px;font-size:13px;line-height:1.35;transition:background .2s,border-color .2s}
+#christmas-film-quiz .answer-option:not(:disabled):hover{background:#e9edde;border-color:#8b9c7b}
+#christmas-film-quiz .answer-letter{font:11px/1 Georgia,serif;flex-shrink:0;border:1px solid #dce1d4;border-radius:50%;width:23px;height:23px;display:grid;place-items:center;color:var(--soft)}
+#christmas-film-quiz .answer-option.is-wrong{background:#f7e7df;border-color:#d9b8a9;color:#795a50}
+#christmas-film-quiz .answer-option.is-wrong .answer-letter{border-color:#d9b8a9}
+#christmas-film-quiz .answer-option.is-correct{background:#e4ecda;border-color:#849b72;color:#294c40}
+#christmas-film-quiz .answer-option:disabled:not(.is-wrong):not(.is-correct){opacity:.52}
+#christmas-film-quiz .question-feedback{font-size:12px;line-height:1.65;color:var(--soft);margin:13px 0 0}
+#christmas-film-quiz .question-feedback.is-wrong{color:#8b5042}
+#christmas-film-quiz .question-feedback strong{display:block;font-weight:normal;font-size:15px;margin-bottom:5px;color:var(--pine)}
+#christmas-film-quiz .question-note{margin:14px 0 0;color:var(--muted);font-size:10px}
+#christmas-film-quiz .question-card .primary-button{width:100%;margin-top:14px;min-height:41px;font-size:12px;padding:8px 12px}
+#christmas-film-quiz .film-section{border-top:1px solid var(--line);margin-top:31px;padding-top:26px}
+#christmas-film-quiz .film-intro{font-size:13px;color:var(--muted);margin:10px 0 17px}
+#christmas-film-quiz #film-choices{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;border:0;padding:0;margin:0;min-width:0}
+#christmas-film-quiz .film-choice{position:relative;display:flex;align-items:center;gap:10px;border:1px solid #dce1d4;background:#ffffff7d;border-radius:7px;padding:10px 13px;min-height:45px;color:var(--ink);font-size:12px;line-height:1.45;cursor:pointer;transition:background .2s,border-color .2s}
+#christmas-film-quiz .film-choice:hover{background:#eef1e4;border-color:#a7b39a}
+#christmas-film-quiz .film-choice:has(input:checked){background:#e8ecdc;border-color:var(--soft)}
+#christmas-film-quiz .film-choice:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:3px}
+#christmas-film-quiz .film-choice input{flex-shrink:0;width:15px;height:15px;margin:0;accent-color:var(--pine)}
+#christmas-film-quiz .film-choice.is-rejected{opacity:.55;background:#f4eee8}
+#christmas-film-quiz .film-choice.is-answer{border-color:var(--pine);background:#e6eddc}
+#christmas-film-quiz .film-choice:has(input:disabled){cursor:default}
+#christmas-film-quiz .guess-actions{display:flex;gap:20px;align-items:center;margin:20px 0 0}
+#christmas-film-quiz .gentle-note{font-size:11px;color:var(--muted)}
+#christmas-film-quiz #film-feedback:empty{display:none}
+#christmas-film-quiz #film-feedback{margin:18px 0 0;padding:15px 19px;border-radius:8px;background:#f4e9df;color:#7c5145;font-size:13px}
+#christmas-film-quiz #film-feedback.is-success{background:#eaf0df;color:var(--pine);border:1px solid #c6d3b5}
+#christmas-film-quiz #film-feedback h3{font:32px/1.1 "Alex Brush",cursive;margin:0 0 6px}
+#christmas-film-quiz #film-feedback p{margin:0}
+#christmas-film-quiz #film-feedback p+p{margin-top:6px}
+#christmas-film-quiz .game-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding:17px 0;margin-top:29px;font-size:10px;color:var(--muted)}
+#christmas-film-quiz .text-button{padding:4px 0;background:none;border:0;color:var(--soft);font-size:11px;text-decoration:underline;text-underline-offset:4px;white-space:nowrap}
+#christmas-film-quiz .text-button span{margin-right:4px;text-decoration:none}
+.film-quiz-celebration{position:fixed;inset:0;z-index:80;isolation:isolate;pointer-events:none;overflow:hidden}
+.film-quiz-celebration .celebration-banner{position:absolute;left:50%;top:clamp(22px,8vh,80px);translate:-50% 0;width:min(470px,calc(100vw - 32px));padding:21px 29px 15px;text-align:center;background:#fffdf5f7;border:1px solid #d8cba0;border-radius:17px;box-shadow:0 10px 60px #294c4029;z-index:5;color:var(--pine)}
+.film-quiz-celebration .celebration-banner h2{font:37px/1.12 "Alex Brush",cursive;margin:0 0 6px;color:var(--pine)}
+.film-quiz-celebration .celebration-banner p{font:13px/1.6 Georgia,serif;margin:0;color:var(--muted)}
+.film-quiz-celebration .celebration-dismiss{pointer-events:auto;background:none;border:0;color:var(--muted);font:11px/1.5 Georgia,serif;text-decoration:underline;text-underline-offset:4px;padding:5px 15px;margin-top:8px;cursor:pointer}
+.film-quiz-celebration .star-halo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,#f6e7a85e,transparent 65%)}
+.film-quiz-celebration .glitter-star{position:absolute;line-height:1;text-shadow:0 0 9px #f7de8ca6,0 0 26px #fff6da;z-index:2;pointer-events:none}
+.film-quiz-celebration .sleigh-wash{position:absolute;inset:0;background:linear-gradient(150deg,#e8eff4b3,#f1efe555,transparent);pointer-events:none}
+.film-quiz-celebration .santa-flight{position:absolute;left:0;top:0;height:auto;max-width:none;z-index:3;filter:drop-shadow(0 10px 9px #294c4024);will-change:transform}
+.film-quiz-celebration .sleigh-trail{position:absolute;font-size:21px;line-height:1;color:#c5a653;text-shadow:0 0 12px #ffedb8;z-index:2}
+.film-quiz-celebration .flying-house{position:absolute;left:0;top:0;z-index:3;object-fit:contain;transform-origin:center center;filter:drop-shadow(0 10px 10px #294c403b);will-change:transform}
+
+@media(max-width:1000px){#christmas-film-quiz .game-layout{grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);gap:18px}#christmas-film-quiz .question-card{padding:16px}#christmas-film-quiz .question-card h3{font-size:18px}}
+@media(prefers-reduced-motion:reduce){#christmas-film-quiz *,#christmas-film-quiz *::before,#christmas-film-quiz *::after{animation:none!important;transition:none!important}.film-quiz-celebration .glitter-star,.film-quiz-celebration .star-halo,.film-quiz-celebration .santa-flight,.film-quiz-celebration .sleigh-wash,.film-quiz-celebration .sleigh-trail,.film-quiz-celebration .flying-house{display:none!important}}

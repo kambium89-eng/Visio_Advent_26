@@ -1,0 +1,156 @@
+{
+  "version": 2,
+  "answer": "aschenbroedel",
+  "films": [
+    {
+      "id": "third-prince",
+      "title": "Der dritte Prinz"
+    },
+    {
+      "id": "polar",
+      "title": "Der Polarexpress"
+    },
+    {
+      "id": "grinch",
+      "title": "Der Grinch"
+    },
+    {
+      "id": "golden-star",
+      "title": "Die Prinzessin mit dem goldenen Stern"
+    },
+    {
+      "id": "narnia",
+      "title": "Die Chroniken von Narnia – Der König von Narnia"
+    },
+    {
+      "id": "home-alone",
+      "title": "Kevin – Allein zu Haus"
+    },
+    {
+      "id": "aschenbroedel",
+      "title": "Drei Haselnüsse für Aschenbrödel"
+    },
+    {
+      "id": "neverending",
+      "title": "Die unendliche Geschichte"
+    },
+    {
+      "id": "klaus",
+      "title": "Klaus"
+    },
+    {
+      "id": "evening-star",
+      "title": "Der Prinz und der Abendstern"
+    }
+  ],
+  "questions": [
+    {
+      "category": "Weihnachtskino",
+      "question": "Wohin reist Kevins Familie in «Kevin – Allein zu Haus»?",
+      "choices": [
+        "Italien",
+        "Frankreich",
+        "Spanien"
+      ],
+      "correct": 1,
+      "explanation": "Die Familie reist über Weihnachten nach Frankreich. Kevin bleibt versehentlich zu Hause bei Chicago zurück.",
+      "source": "https://family.20thcenturystudios.com/movies/home-alone"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Wie heisst der Hund des Grinch?",
+      "choices": [
+        "Max",
+        "Bruno",
+        "Oscar"
+      ],
+      "correct": 0,
+      "explanation": "Max ist der treue Hund des Grinch und begleitet ihn sogar bei seinem Plan, Weihnachten zu stehlen.",
+      "source": "https://www.illuminationstudiosparis.com/portfolio/the-grinch/"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Wohin fährt der geheimnisvolle Zug in «Der Polarexpress»?",
+      "choices": [
+        "Zum Südpol",
+        "Nach London",
+        "Zum Nordpol"
+      ],
+      "correct": 2,
+      "explanation": "Der Polarexpress fährt am Weihnachtsabend zum Nordpol – eine ziemlich besondere Zugreise.",
+      "source": "https://www.netflix.com/title/70011200"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Welchen Beruf hat Jesper im Weihnachtsfilm «Klaus»?",
+      "choices": [
+        "Bäcker",
+        "Briefträger",
+        "Lehrer"
+      ],
+      "correct": 1,
+      "explanation": "Jesper ist Briefträger. Seine ungewöhnliche Freundschaft mit einem Spielzeugmacher verändert eine ganze Stadt.",
+      "source": "https://www.netflix.com/title/80183187"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Von wem wird Buddy in «Buddy – Der Weihnachtself» grossgezogen?",
+      "choices": [
+        "Weihnachtselfen",
+        "Schneemännern",
+        "Rentieren"
+      ],
+      "correct": 0,
+      "explanation": "Buddy wächst bei den Weihnachtselfen am Nordpol auf. Als Mensch ist er dort irgendwann ziemlich gross geraten.",
+      "source": "https://www.youtube.com/watch?v=KspODj6Q4D0"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Welche Rolle muss Scott Calvin in «Santa Clause – Eine schöne Bescherung» übernehmen?",
+      "choices": [
+        "Die des Bürgermeisters",
+        "Die des Hoteldirektors",
+        "Die des Weihnachtsmanns"
+      ],
+      "correct": 2,
+      "explanation": "Scott zieht den Weihnachtsmannanzug an und übernimmt damit unerwartet auch den dazugehörigen Beruf.",
+      "source": "https://movies.disney.com/the-santa-clause"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Welcher Schauspieler spielt Ebenezer Scrooge in «Die Muppets-Weihnachtsgeschichte»?",
+      "choices": [
+        "Robin Williams",
+        "Michael Caine",
+        "Tim Allen"
+      ],
+      "correct": 1,
+      "explanation": "Michael Caine spielt den zunächst griesgrämigen Scrooge – mitten unter Kermit, Miss Piggy und den anderen Muppets.",
+      "source": "https://movies.disney.com/the-muppet-christmas-carol"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Wie heisst die Familie, deren Weihnachtsfest in «Schöne Bescherung» im Chaos versinkt?",
+      "choices": [
+        "McCallister",
+        "Addams",
+        "Griswold"
+      ],
+      "correct": 2,
+      "explanation": "Die Griswolds wollen ein perfektes Familienweihnachten feiern. Bei Clark läuft dabei so einiges anders als geplant.",
+      "source": "https://www.youtube.com/watch?v=8Ohn282bL6I"
+    },
+    {
+      "category": "Weihnachtskino",
+      "question": "Wie heisst der geizige Geschäftsmann, den in «Eine Weihnachtsgeschichte» die Weihnachtsgeister besuchen?",
+      "choices": [
+        "Ebenezer Scrooge",
+        "Sherlock Holmes",
+        "Oliver Twist"
+      ],
+      "correct": 0,
+      "explanation": "Ebenezer Scrooge entdeckt durch die Begegnungen mit den Weihnachtsgeistern, was im Leben wirklich zählt.",
+      "source": "https://movies.disney.com/a-christmas-carol"
+    }
+  ]
+}

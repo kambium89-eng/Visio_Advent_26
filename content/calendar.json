@@ -117,7 +117,7 @@
     "format": "Film-Rätsel",
     "description": "Einen Weihnachtsfilm anhand von Hinweisen erraten und die Auflösung aufdecken.",
     "house": "house-15",
-    "type": "placeholder"
+    "type": "filmquiz"
   },
   {
     "day": 16,

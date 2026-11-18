@@ -8,6 +8,7 @@ const DAY_INTROS = {
     5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
     6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
     11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
+    15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
     9: "Ein Weihnachtswunsch kommt selten allein."
 };
@@ -17,7 +18,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
 let token = readTeamToken();
-let storyPromise, disposeCrossword, disposeFacts;
+let storyPromise, disposeCrossword, disposeFacts, disposeFilmQuiz;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
 function readTeamToken() {
@@ -154,7 +155,7 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
-    finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;generation++;const viewId=generation;selectedDay=day;
+    finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;generation++;const viewId=generation;selectedDay=day;
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
@@ -166,6 +167,11 @@ async function selectDay(day,updateUrl=false) {
     content.dataset.type=DAYS[day].type;
     document.body.classList.add("is-arriving");
     switch(DAYS[day].type){
+        case "filmquiz":{
+            const cleanup=await createChristmasFilmQuiz(body,{isCurrent:()=>viewId===generation,day});
+            if(viewId===generation)disposeFilmQuiz=cleanup;else cleanup?.();
+            break;
+        }
         case "facts":{
             const cleanup=await createChristmasFacts(body,{isCurrent:()=>viewId===generation,reducedMotion:reducedMotion.matches});
             if(viewId===generation)disposeFacts=cleanup;else cleanup?.();
