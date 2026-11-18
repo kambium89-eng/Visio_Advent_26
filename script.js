@@ -9,7 +9,7 @@ const DAY_INTROS = {
     6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
     11: "Ein bisschen Schalk mit Otto. Mach es dir gemütlich.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
-    17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst.",
+    17: "Nimm dir fünf bis zehn Minuten nur für dich.",
     7: "Manchmal liegt das Schöne direkt vor unseren Füssen.",
     9: "Ein kleiner Weihnachtsgruss zum Schmunzeln."
 };

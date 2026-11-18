@@ -21,15 +21,8 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
             element.textContent = text;
             return element;
         };
-        moment.append(
-            paragraph(data.invitation, "joy-invitation"),
-            paragraph(data.examples, "joy-copy"),
-            paragraph(data.plan, "joy-copy")
-        );
-
         const choices = document.createElement("fieldset");
         choices.className = "joy-choices";
-        choices.setAttribute("aria-describedby", "joy-privacy");
         const legend = document.createElement("legend");
         legend.textContent = "Worauf hast du Lust?";
         const optional = document.createElement("span");
@@ -52,20 +45,8 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
         }
         choices.append(legend, grid);
 
-        const choiceFooter = document.createElement("div");
-        choiceFooter.className = "joy-choice-footer";
-        const privacy = paragraph("Deine Auswahl bleibt nur auf dieser geöffneten Seite.", "joy-privacy");
-        privacy.id = "joy-privacy";
-        const clear = document.createElement("button");
-        clear.type = "button";
-        clear.className = "text-button joy-clear";
-        clear.textContent = "Auswahl aufheben";
-        clear.addEventListener("click", () => {
-            grid.querySelectorAll("input").forEach(input => { input.checked = false; });
-        });
-        choiceFooter.append(privacy, clear);
-
         const reflection = paragraph(data.reflection, "joy-reflection");
+        reflection.tabIndex = -1;
         const ending = document.createElement("div");
         ending.className = "joy-ending";
         const confirm = document.createElement("button");
@@ -83,10 +64,29 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
             confirm.setAttribute("aria-expanded", "true");
         });
         ending.append(confirm, closing);
-        const timer = createJoyTimer({isCurrent});
-        moment.append(choices, choiceFooter, timer.element, reflection, ending);
+        const finish = document.createElement("div");
+        finish.className = "joy-finish";
+        finish.append(reflection, ending);
+        const showFocused = (phase, element, focus) => {
+            if (!isCurrent()) return;
+            document.body.classList.add("joy-focus");
+            target.dataset.joyPhase = phase;
+            target.replaceChildren(element);
+            target.closest(".day-content").scrollTop = 0;
+            focus.focus({preventScroll: true});
+        };
+        const timer = createJoyTimer({
+            isCurrent,
+            onStart() { showFocused("countdown", timer.display, timer.display); },
+            onFinish() { showFocused("reflection", finish, reflection); }
+        });
+        moment.append(choices, timer.element);
         target.replaceChildren(moment);
-        return timer.dispose;
+        return () => {
+            timer.dispose();
+            document.body.classList.remove("joy-focus");
+            delete target.dataset.joyPhase;
+        };
     } catch {
         if (!isCurrent()) return;
         loading.className = "form-message error";

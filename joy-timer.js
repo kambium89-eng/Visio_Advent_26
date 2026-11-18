@@ -63,27 +63,17 @@ function showJoyStars() {
     return () => { clearTimeout(timeout); layer.remove(); };
 }
 
-function createJoyTimer({isCurrent = () => true} = {}) {
-    const element = document.createElement("section");
+function createJoyTimer({isCurrent = () => true, onStart, onFinish} = {}) {
+    const element = document.createElement("div");
     element.className = "joy-timer";
-    element.setAttribute("aria-labelledby", "joy-timer-title");
-    const title = document.createElement("h3");
-    title.id = "joy-timer-title";
-    title.textContent = "Zeit für dich";
     const optional = document.createElement("p");
     optional.className = "joy-timer-optional";
     optional.textContent = "Wenn du magst, begleitet dich ein Timer.";
-
-    const layout = document.createElement("div");
-    layout.className = "joy-timer-layout";
-    const duration = document.createElement("div");
-    duration.className = "joy-duration";
     const picker = document.createElement("div");
     picker.className = "joy-duration-picker";
     picker.tabIndex = 0;
     picker.setAttribute("role", "listbox");
-    picker.setAttribute("aria-label", "Timerdauer in Minuten");
-    picker.setAttribute("aria-describedby", "joy-duration-help");
+    picker.setAttribute("aria-label", "Timerdauer in Minuten, 5 bis 10 Minuten");
     const options = [];
     for (let minutes = 5; minutes <= 10; minutes++) {
         const option = document.createElement("div");
@@ -95,35 +85,20 @@ function createJoyTimer({isCurrent = () => true} = {}) {
         picker.append(option);
         options.push(option);
     }
-    const help = document.createElement("p");
-    help.id = "joy-duration-help";
-    help.className = "joy-duration-help";
-    help.textContent = "5–10 Min. · Scrollen oder Pfeiltasten";
-    duration.append(picker, help);
-
-    const clock = document.createElement("div");
-    clock.className = "joy-clock";
-    const display = document.createElement("output");
-    display.className = "joy-countdown";
-    display.setAttribute("role", "timer");
-    display.setAttribute("aria-live", "off");
-    const actions = document.createElement("div");
-    actions.className = "joy-timer-actions";
+    const wheel = document.createElement("div");
+    wheel.className = "joy-duration";
+    wheel.append(picker);
     const start = document.createElement("button");
     start.type = "button";
     start.className = "primary-button joy-timer-start";
-    const reset = document.createElement("button");
-    reset.type = "button";
-    reset.className = "text-button";
-    reset.textContent = "Zurücksetzen";
-    actions.append(start, reset);
-    clock.append(display, actions);
-    layout.append(duration, clock);
-    const message = document.createElement("p");
-    message.className = "joy-timer-message";
-    message.setAttribute("role", "status");
-    element.append(title, optional, layout, message);
+    start.textContent = "Start";
+    element.append(optional, wheel, start);
 
+    const display = document.createElement("output");
+    display.className = "joy-countdown";
+    display.tabIndex = -1;
+    display.setAttribute("role", "timer");
+    display.setAttribute("aria-live", "off");
     let state, clearStars = () => {};
     const countdown = createJoyCountdown({
         onTick(next) {
@@ -132,31 +107,21 @@ function createJoyTimer({isCurrent = () => true} = {}) {
             const seconds = next.remainingSeconds % 60;
             display.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
             display.setAttribute("aria-label", `Verbleibende Zeit: ${minutes} Minuten und ${seconds} Sekunden`);
-            const locked = ["running", "paused"].includes(next.status);
-            picker.setAttribute("aria-disabled", String(locked));
-            picker.tabIndex = locked ? -1 : 0;
-            duration.classList.toggle("is-locked", locked);
             for (let i = 0; i < options.length; i++) options[i].setAttribute("aria-selected", String(i + 5 === next.minutes));
             picker.setAttribute("aria-activedescendant", `joy-duration-${next.minutes}`);
-            start.textContent = {idle:"Timer starten", running:"Pause", paused:"Fortsetzen", finished:"Noch einmal starten"}[next.status];
-            reset.disabled = next.status === "idle";
-            const text = {idle:"Starte, wenn es für dich passt.", running:"Dein Moment läuft. Lass dir Zeit.", paused:"Pausiert – du kannst gleich weitermachen.", finished:"Deine Zeit für Freude ist um."}[next.status];
-            if (message.textContent !== text) message.textContent = text;
-            element.classList.toggle("is-finished", next.status === "finished");
         },
         onFinish() {
             if (!isCurrent()) return;
-            clearStars();
+            onFinish();
             clearStars = showJoyStars();
         }
     });
     const choose = (minutes, align = true) => {
         if (!countdown.setMinutes(minutes)) return;
-        clearStars();
-        if (align) picker.scrollTop = (minutes - 5) * 44;
+        if (align) picker.scrollTop = (minutes - 5) * 32;
     };
     picker.addEventListener("scroll", () => {
-        const minutes = 5 + Math.min(5, Math.max(0, Math.round(picker.scrollTop / 44)));
+        const minutes = 5 + Math.min(5, Math.max(0, Math.round(picker.scrollTop / 32)));
         if (minutes !== state.minutes) choose(minutes, false);
     });
     options.forEach((option, index) => option.addEventListener("click", () => choose(index + 5)));
@@ -164,18 +129,18 @@ function createJoyTimer({isCurrent = () => true} = {}) {
         const changes = {ArrowUp: -1, ArrowDown: 1, ArrowLeft: -1, ArrowRight: 1};
         if (!(event.key in changes) && !["Home", "End"].includes(event.key)) return;
         event.preventDefault();
-        const minutes = event.key === "Home" ? 5 : event.key === "End" ? 10 : Math.min(10, Math.max(5, state.minutes + changes[event.key]));
-        choose(minutes);
+        choose(event.key === "Home" ? 5 : event.key === "End" ? 10 : Math.min(10, Math.max(5, state.minutes + changes[event.key])));
     });
     start.addEventListener("click", () => {
-        if (state.status === "running") countdown.pause();
-        else { clearStars(); countdown.start(); }
+        if (!isCurrent() || state.status !== "idle") return;
+        onStart();
+        countdown.start();
     });
-    reset.addEventListener("click", () => { clearStars(); countdown.reset(); });
     const onVisible = () => { if (!document.hidden) countdown.sync(); };
     document.addEventListener("visibilitychange", onVisible);
     return {
         element,
+        display,
         dispose() {
             countdown.dispose();
             clearStars();
