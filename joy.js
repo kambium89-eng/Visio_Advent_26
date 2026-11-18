@@ -53,17 +53,22 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
         confirm.type = "button";
         confirm.className = "primary-button joy-confirm";
         confirm.textContent = "Ich habe mir einen Moment genommen";
-        confirm.setAttribute("aria-controls", "joy-closing");
-        confirm.setAttribute("aria-expanded", "false");
-        const closing = paragraph("", "joy-closing");
-        closing.id = "joy-closing";
-        closing.setAttribute("role", "status");
-        closing.setAttribute("aria-live", "polite");
+        confirm.setAttribute("aria-controls", target.id);
         confirm.addEventListener("click", () => {
-            closing.textContent = data.closing;
-            confirm.setAttribute("aria-expanded", "true");
+            if (!isCurrent()) return;
+            timer.dispose();
+            const previousTimer = timer.element;
+            timer = makeTimer();
+            previousTimer.replaceWith(timer.element);
+            document.body.classList.remove("joy-focus");
+            delete target.dataset.joyPhase;
+            target.replaceChildren(moment);
+            const article = target.closest(".day-content");
+            article.scrollTop = 0;
+            window.scrollTo({top: 0, behavior: "instant"});
+            article.focus({preventScroll: true});
         });
-        ending.append(confirm, closing);
+        ending.append(confirm);
         const finish = document.createElement("div");
         finish.className = "joy-finish";
         finish.append(reflection, ending);
@@ -75,11 +80,13 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
             target.closest(".day-content").scrollTop = 0;
             focus.focus({preventScroll: true});
         };
-        const timer = createJoyTimer({
+        let timer;
+        const makeTimer = () => createJoyTimer({
             isCurrent,
             onStart() { showFocused("countdown", timer.display, timer.display); },
             onFinish() { showFocused("reflection", finish, reflection); }
         });
+        timer = makeTimer();
         moment.append(choices, timer.element);
         target.replaceChildren(moment);
         return () => {
