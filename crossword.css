@@ -96,15 +96,8 @@ body:has(.day-content[data-type="crossword"]) .header-ornament{height:20px}
   .day-content[data-type="crossword"] .day-intro{margin-top:4px;font-size:11px;line-height:1.4}
 }
 
-/* A brief, silent Christmas sparkle when the last answer is completed. */
+/* Completion effect: the selected “Ein Kranz aus Licht” preview, without a text bubble. */
 .cw-celebration{position:fixed;inset:0;z-index:40;overflow:hidden;pointer-events:none}
-.cw-celebration::before{content:"";position:absolute;left:var(--cw-magic-x);top:var(--cw-magic-y);width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,#f7e9b577,#f8edcf35 38%,transparent 70%);transform:translate(-50%,-50%);animation:cw-magic-glow 4.2s ease-in-out both}
-.cw-magic-greeting{position:absolute;left:var(--cw-magic-x);top:var(--cw-magic-y);display:flex;align-items:center;flex-direction:column;gap:2px;width:max-content;max-width:calc(100vw - 32px);padding:12px 25px 17px;border:1px solid #b99c5a88;border-radius:16px;background:#fffdf7f2;box-shadow:0 0 40px #eed59c88,0 12px 36px #294c4020;color:#294c40;font:34px/1.2 "Alex Brush",Georgia,serif;text-align:center;animation:cw-magic-greeting 4.2s ease-in-out both}
-.cw-magic-star{color:#a58039;font:37px/1 Georgia,serif;text-shadow:0 0 12px #d6b76999}
-.cw-magic-sparkle{position:absolute;left:var(--cw-magic-x);top:var(--cw-magic-y);color:#b68a37;font:var(--cw-size)/1 Georgia,serif;text-shadow:0 0 9px #f1dd9ee6;animation:cw-magic-sparkle 3.6s var(--cw-delay) cubic-bezier(.15,.55,.35,1) both}
-.cw-magic-sparkle:nth-child(3n){color:#fffdf7;filter:drop-shadow(0 0 3px #b69a56)}
-.cw-magic-sparkle:nth-child(4n){color:#c7a491}
-@keyframes cw-magic-sparkle{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}16%{opacity:1}48%{opacity:1;transform:translate(calc(-50% + var(--cw-dx)),calc(-50% + var(--cw-dy))) rotate(var(--cw-turn)) scale(1.15)}100%{opacity:0;transform:translate(calc(-50% + var(--cw-dx)),calc(-50% + var(--cw-dy) + 70px)) rotate(var(--cw-turn)) scale(.25)}}
-@keyframes cw-magic-glow{0%,100%{opacity:0;transform:translate(-50%,-50%) scale(.5)}25%,60%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}}
-@keyframes cw-magic-greeting{0%{opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.92)}18%,76%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,calc(-50% - 12px)) scale(1.03)}}
-@media(prefers-reduced-motion:reduce){.cw-celebration{display:none}.cw-celebration *,.cw-celebration::before{animation:none!important}}
+.cw-wreath-celebration::before{content:"";position:absolute;left:var(--cw-magic-x);top:var(--cw-magic-y);width:min(380px,calc(100vw - 16px));height:300px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,#fffdf7fa 18%,#fffdf7e6 42%,#fffdf700 72%);opacity:var(--cw-wreath-opacity,0)}
+.cw-wreath-canvas{position:absolute;left:var(--cw-magic-x);top:var(--cw-magic-y);display:block;width:min(440px,calc(100vw - 20px));height:auto;transform:translate(-50%,-50%)}
+@media(prefers-reduced-motion:reduce){.cw-celebration{display:none}}

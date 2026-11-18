@@ -14,7 +14,7 @@ function createChristmasCrossword(host) {
         let activeWord = words[0];
         let activeKey = '0,0';
         let isComplete = false;
-        let readyToCelebrate = false, hasCelebrated = false, celebrationLayer, celebrationTimer;
+        let readyToCelebrate = false, hasCelebrated = false, celebrationLayer, celebrationFrame;
         const keyFor = (row, col) => row + ',' + col;
         const normalise = value => value.toUpperCase().replace(/Ä/g, 'AE').replace(/Ö/g, 'OE').replace(/Ü/g, 'UE').replace(/ẞ|ß/g, 'SS').replace(/[^A-Z]/g, '');
         const revealLimit = word => Math.max(1, Math.min(3, Math.round(word.answer.length / 4)));
@@ -151,7 +151,8 @@ function createChristmasCrossword(host) {
         }
 
         function clearCelebration() {
-          clearTimeout(celebrationTimer);
+          cancelAnimationFrame(celebrationFrame);
+          celebrationFrame = 0;
           celebrationLayer?.remove();
           celebrationLayer = null;
         }
@@ -162,29 +163,105 @@ function createChristmasCrossword(host) {
           const bounds = find('cw-grid').getBoundingClientRect();
           const layer = document.createElement('div');
           celebrationLayer = layer;
-          layer.className = 'cw-celebration';
+          layer.className = 'cw-celebration cw-wreath-celebration';
           layer.setAttribute('aria-hidden', 'true');
           layer.style.setProperty('--cw-magic-x', (bounds.left + bounds.width / 2) + 'px');
           layer.style.setProperty('--cw-magic-y', (bounds.top + bounds.height / 2) + 'px');
-          const greeting = document.createElement('div');
-          greeting.className = 'cw-magic-greeting';
-          greeting.innerHTML = '<span class="cw-magic-star">✧</span><span>Frohe Weihnachten!</span>';
-          layer.append(greeting);
-          for (let i = 0; i < 32; i++) {
-            const sparkle = document.createElement('span');
-            sparkle.className = 'cw-magic-sparkle';
-            sparkle.textContent = i % 4 === 0 ? '❄' : '✦';
-            const angle = i * Math.PI * (3 - Math.sqrt(5));
-            const distance = 95 + (i % 7) * 24;
-            sparkle.style.setProperty('--cw-dx', Math.cos(angle) * distance + 'px');
-            sparkle.style.setProperty('--cw-dy', Math.sin(angle) * distance - 45 + 'px');
-            sparkle.style.setProperty('--cw-turn', (i % 2 ? 100 : -100) + 'deg');
-            sparkle.style.setProperty('--cw-delay', (i % 8) * 45 + 'ms');
-            sparkle.style.setProperty('--cw-size', (i % 4 === 0 ? 15 : 7 + i % 5 * 2) + 'px');
-            layer.append(sparkle);
-          }
+          layer.style.setProperty('--cw-wreath-opacity', '0');
+          const canvas = document.createElement('canvas');
+          canvas.className = 'cw-wreath-canvas';
+          const dpr = Math.min(devicePixelRatio || 1, 2);
+          canvas.width = Math.round(440 * dpr);
+          canvas.height = Math.round(280 * dpr);
+          const ctx = canvas.getContext('2d');
+          if (!ctx) { clearCelebration(); return; }
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          layer.append(canvas);
           document.body.append(layer);
-          celebrationTimer = setTimeout(clearCelebration, 4300);
+          const C = { pine: '#294c40', soft: '#567260', sage: '#c7cdbf', olive: '#919682', gold: '#a58039', rose: '#c7a491', blush: '#eecfca', cream: '#fffdf7' };
+          const TAU = Math.PI * 2;
+          const clamp = (x, low = 0, high = 1) => Math.max(low, Math.min(high, x));
+          const smooth = x => { x = clamp(x); return x * x * (3 - 2 * x); };
+          const easeOut = x => 1 - Math.pow(1 - clamp(x), 3);
+          const between = (t, start, end) => clamp((t - start) / (end - start));
+          const noise = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+          function glow(ctx, x, y, radius, colour, alpha = 1) {
+            ctx.save(); ctx.globalAlpha *= alpha;
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius); gradient.addColorStop(0, colour); gradient.addColorStop(1, colour + '00');
+            ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(x, y, radius, 0, TAU); ctx.fill(); ctx.restore();
+          }
+
+          function star(ctx, x, y, radius, colour = C.gold, alpha = 1, rotation = 0, points = 4, outline = false) {
+            if (radius <= 0 || alpha <= 0) return;
+            ctx.save(); ctx.translate(x, y); ctx.rotate(rotation); ctx.globalAlpha *= clamp(alpha); ctx.beginPath();
+            for (let i = 0; i < points * 2; i++) {
+              const angle = i * Math.PI / points - Math.PI / 2;
+              const r = i % 2 ? radius * (points === 4 ? .22 : .43) : radius;
+              const px = Math.cos(angle) * r, py = Math.sin(angle) * r;
+              i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+            }
+            ctx.closePath(); ctx.fillStyle = colour; ctx.strokeStyle = colour; ctx.lineWidth = 1.4;
+            if (outline) ctx.stroke(); else ctx.fill(); ctx.restore();
+          }
+
+          function dot(ctx, x, y, size, colour, alpha = 1) {
+            if (size <= 0) return;
+            ctx.save(); ctx.globalAlpha *= clamp(alpha); ctx.fillStyle = colour; ctx.beginPath(); ctx.arc(x, y, size, 0, TAU); ctx.fill(); ctx.restore();
+          }
+
+          function leaf(ctx, x, y, angle, length, colour, alpha = 1) {
+            if (length <= 0) return;
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.globalAlpha *= alpha;
+            ctx.fillStyle = colour; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(length * .25, -length * .34, length * .8, -length * .25, length, 0); ctx.bezierCurveTo(length * .7, length * .3, length * .25, length * .25, 0, 0); ctx.fill();
+            ctx.globalAlpha *= .3; ctx.strokeStyle = C.cream; ctx.lineWidth = .65; ctx.beginPath(); ctx.moveTo(1, 0); ctx.lineTo(length * .8, 0); ctx.stroke(); ctx.restore();
+          }
+
+          function wreath(ctx, t) {
+            const grow = between(t, .02, .62);
+            const cx = 220, cy = 142, radius = 73;
+            for (let i = 0; i < 44; i++) {
+              const local = easeOut((grow * 49 - i) / 5);
+              if (!local) continue;
+              const angle = i / 44 * TAU - Math.PI / 2;
+              const x = cx + Math.cos(angle) * radius, y = cy + Math.sin(angle) * radius;
+              leaf(ctx, x, y, angle + .95, (18 + noise(i) * 9) * local, i % 3 === 0 ? C.pine : C.soft, .86);
+              leaf(ctx, x, y, angle + 2.05, (15 + noise(i + 1) * 8) * local, i % 4 === 0 ? C.olive : C.sage, .95);
+              if (i % 6 === 0) { dot(ctx, x, y, 3.5 * local, C.rose); dot(ctx, x + 5, y + 2, 2.8 * local, C.blush); }
+            }
+            const illuminate = smooth(between(t, .58, .76));
+            for (let i = 0; i < 13; i++) {
+              const angle = i / 13 * TAU - .9;
+              const x = cx + Math.cos(angle) * 76, y = cy + Math.sin(angle) * 76;
+              glow(ctx, x, y, 9, '#ebd596', illuminate * (.35 + Math.sin(t * 12 + i) * .15));
+              dot(ctx, x, y, 1.6, C.gold, illuminate);
+            }
+            const bow = smooth(between(t, .56, .69));
+            ctx.save(); ctx.globalAlpha *= bow; ctx.strokeStyle = C.rose; ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(220, 217); ctx.bezierCurveTo(190, 195, 187, 226, 220, 217); ctx.bezierCurveTo(250, 195, 251, 228, 220, 217); ctx.moveTo(219, 219); ctx.quadraticCurveTo(215, 232, 206, 239); ctx.moveTo(222, 219); ctx.quadraticCurveTo(228, 235, 236, 235); ctx.stroke(); ctx.restore();
+            star(ctx, 220, 140, 14 * smooth(between(t, .65, .8)), C.gold, .9, 0, 4, true);
+            for (let i = 0; i < 7; i++) {
+              const angle = i * 2.39996 + t * .35;
+              star(ctx, 220 + Math.cos(angle) * 113, 140 + Math.sin(angle) * 100, (1.7 + noise(i) * 2) * illuminate, C.gold, illuminate * (.3 + Math.sin(t * 18 + i) ** 2 * .5), angle);
+            }
+          }
+
+
+          const started = performance.now();
+          function animate(now) {
+            if (celebrationLayer !== layer) return;
+            const t = clamp((now - started) / 7200);
+            const opacity = smooth(between(t, 0, .12)) * (1 - smooth(between(t, .88, 1)));
+            ctx.clearRect(0, 0, 440, 280);
+            ctx.save();
+            ctx.globalAlpha = opacity;
+            wreath(ctx, t);
+            ctx.restore();
+            layer.style.setProperty('--cw-wreath-opacity', String(opacity));
+            if (t < 1) celebrationFrame = requestAnimationFrame(animate);
+            else clearCelebration();
+          }
+          celebrationFrame = requestAnimationFrame(animate);
         }
 
         function updateProgress() {
@@ -192,7 +269,7 @@ function createChristmasCrossword(host) {
           find('cw-grid').setAttribute('aria-label', 'Kreuzworträtsel, 12 Spalten und 10 Zeilen. ' + filled + ' von ' + cells.size + ' Feldern ausgefüllt.');
           const complete = [...cells.values()].every(cell => cell.value === cell.answer);
           if (complete && !isComplete) {
-            message('Geschafft! Frohe Weihnachten! ✧', 'success');
+            message('Gut gemacht!', 'success');
             if (readyToCelebrate && !hasCelebrated) {
               hasCelebrated = true;
               celebrate();
@@ -345,7 +422,7 @@ function createChristmasCrossword(host) {
           if (wrong) message(wrong === 1 ? 'Ein Buchstabe stimmt noch nicht.' : wrong + ' Buchstaben stimmen noch nicht.', 'error');
           else if (empty === cells.size) message('Das Rätsel ist noch leer.');
           else if (empty) message('Bisher alles richtig. Noch ' + empty + ' ' + (empty === 1 ? 'leeres Feld.' : 'leere Felder.'), 'success');
-          else message('Geschafft! Frohe Weihnachten! ✧', 'success');
+          else message('Gut gemacht!', 'success');
           updateProgress();
         });
 
