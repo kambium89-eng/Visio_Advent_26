@@ -180,7 +180,7 @@ async function selectDay(day,updateUrl=false) {
         case "story":await renderStory(viewId);break;
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
         case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
-        case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
+        case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
         case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
         default:renderPlaceholder(day);break;
