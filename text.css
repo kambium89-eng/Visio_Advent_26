@@ -1,0 +1,10 @@
+.day-content[data-type="text"] .content-heading{margin-bottom:20px}
+.daily-reading{font-size:16px;line-height:1.75}
+.daily-reading>p:first-child{color:var(--muted)}
+.daily-reading>p:nth-child(2){margin:22px 0;padding:16px 20px;border-left:2px solid var(--gold);background:#edf2e466;border-radius:0 8px 8px 0}
+.daily-reading ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px;margin:0 0 24px;padding:0;list-style-position:inside}
+.daily-reading li{padding-top:16px;border-top:1px solid var(--line)}
+.daily-reading li::marker{font:34px/1 "Alex Brush",cursive;color:var(--gold)}
+.daily-reading li strong{display:block;margin:4px 0 8px;font-size:17px;line-height:1.5}
+.daily-reading>p:last-child{padding-top:18px;border-top:1px solid var(--line);color:var(--pine-soft)}
+@media(max-width:1100px){.daily-reading ol{grid-template-columns:1fr;gap:20px}}

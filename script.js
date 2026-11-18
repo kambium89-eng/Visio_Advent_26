@@ -189,6 +189,7 @@ async function selectDay(day,updateUrl=false) {
             if(viewId===generation)disposeJoy=cleanup;else cleanup?.();
             break;
         }
+        case "text":await renderText(day,viewId);break;
         case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
         default:renderPlaceholder(day);break;
@@ -231,6 +232,21 @@ async function renderStory(viewId) {
             reading.removeAttribute("aria-busy");toggle.disabled=false;
         });
     }catch{if(viewId===generation)body.innerHTML='<p class="form-message error" role="alert">Die Geschichte konnte nicht geladen werden. Bitte lade die Seite erneut.</p>';}
+}
+
+async function renderText(day,viewId) {
+    try{
+        const response=await fetch(`content/${String(day).padStart(2,"0")}-tagesinhalt.md`);
+        if(!response.ok)throw new Error("text");
+        const markdown=await response.text();
+        if(viewId!==generation)return;
+        const reading=document.createElement("div");
+        reading.className="reading daily-reading";
+        reading.innerHTML=marked.parse(markdown);
+        body.append(reading);
+    }catch{
+        if(viewId===generation)body.innerHTML='<p class="form-message error" role="alert">Der Tagesinhalt konnte nicht geladen werden. Bitte lade die Seite erneut.</p>';
+    }
 }
 
 function renderHunt(){

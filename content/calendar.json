@@ -149,7 +149,7 @@
     "format": "Challenge",
     "description": "Einen überschaubaren Ort aufräumen oder gestalten, damit er sich wieder angenehm anfühlt.",
     "house": "house-19",
-    "type": "placeholder"
+    "type": "text"
   },
   {
     "day": 20,

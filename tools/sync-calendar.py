@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 NS = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
-HANDLERS = {1: "form", 4: "facts", 5: "story", 6: "crossword", 7: "hunt", 9: "image", 11: "video", 15: "filmquiz", 17: "joy", 23: "reveal"}
+HANDLERS = {1: "form", 4: "facts", 5: "story", 6: "crossword", 7: "hunt", 9: "image", 11: "video", 15: "filmquiz", 17: "joy", 19: "text", 23: "reveal"}
 
 def read_plan(path):
     with zipfile.ZipFile(path) as book:
