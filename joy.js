@@ -83,8 +83,10 @@ async function createJoyMoment(target, {isCurrent = () => true} = {}) {
             confirm.setAttribute("aria-expanded", "true");
         });
         ending.append(confirm, closing);
-        moment.append(choices, choiceFooter, reflection, ending);
+        const timer = createJoyTimer({isCurrent});
+        moment.append(choices, choiceFooter, timer.element, reflection, ending);
         target.replaceChildren(moment);
+        return timer.dispose;
     } catch {
         if (!isCurrent()) return;
         loading.className = "form-message error";

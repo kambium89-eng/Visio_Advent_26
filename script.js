@@ -19,7 +19,7 @@ const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
 let token = readTeamToken();
-let storyPromise, disposeCrossword, disposeFacts, disposeFilmQuiz;
+let storyPromise, disposeCrossword, disposeFacts, disposeFilmQuiz, disposeJoy;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
 function readTeamToken() {
@@ -156,7 +156,7 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
-    finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;generation++;const viewId=generation;selectedDay=day;
+    finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;disposeJoy?.();disposeJoy=null;generation++;const viewId=generation;selectedDay=day;
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
     if(updateUrl){const url=dayUrl(day);history.pushState(null,"",url);}
@@ -182,7 +182,11 @@ async function selectDay(day,updateUrl=false) {
         case "crossword":disposeCrossword=createChristmasCrossword(body);break;
         case "video":body.innerHTML='<iframe class="video-frame" id="christmas-video" title="Otto &amp; der Weihnachtsmann" allow="encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><p class="media-link"><a href="https://www.youtube.com/watch?v=NpBb5qFIaIY" target="_blank" rel="noopener noreferrer">Video auf YouTube öffnen ↗</a></p>';break;
         case "image":body.innerHTML='<img class="comic" src="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" width="5008" height="1680" alt="Dreiteiliger Weihnachtscomic mit Herr Hummel und seiner Frau am Fenster: Draussen taucht ein Samichlaus auf."><p class="media-link"><a href="Images/Herr_Hummel_Samichlaus.jpg?v=701ae764c565" target="_blank" rel="noopener">Bild in voller Grösse öffnen ↗</a></p>';break;
-        case "joy":await createJoyMoment(body,{isCurrent:()=>viewId===generation});break;
+        case "joy":{
+            const cleanup=await createJoyMoment(body,{isCurrent:()=>viewId===generation});
+            if(viewId===generation)disposeJoy=cleanup;else cleanup?.();
+            break;
+        }
         case "hunt":renderHunt();break;
         case "form":case "reveal":renderProtected(day,viewId);break;
         default:renderPlaceholder(day);break;
