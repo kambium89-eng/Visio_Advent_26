@@ -19,6 +19,7 @@ const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
 let token = readTeamToken();
 let storyPromise, disposeCrossword, disposeFacts, disposeFilmQuiz, disposeJoy;
+let contributionController;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
 function readTeamToken() {
@@ -156,6 +157,7 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
+    contributionController?.abort();
     finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;disposeJoy?.();disposeJoy=null;generation++;const viewId=generation;selectedDay=day;
     document.body.classList.toggle("video-day",DAYS[day].type==="video");
     document.body.classList.remove("video-expanded");
@@ -169,7 +171,19 @@ async function selectDay(day,updateUrl=false) {
     setHeading(day);
     content.dataset.type=DAYS[day].type;
     document.body.classList.add("is-arriving");
+    let startContribution;
     switch(DAYS[day].type){
+        case "contribution": {
+            contributionController = new AbortController();
+            try {
+                const { renderContribution } = await import("./contribution.js?v=20261120a");
+                if (viewId !== generation) return;
+                startContribution = renderContribution(body, DAYS[day], contributionController.signal);
+            } catch {
+                if (viewId === generation) body.innerHTML = '<p class="form-message error" role="alert">Der Tagesinhalt konnte nicht geladen werden. Bitte lade die Seite erneut.</p>';
+            }
+            break;
+        }
         case "filmquiz":{
             const cleanup=await createChristmasFilmQuiz(body,{isCurrent:()=>viewId===generation,day});
             if(viewId===generation)disposeFilmQuiz=cleanup;else cleanup?.();
@@ -195,6 +209,7 @@ async function selectDay(day,updateUrl=false) {
     }
     if(viewId!==generation)return;
     await arrive(day,viewId);
+    if (viewId === generation) startContribution?.();
     if(viewId===generation&&DAYS[day].type==="video"){const video=$("christmas-video");if(video)video.src="https://www.youtube-nocookie.com/embed/kq3sYEPdvdM?hl=de&playsinline=1";}
 }
 

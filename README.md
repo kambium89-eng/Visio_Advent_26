@@ -20,7 +20,11 @@ Die Excel-Datei `Adventskalender_2026_Links.xlsx`, Blatt `Adventstage`, ist die 
 python3 tools/sync-calendar.py /absoluter/Pfad/Adventskalender_2026_Links.xlsx
 ```
 
-Tag 1, 4, 5, 6, 7, 9, 11, 15, 17, 19 und 23 haben ausgearbeitete Inhalte. Die übrigen 13 Seiten zeigen einen gekennzeichneten Platzhalter mit dem genauen Wortlaut der Beschreibung aus der Excel-Datei. Das gilt auch für den noch auszuarbeitenden Weihnachtsgruss an Tag 24. Änderungen in Excel werden beim nächsten Inhaltsupdate exportiert und veröffentlicht. Die Website liest keine lokale Arbeitsmappe im Browser.
+Alle 24 Tageslinks enthalten einen ersten vollständigen Entwurf. Für Tag 2, 3, 8, 10, 12, 13, 14, 16, 18, 20, 21, 22 und 24 übernimmt der Export den Wortlaut aus Spalte K. Das Bastelvideo an Tag 16 verwendet den Link aus Spalte N. Die Originalmaterialien für Rezept, Wunschkarte und Weihnachtsgedanken liegen für die Website in `assets/tagesmaterial/`.
+
+- Tag 8 zeigt die Spitzbuben-Karte mit einseitigem PDF-Download und einer Druckansicht nur für das Rezept.
+- An Tag 16 öffnet «Videoanleitung» die Rückseite der Karte. Tag 18 enthält fünf Filmbeschreibungen mit Trailerlinks. Tag 21 bietet die Word-Wunschkarte zum Herunterladen.
+- Tag 22 zeigt die 16 Karten einzeln für je zehn Sekunden. Tag 24 zeigt Fatimes Gedicht in goldener Alex Brush, rund fünf Sekunden pro Satz. Beide Folgen können angehalten und von Hand weitergeschaltet werden. Bei reduzierter Bewegung lässt sich das ganze Gedicht direkt lesen.
 
 - Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
 - Tag 4: fünf frei wählbare Fragen mit drehbarer Textkarte zu Wintergrün, Samichlaus, Sonnenwende, Island und Adventskranz. Jede Antwort hat sechs Sätze in zwei Absätzen; die Quellen lassen sich separat aufklappen. Themenwechsel starten auf der Frageseite; die kurze Drehung entfällt bei reduzierter Bewegung. Die freigegebenen Vault-Texte werden mit `python3 tools/sync-facts.py /absoluter/Pfad/zum/Advent-Projekt` nach `content/04-fakten.json` übernommen.

@@ -10,6 +10,22 @@ import zipfile
 NS = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 HANDLERS = {1: "form", 4: "facts", 5: "story", 6: "video", 7: "text", 9: "image", 11: "crossword", 15: "filmquiz", 17: "joy", 19: "text", 23: "reveal"}
 
+def contribution(day, cells):
+    copy = cells.get("K", "").strip()
+    if day in (8, 21, 22):
+        # The trailing local file reference is supplied as a public asset instead.
+        copy = re.sub(r"\s+/Users/[^\n]+\.(?:png|docx|pdf)\s*$", "", copy)
+    if not copy or "/Users/" in copy:
+        raise ValueError(f"Tag {day}: Tagesinhalt fehlt oder enthält einen lokalen Pfad")
+    fields = {"copy": copy}
+    if day in (10, 12, 16, 20):
+        source = cells["N"] if day == 16 else copy
+        urls = re.findall(r"https://www\.youtube\.com/watch\?v=[\w-]{11}\b", source)
+        if len(urls) != 1:
+            raise ValueError(f"Tag {day}: genau ein YouTube-Link erwartet")
+        fields["videoUrl"] = urls[0]
+    return fields
+
 def read_plan(path):
     with zipfile.ZipFile(path) as book:
         shared = []
@@ -36,7 +52,10 @@ def read_plan(path):
                 for field in ("C", "D", "G"):
                     if not cells.get(field, "").strip():
                         raise ValueError(f"Tag {day}: {field} ist leer")
-                rows.append({"day": day, "title": cells["C"], "format": cells["D"], "description": cells["G"], "house": Path(house).stem, "type": HANDLERS.get(day, "placeholder")})
+                entry = {"day": day, "title": cells["C"], "format": cells["D"], "description": cells["G"], "house": Path(house).stem, "type": HANDLERS.get(day, "contribution")}
+                if entry["type"] == "contribution":
+                    entry.update(contribution(day, cells))
+                rows.append(entry)
         rows.sort(key=lambda entry: entry["day"])
         if [entry["day"] for entry in rows] != list(range(1, 25)):
             raise ValueError("Die Planung muss genau die Tage 1 bis 24 enthalten")

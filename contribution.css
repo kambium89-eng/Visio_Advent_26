@@ -1,0 +1,171 @@
+.contribution-reading {
+    max-width: 40rem;
+    margin-inline: auto;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+.contribution-reading h3, .contribution-reading h4 {
+    color: var(--pine);
+    line-height: 1.35;
+}
+.contribution-reading h3 {
+    font: normal 1.45rem/1.35 Georgia, serif;
+    margin: 0 0 1.15rem;
+}
+.contribution-reading .film-heading {
+    margin: 1.65rem 0 .55rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+}
+.contribution-link {overflow-wrap: anywhere;}
+.contribution-reading p:has(.contribution-link) {margin-bottom: .75rem;}
+.contribution-player {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: .65rem;
+    background: #e4e9df;
+    margin: .8rem auto 1rem;
+}
+.video-card-face {transform-origin: center; text-align: center;}
+.contribution-actions, .sequence-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .6rem 1rem;
+    margin: 1.25rem 0 .25rem;
+}
+.recipe-card {
+    display: block;
+    width: min(100%, 35rem);
+    height: auto;
+    margin: 1.4rem auto 0;
+}
+.sequence-stage {
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+}
+.sequence-stage > * {grid-area: 1 / 1;}
+.quote-gallery {margin: 1.5rem auto 0;}
+.quote-gallery .sequence-stage {min-height: 0;}
+.quote-card {
+    display: block;
+    width: min(100%, 18rem);
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: contain;
+}
+.sequence-controls {margin-top: .75rem; gap: .45rem 1rem;}
+.sequence-controls button {min-height: 2.25rem; padding-inline: .45rem; font-size: .88rem;}
+.sequence-controls button:disabled {cursor: default; opacity: .45;}
+.sequence-position {font-size: .85rem; color: var(--pine-soft); font-variant-numeric: tabular-nums;}
+.poem-cinema .sequence-stage, .poem-lines {
+    position: relative;
+    overflow: hidden;
+    border-radius: .9rem;
+    color: #f3d793;
+    background: radial-gradient(ellipse at top, #34574b, #19352e 60%, #102822);
+    box-shadow: inset 0 0 0 1px #d7b66b66;
+}
+.poem-cinema .sequence-stage {
+    min-height: clamp(12rem, 29dvh, 19rem);
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem);
+}
+.poem-cinema .sequence-stage::before, .poem-cinema .sequence-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 7% 13%, #fff5ca 0 1px, transparent 2px),
+        radial-gradient(circle at 18% 86%, #debc77 0 1px, transparent 2px),
+        radial-gradient(circle at 67% 9%, #fae8ac 0 1px, transparent 2px),
+        radial-gradient(circle at 93% 71%, #f8df9a 0 1px, transparent 2px);
+    animation: poem-starlight 3.8s ease-in-out infinite alternate;
+}
+.poem-cinema .sequence-stage::after {transform: rotate(180deg); animation-delay: -1.7s;}
+@keyframes poem-starlight {from {opacity: .35;} to {opacity: .95;}}
+.poem-frame, .poem-lines {
+    margin: 0;
+    white-space: pre-line;
+    text-align: center;
+    font: normal clamp(1.75rem, 1.3rem + 1.5vw, 2.75rem)/1.23 "Alex Brush", cursive;
+}
+.poem-frame {z-index: 1;}
+.complete-poem {margin: 1rem 0; text-align: center;}
+.complete-poem summary {cursor: pointer; color: var(--pine); padding: .5rem;}
+.poem-lines {padding: 1.75rem 1rem; margin-top: .5rem; line-height: 1.45;}
+@media (prefers-reduced-motion: reduce) {
+    .poem-cinema .sequence-stage::before, .poem-cinema .sequence-stage::after {animation: none;}
+}
+@media screen and (max-width: 959px) {
+    html:has(.day-content[data-type="contribution"]) {
+        min-width: 0;
+        --village-height: 148px;
+        --house-size: 83px;
+        --house-slot: 94px;
+        --house-gap: 12px;
+    }
+    body:has(.day-content[data-type="contribution"]) {
+        display: grid;
+        height: 100dvh;
+        min-height: 0;
+        grid-template-rows: auto minmax(0, 1fr) var(--village-height);
+    }
+    body:has(.day-content[data-type="contribution"]) .page-header {padding-top: 12px;}
+    body:has(.day-content[data-type="contribution"]) h1,
+    body:has(.day-content[data-type="contribution"]) h1 span {font-size: 2.5rem;}
+    body:has(.day-content[data-type="contribution"]) main {
+        width: 100%;
+        min-height: 0;
+        margin: 0 auto;
+        padding: .25rem .75rem .5rem;
+    }
+    .content-panel:has(.day-content[data-type="contribution"]) {height: 100%;}
+    body:has(.day-content[data-type="contribution"]) .village-tree {height: 95px;}
+    body:has(.day-content[data-type="contribution"]) .village-scroll-button {bottom: 36px;}
+    .day-content[data-type="contribution"] {
+        padding: 1.1rem 1rem;
+        height: 100%;
+        max-height: none;
+    }
+    .day-content[data-type="contribution"] .content-heading h2 {font-size: 2.25rem;}
+}
+@page spitzbuben {size: A4 portrait; margin: 8mm;}
+@media print {
+    html:has(.recipe-card), body:has(.recipe-card) {
+        page: spitzbuben;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        background: white;
+    }
+    body:has(.recipe-card) > :not(main),
+    main:has(.recipe-card) :is(.content-heading, .contribution-reading, .contribution-actions, .sr-only, noscript),
+    .content-panel:has(.recipe-card)::before {display: none !important;}
+    body:has(.recipe-card) :is(main, .content-panel, .day-content, #content-body) {
+        position: static;
+        display: block;
+        max-width: none;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+        margin: 0;
+        padding: 0;
+        opacity: 1;
+        transform: none;
+    }
+    .recipe-card {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 278mm;
+        margin: 0 auto;
+        break-inside: avoid;
+    }
+}

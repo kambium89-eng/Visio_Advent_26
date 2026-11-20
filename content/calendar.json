@@ -13,7 +13,8 @@
     "format": "Geschichte",
     "description": "Eine kurze Weihnachtsgeschichte über Wärme, Hoffnung und menschliche Nähe lesen.",
     "house": "house-02",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Das schönste Weihnachtsgeschenk\nEs war ein kalter Dezemberabend. Die Fenster waren festlich geschmückt, aus den Häusern duftete es nach Zimt und Tannenzweigen. Überall freute man sich auf Weihnachten.\n\nNur Herr Müller saß allein auf einer Bank im kleinen Park. Er war schon älter und hatte in diesem Jahr seine Frau verloren. Weihnachten, das früher sein liebstes Fest gewesen war, schien ihm nun leer und bedeutungslos.\n\nDa setzte sich ein junges Mädchen neben ihn. Es trug eine rote Mütze und hielt einen kleinen Papierstern in der Hand.\n\n„Warum sind Sie so traurig?“, fragte sie.\n\nHerr Müller lächelte schwach. „Weil mir jemand fehlt, mit dem ich Weihnachten feiern kann.“\n\nDas Mädchen dachte kurz nach und sagte dann: „Dann feiern Sie doch mit uns! Meine Oma hat viel zu viele Plätzchen gebacken.“\n\nHerr Müller wollte zunächst ablehnen. Doch das Mädchen nahm einfach seine Hand und sagte: „Meine Oma sagt immer, dass ein Platz am Tisch nie leer bleiben sollte, wenn man ihn mit jemandem teilen kann.“\n\nWenig später saß Herr Müller in einer warmen Küche zwischen fremden, aber herzlichen Menschen. Es wurde gelacht, gesungen und erzählt. Die Oma schenkte ihm Tee ein, und das Mädchen legte seinen Papierstern neben seinen Teller.\n\n„Den schenke ich Ihnen“, sagte sie. „Damit Sie wissen, dass Sie nicht vergessen sind.“\n\nHerr Müller betrachtete den kleinen Stern. Zum ersten Mal seit langer Zeit spürte er wieder Wärme in seinem Herzen.\n\nAuf dem Heimweg leuchteten die Sterne am Himmel. Die Nacht war noch immer kalt, doch in ihm war etwas heller geworden.\n\nEr hatte verstanden:\n\nWeihnachten bedeutet nicht, alles zu haben, was man sich wünscht. Weihnachten bedeutet, füreinander da zu sein.\n\nUnd manchmal ist das größte Geschenk nicht das, was unter dem Weihnachtsbaum liegt, sondern ein Mensch, der sagt:\n\n„Komm, du gehörst zu uns.“ ❤️"
   },
   {
     "day": 3,
@@ -21,7 +22,8 @@
     "format": "Challenge",
     "description": "Einem Menschen bewusst ein ehrliches, wertschätzendes Kompliment machen.",
     "house": "house-03",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Ein kleines Kompliment. Eine grosse Wirkung.\n\nOft denken wir uns schöne Dinge über andere Menschen, sprechen sie aber nicht aus. Dabei können ein paar ehrliche Worte unglaublich viel bewirken.\n\nDeine Aufgabe: Mache heute einem Menschen ein aufrichtiges Kompliment.\n\nÜberlege dir, was du an dieser Person besonders schätzt. Vielleicht ihre Hilfsbereitschaft, ihren Humor oder ihre positive Art.\n\nSag dieser Person ganz bewusst, warum sie besonders ist, persönlich, per Nachricht oder mit einer kleinen Notiz oder persönlich.\n\nDenk daran: Manchmal bleibt ein freundlicher Satz noch lange im Kopf, besonders an einem schwierigen Tag."
   },
   {
     "day": 4,
@@ -58,10 +60,11 @@
   {
     "day": 8,
     "title": "Weihnachtsguetzli zum Nachbacken",
-    "format": "PDF-Rezept",
-    "description": "Ein einfaches Guetzlirezept entdecken und als PDF herunterladen.",
+    "format": "Rezeptkarte",
+    "description": "Die Spitzbuben-Rezeptkarte ansehen, als PDF speichern oder ausdrucken.",
     "house": "house-08",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Weihnachtsduft liegt in der Luft!\n\nWas wäre die Adventszeit ohne selbst gebackene Guetzli? Der Duft von frisch gebackenen Weihnachtsguetzli gehört einfach zur schönsten Zeit des Jahres.\n\nHeute haben wir ein klassisches Rezept für dich, das garantiert für Weihnachtsstimmung sorgt.\n\nDeine Aufgabe: Backe deine eigenen Spitzbuben!"
   },
   {
     "day": 9,
@@ -77,7 +80,9 @@
     "format": "Video-Übung",
     "description": "Eine kurze angeleitete Atemübung als bewusste Pause kennenlernen.",
     "house": "house-10",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Eine kleine Pause nur für dich\n\nGönn dir heute einen Moment Ruhe und lass den Alltag kurz hinter dir.\n\nDeine Aufgabe: Probiere die Box-Atmung aus. Atme jeweils 4 Sekunden ein, halte den Atem 4 Sekunden an, atme 4 Sekunden aus und halte erneut 4 Sekunden inne.\n\nLass dich vom Video anleiten und mach einfach mit: https://www.youtube.com/watch?v=wazCdqIBi2c",
+    "videoUrl": "https://www.youtube.com/watch?v=wazCdqIBi2c"
   },
   {
     "day": 11,
@@ -93,7 +98,9 @@
     "format": "DIY-Anleitung",
     "description": "Eine einfache, persönliche Geschenkidee anhand einer kurzen Anleitung ausprobieren.",
     "house": "house-12",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Eine süsse Überraschung zu Weihnachten\nWas gibt es Schöneres, als jemandem mit einer kleinen Aufmerksamkeit eine Freude zu machen? Selbstgemachte Bruchschokolade ist nicht nur ein Genuss, sondern auch ein liebevolles Geschenk, das von Herzen kommt.\nOb fruchtig, knusprig oder schokoladig, hier ist für jeden Geschmack etwas dabei.\nNeugierig geworden? Hier findest du die Videoanleitung:\nhttps://www.youtube.com/watch?v=mkHypHRjH-I\nViel Freude beim Entdecken und Verschenken!",
+    "videoUrl": "https://www.youtube.com/watch?v=mkHypHRjH-I"
   },
   {
     "day": 13,
@@ -101,7 +108,8 @@
     "format": "Geschichte",
     "description": "Eine Geschichte über die Bedeutung kleiner Gesten und unscheinbarer Glücksmomente lesen.",
     "house": "house-13",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Die kleinen Wunder der Weihnachtszeit\n\nEs war ein kalter Dezembermorgen. Die Strassen waren mit einer feinen Schicht Schnee bedeckt und in den Fenstern leuchteten bereits die ersten Weihnachtslichter.\n\nAuf dem Weg zur Arbeit hielt jemand einer fremden Person die Tür auf. Eine Nachbarin stellte für jemanden ein paar selbst gebackene Guetzli vor die Tür. Und ein herzliches «Schön, dass es dich gibt» zauberte jemandem ein Lächeln ins Gesicht.\n\nEs waren keine grossen Geschenke oder aussergewöhnlichen Ereignisse. Es waren kleine Gesten, die im Alltag oft ganz selbstverständlich erscheinen. Doch genau sie machten diesen Tag ein bisschen heller.\n\nDenn manchmal liegt das Glück nicht in den grossen Momenten, sondern in einer warmen Tasse Tee, einem ehrlichen Lächeln, einer unerwarteten Nachricht oder darin, dass jemand an uns denkt.\n\nGerade in der Weihnachtszeit dürfen wir uns daran erinnern, wie wertvoll diese kleinen Augenblicke sind.\n\nUnsere kleine Weihnachtsbotschaft an dich:\n\nAchte heute bewusst auf die kleinen Dinge, die dir ein Lächeln schenken. Und vielleicht bist du selbst der Grund, warum jemand anderes heute einen glücklicheren Tag hat.\n\nDenn die schönsten Weihnachtsgeschenke passen nicht immer unter den Weihnachtsbaum. Manche kommen direkt von Herzen."
   },
   {
     "day": 14,
@@ -109,7 +117,8 @@
     "format": "Schreibübung",
     "description": "Sich selbst einen ermutigenden Brief wie an einen guten Freund schreiben und für einen schwierigen Tag aufbewahren.",
     "house": "house-14",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Dein persönlicher Notfallbrief\nManchmal brauchen wir einfach ein paar liebevolle Worte, um uns selbst wieder Mut zu machen.\nDeine Aufgabe: Stell dir vor, ein guter Freund steckt in einer schwierigen Phase. Was würdest du ihm sagen? Schreibe einen aufmunternden Brief ohne Namen, voller Stärken, schöner Eigenschaften und Mutmacher.\nBewahre ihn auf und lies ihn an schlechten Tagen. Manchmal brauchen wir selbst die Worte, die wir anderen schenken würden!"
   },
   {
     "day": 15,
@@ -125,7 +134,9 @@
     "format": "DIY-Video",
     "description": "Eine kleine winterliche Bastelidee mithilfe eines ausgewählten Videos umsetzen.",
     "house": "house-16",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Kreative Weihnachtsdeko selbst gemacht\nDu möchtest deiner Weihnachtsdekoration eine persönliche Note verleihen? Dann haben wir heute eine kreative Bastelidee für dich: Weihnachtskugeln mit einem kleinen Tannenbaum aus Papier.\nEine schöne Möglichkeit, mit einfachen Materialien individuelle Weihnachtsdekoration zu gestalten und etwas festliche Stimmung nach Hause zu bringen.\nNeugierig geworden? Hier findest du die Videoanleitung:\nGeniale Weihnachtskugeln mit Tannenbaum aus Papier basteln\nViel Freude beim Ausprobieren und Gestalten!",
+    "videoUrl": "https://www.youtube.com/watch?v=-lb36UdvhFA"
   },
   {
     "day": 17,
@@ -141,7 +152,8 @@
     "format": "Filmempfehlungen",
     "description": "Eine kleine Auswahl an Weihnachtsfilmen mit eigener Kurzbeschreibung und Links zu Trailern entdecken.",
     "house": "house-18",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Film ab! Weihnachtsfilme für gemütliche Stunden\nWas gibt es Schöneres, als es sich in der kalten Jahreszeit mit einer warmen Decke und einem guten Film gemütlich zu machen?\nWir haben eine kleine Auswahl an Weihnachtsfilmen für dich zusammengestellt. Ob romantisch, humorvoll oder herzerwärmend – hier ist für jeden Geschmack etwas dabei!\n1. Liebe braucht keine Ferien\nZwei Frauen tauschen über Weihnachten ihre Häuser und finden dabei nicht nur einen Tapetenwechsel, sondern auch überraschende Begegnungen und eine neue Liebe. Ein romantischer Film voller winterlicher Atmosphäre.\nTrailer ansehen: https://www.youtube.com/watch?v=ayZdE1eDeCk\n2. Tatsächlich ... Liebe\nMehrere unterschiedliche Liebesgeschichten, die sich in der Weihnachtszeit in London miteinander verweben. Humorvoll, romantisch und voller schöner Weihnachtsmomente.\nTrailer ansehen: https://www.youtube.com/watch?v=wO9jfOP5cAs\n3. Last Christmas\nKate hat es im Leben nicht gerade leicht. Als sie Tom kennenlernt, beginnt sich langsam etwas zu verändern. Eine berührende Geschichte über Liebe, Hoffnung und zweite Chancen.\nTrailer ansehen: https://www.youtube.com/watch?v=oUw1mq_tBS4\n4. Klaus\nEin Postbote trifft auf einen zurückgezogenen Spielzeugmacher. Aus einer ungewöhnlichen Begegnung entsteht eine Geschichte über Freundschaft, Hilfsbereitschaft und den Zauber des Schenkens.\nTrailer ansehen: https://www.youtube.com/watch?v=eogbqNW5Drs\n5. Der Grinch\nDer Grinch kann Weihnachten überhaupt nicht ausstehen und möchte am liebsten das ganze Fest stehlen. Doch ein kleines Mädchen bringt seine Welt gehörig durcheinander. Eine humorvolle Weihnachtsgeschichte mit einer schönen Botschaft.\nTrailer ansehen: https://www.youtube.com/watch?v=BxbJFJaBFkg\nUnser Tipp: Mach es dir gemütlich, schnapp dir eine Tasse Tee und geniesse einen schönen Weihnachtsfilmabend!"
   },
   {
     "day": 19,
@@ -157,23 +169,27 @@
     "format": "YouTube-Video",
     "description": "Einen zweiten lustigen Weihnachtsclip als kurze Pause geniessen.",
     "house": "house-20",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Eine kleine Lachpause zur Weihnachtszeit\n\nZwischen Weihnachtsvorbereitungen, Guetzli backen und Geschenke besorgen darf auch das Lachen nicht zu kurz kommen!\n\nLehn dich zurück, gönn dir eine kurze Pause und lass dich von diesem Video überraschen.\n\nHier geht's zum Video:\n\nhttps://www.youtube.com/watch?v=unvU4N-B5qQ\n\nViel Spass beim Schauen und Schmunzeln!",
+    "videoUrl": "https://www.youtube.com/watch?v=unvU4N-B5qQ"
   },
   {
     "day": 21,
     "title": "Drei Wünsche für das kommende Jahr",
     "format": "Reflexion",
-    "description": "Drei Dinge aufschreiben, die man im nächsten Jahr gerne erleben möchte.",
+    "description": "Drei Dinge aufschreiben, die man im nächsten Jahr gerne erleben möchte. Wordvorlage Karte zum download.",
     "house": "house-21",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Drei Wünsche für dein neues Jahr\nNimm dir einen Moment Zeit und überlege, was du im kommenden Jahr gerne erleben möchtest.\nDeine Aufgabe: Schreibe drei Dinge auf, die du im nächsten Jahr unbedingt erleben, ausprobieren oder erreichen möchtest.\nLass deinen Wünschen freien Lauf!"
   },
   {
     "day": 22,
     "title": "Weihnachtsgedanken und Zitate",
     "format": "Zitate",
-    "description": "Eine kleine Sammlung ausgewählter Weihnachtszitate und Gedanken mit Quellenangaben lesen.",
+    "description": "Eine kleine Sammlung ausgewählter Weihnachtszitate und Gedanken mit Quellenangaben lesen. Pdf zum download.",
     "house": "house-22",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Worte, die von Herzen kommen\nWeihnachten ist eine Zeit der Besinnlichkeit, Freude und kleinen Gesten. Schöne Worte können inspirieren, Mut schenken und ein Lächeln zaubern.\nEntdecke unsere Sammlung weihnachtlicher Zitate und Gedanken und lass dich inspirieren, vielleicht findest du auch einen passenden Spruch für deine nächste Weihnachtskarte oder einen persönlichen Gruss."
   },
   {
     "day": 23,
@@ -189,6 +205,7 @@
     "format": "Finale",
     "description": "Das Dorf mit allen 24 Häuschen und einen abschliessenden Weihnachtsgruss entdecken.",
     "house": "house-24",
-    "type": "placeholder"
+    "type": "contribution",
+    "copy": "Das grosse Finale – Frohe Weihnachten!\n\nVierundzwanzig Türchen, Tag für Tag,\nvoll kleiner Freuden, die man gerne mag.\nMal gab es etwas zum Lachen, mal Zeit zum Innehalten,\nmal neue Ideen, die den Advent mitgestalten.\n\nNun leuchtet unser Weihnachtsdorf im hellen Lichterkleid,\nund schenkt uns einen letzten Hauch von Weihnachtszeit.\n\nDoch bevor der Kalender seine Türen schliesst,\ngibt es noch etwas, das du nicht verpassen solltest:\nEin süsser Gruss steht in der Küche bereit,\nfür deinen kleinen Genuss zur Weihnachtszeit!\n\nWir sagen Danke für die gemeinsame Zeit,\nfür all die kleinen Momente und die Heiterkeit.\n\nWir wünschen dir und deinen Liebsten von Herzen nur das Beste,\nviel Wärme, Freude und wunderschöne Weihnachtsfeste!\n\nFrohe Weihnachten und einen guten Rutsch ins neue Jahr!"
   }
 ]
