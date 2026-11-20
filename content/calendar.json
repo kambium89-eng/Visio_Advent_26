@@ -41,11 +41,11 @@
   },
   {
     "day": 6,
-    "title": "Weihnachtliches Kreuzworträtsel",
-    "format": "Rätsel",
-    "description": "Zehn Weihnachtsbegriffe im interaktiven Kreuzworträtsel lösen. Hinweise über die Zahlen öffnen, Antworten prüfen und bei Bedarf einzelne Buchstaben aufdecken.",
+    "title": "Bullyparade: Weihnachten auf dem (T)Raumschiff",
+    "format": "YouTube-Video",
+    "description": "Einen kurzen Weihnachtsclip aus «Unser (T)Raumschiff» von Bullyparade anschauen.",
     "house": "house-06",
-    "type": "crossword"
+    "type": "video"
   },
   {
     "day": 7,
@@ -81,11 +81,11 @@
   },
   {
     "day": 11,
-    "title": "Bullyparade: Weihnachten auf dem (T)Raumschiff",
-    "format": "YouTube-Video",
-    "description": "Einen kurzen Weihnachtsclip aus «Unser (T)Raumschiff» von Bullyparade anschauen.",
+    "title": "Weihnachtliches Kreuzworträtsel",
+    "format": "Rätsel",
+    "description": "Zehn Weihnachtsbegriffe im interaktiven Kreuzworträtsel lösen. Hinweise über die Zahlen öffnen, Antworten prüfen und bei Bedarf einzelne Buchstaben aufdecken.",
     "house": "house-11",
-    "type": "video"
+    "type": "crossword"
   },
   {
     "day": 12,

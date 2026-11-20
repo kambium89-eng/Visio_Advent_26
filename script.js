@@ -6,8 +6,8 @@ const DAY_INTROS = {
     1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
     4: "Fünf Fragen. Wähle ein Thema und entdecke die Geschichte dahinter.",
     5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
-    6: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
-    11: "Ein Weihnachtsclip zum Schmunzeln. Mach es dir gemütlich.",
+    11: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
+    6: "Ein Weihnachtsclip zum Schmunzeln. Mach es dir gemütlich.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst. Such dir eine Tätigkeit aus und gönn dir dafür fünf bis zehn Minuten. Wenn du magst, begleitet dich dabei ein Timer.",
     9: "Ein kleiner Weihnachtsgruss zum Schmunzeln."
@@ -28,7 +28,7 @@ function readTeamToken() {
 }
 function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
 // Transparent space below each source motif; its visible base meets its snow shadow.
-const HOUSE_BASE_GAPS = [20,31,39,15,40,28,14,131,50,56,61,63,88,61,22,37,0,58,23,31,15,0,48,54].map(pixels=>pixels/768);
+const HOUSE_BASE_GAPS = [20,31,39,15,40,48,14,131,50,56,28,63,88,61,22,37,0,58,23,31,15,0,61,54].map(pixels=>pixels/768);
 
 function makeVillage() {
     const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23);
@@ -48,7 +48,7 @@ function makeVillage() {
             house.href=url.href;
             house.addEventListener("click",openHouse);
         }
-        const image=document.createElement("img");image.src=`assets/web/houses/${DAYS[day].house}.webp`;image.dataset.house=DAYS[day].house.slice(-2);image.alt="";image.width=150;image.height=150;image.draggable=false;
+        const image=document.createElement("img");image.src=`assets/web/houses/${DAYS[day].house}.webp?v=20261120`;image.dataset.house=DAYS[day].house.slice(-2);image.alt="";image.width=150;image.height=150;image.draggable=false;
         const number=document.createElement(memoryDay?"button":"a");number.className="house-number village-marker";number.textContent=`${day}.`;number.setAttribute("aria-hidden","true");
         number.dataset.day=day;
         if(memoryDay){number.type="button";number.tabIndex=-1;memoryClouds.bind(house,number,day);}
