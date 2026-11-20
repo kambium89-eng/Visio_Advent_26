@@ -175,7 +175,7 @@ async function selectDay(day,updateUrl=false) {
         case "contribution": {
             contributionController = new AbortController();
             try {
-                const { renderContribution } = await import("./contribution.js?v=review-20261120");
+                const { renderContribution } = await import("./contribution.js?v=review-20261120b");
                 if (viewId !== generation) return;
                 startContribution = renderContribution(body, DAYS[day], contributionController.signal);
             } catch {
