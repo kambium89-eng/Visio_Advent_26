@@ -65,7 +65,7 @@ function player(url, title) {
 function reading(info) {
     const section = element("section", "reading contribution-reading");
     const [heading, ...lines] = info.copy.split("\n");
-    section.append(element("h3", "", heading));
+    if (info.day !== 21) section.append(element("h3", "", heading));
     let filmHeading;
     for (const line of lines.filter(Boolean)) {
         if (info.day === 18 && /^\d+\. /.test(line)) {
@@ -148,7 +148,7 @@ function flipCard(parent, info, signal, label, showBack) {
     toggle.setAttribute("aria-expanded", "false");
     const actions = element("div", "contribution-actions");
     actions.append(toggle);
-    parent.append(face, actions);
+    parent.append(actions, face);
 }
 
 // Both timed sequences keep the last frame available and stop when the day is left.

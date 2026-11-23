@@ -52,7 +52,7 @@ async function createChristmasFacts(target, {isCurrent, reducedMotion}) {
     toggle.firstElementChild.setAttribute("aria-hidden", "true");
     const actions = el("div", "fact-actions");
     actions.append(toggle);
-    card.append(label, scene, actions);
+    card.append(label, actions, scene);
     const sources = el("details", "fact-sources");
     const summary = el("summary", "", "Quellen zu dieser Geschichte");
     const sourceList = el("ol", "");
@@ -72,15 +72,15 @@ async function createChristmasFacts(target, {isCurrent, reducedMotion}) {
     });
     const navigation = el("nav", "fact-navigation");
     navigation.setAttribute("aria-label", "Zwischen den Weihnachtsgeschichten wechseln");
-    const previous = el("button", "text-button", "← Vorheriges Thema");
-    const next = el("button", "text-button", "Nächstes Thema →");
+    const previous = el("button", "text-button", "Vorheriges Thema");
+    const next = el("button", "text-button", "Nächstes Thema");
     previous.type = next.type = "button";
     const progress = el("span", "fact-progress");
     navigation.append(previous, progress, next);
     const status = el("p", "sr-only");
     status.setAttribute("role", "status");
     status.setAttribute("aria-live", "polite");
-    section.append(card, sources, topics, navigation, status);
+    section.append(topics, card, sources, navigation, status);
     target.replaceChildren(section);
 
     let current = 0, showingAnswer = false, turn = 0, disposed = false;

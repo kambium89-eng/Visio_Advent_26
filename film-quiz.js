@@ -208,7 +208,7 @@ async function createChristmasFilmQuiz(target, {isCurrent = () => true, day = 15
     }
     panel.append(top, heading, list, feedback);
     if (solved) {
-      const next = document.createElement("button"); next.type = "button"; next.className = "primary-button"; next.id = "next-piece";
+      const next = document.createElement("button"); next.type = "button"; next.className = "primary-button navigation-button"; next.id = "next-piece";
       next.textContent = countSolved() === 9 ? state.filmWon ? "Zur Filmauflösung ↓" : "Jetzt den Film erraten ↓" : "Nächstes Puzzleteil →";
       next.addEventListener("click", () => {
         if (countSolved() === 9) {

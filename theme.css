@@ -1,0 +1,176 @@
+/* Shared Advent palette from Gestaltung/Farbpaletten/Hex Codes.md. */
+:root {
+    --theme-green: #595e48;
+    --theme-green-light: #c7cdbf;
+    --theme-sage: #919682;
+    --theme-pink-light: #ece1dd;
+    --theme-rose: #c7a491;
+    --theme-blush: #eecfca;
+    --button-action-bg: var(--theme-green);
+    --button-action-text: var(--theme-pink-light);
+    --button-navigation-bg: var(--theme-rose);
+    --button-navigation-text: var(--theme-green);
+}
+
+/* House numbers and crossword fields retain their own styles. */
+.primary-button,
+#christmas-crossword .cw-button-primary {
+    background: var(--button-action-bg);
+    color: var(--button-action-text);
+    border-color: var(--theme-green);
+}
+.primary-button:hover:not(:disabled),
+#christmas-crossword .cw-button-primary:hover:not(:disabled) {
+    background: var(--button-action-bg);
+    color: var(--button-action-text);
+    border-color: var(--theme-green);
+}
+a.primary-button, .navigation-button, .fact-topic, .text-button,
+.village-scroll-button, .video-zoom, .contribution-link, .media-link a,
+#christmas-film-quiz :is(.text-button, .secondary-button, .navigation-button, .answer-option),
+#christmas-crossword .cw-button:not(.cw-button-primary),
+#christmas-crossword .cw-dialog-close {
+    background: var(--button-navigation-bg);
+    color: var(--button-navigation-text);
+    border: 1px solid var(--theme-green);
+}
+a.primary-button:hover, .navigation-button:hover, .fact-topic:hover,
+.text-button:hover, .village-scroll-button:hover, .video-zoom:hover,
+.contribution-link:hover, .media-link a:hover,
+#christmas-film-quiz :is(.text-button, .secondary-button, .navigation-button, .answer-option):hover:not(:disabled),
+#christmas-crossword .cw-button:not(.cw-button-primary):hover:not(:disabled),
+#christmas-crossword .cw-dialog-close:hover {
+    background: var(--button-navigation-bg);
+    color: var(--button-navigation-text);
+    border-color: var(--theme-green);
+}
+.text-button, .contribution-link, .media-link a,
+#christmas-film-quiz .text-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: .4rem .8rem;
+    border-radius: .45rem;
+    font-size: .875rem;
+    line-height: 1.4;
+    text-decoration: none;
+}
+.fact-topic {font-size: .875rem; min-height: 2.5rem;}
+.fact-topic[aria-pressed="true"] {
+    color: var(--button-navigation-text);
+    background: var(--button-navigation-bg);
+    border-color: var(--theme-green);
+    outline: 2px solid var(--theme-green);
+    outline-offset: 2px;
+    font-weight: bold;
+}
+.fact-navigation .text-button {font-size: .875rem;}
+.sequence-controls button {padding-inline: .8rem;}
+.arrival-skip {background: var(--button-navigation-bg);}
+.arrival-skip:hover {transform: translateX(-50%);}
+.memory-cloud .memory-cloud-close {
+    background: var(--button-navigation-bg);
+    color: var(--button-navigation-text);
+    border: 1px solid var(--theme-green);
+}
+#christmas-film-quiz .answer-option.is-correct {
+    background: var(--theme-sage);
+    color: var(--ink);
+    border-color: var(--theme-green);
+}
+#christmas-film-quiz .answer-option.is-wrong {
+    background: var(--theme-rose);
+    color: var(--theme-green);
+    border-color: var(--theme-green);
+}
+#christmas-film-quiz .answer-letter {color: inherit; border-color: currentColor;}
+
+/* Let the card occupy the available width and the space above the village. */
+@media screen {
+body:not(.video-day):not(.joy-focus) {
+    display: grid;
+    height: 100dvh;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr) var(--village-height);
+}
+body:not(.video-day):not(.joy-focus) .page-header {padding-block: .75rem .25rem;}
+body:not(.video-day):not(.joy-focus) main {
+    width: 100%;
+    max-width: 78rem;
+    min-height: 0;
+    margin: 0 auto;
+    padding: .25rem clamp(1rem, 2dvw, 2rem) .75rem;
+}
+body:not(.video-day):not(.joy-focus) .content-panel {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    min-height: 0;
+}
+body:not(.video-day):not(.joy-focus):not(.memories-ready) .day-content[data-type] {
+    max-width: none;
+    height: 100%;
+    max-height: 100%;
+}
+.day-content {padding: 1.25rem clamp(1.25rem, 3dvw, 2.5rem);}
+.content-heading {margin-bottom: 1rem;}
+.reading {line-height: 1.7;}
+.contribution-reading {max-width: 67rem;}
+.contribution-actions {margin-top: 1rem;}
+#content-body > .contribution-actions:has(+ .video-card-face) {margin: 0 0 .75rem;}
+.contribution-player {
+    width: min(100%, calc(clamp(10rem, 100dvh - var(--village-height) - 23rem, 26rem) * 16 / 9));
+}
+.story-actions {margin: 0 0 1rem; padding: 0; border: 0;}
+.joy-moment {max-width: 67rem;}
+.day-content[data-type="joy"] .day-intro {max-width: 65rem;}
+.day-content[data-type="joy"] .content-heading h2 {max-width: none;}
+.day-message {text-align: center;}
+.day-message p {margin: 0;}
+.fact-card.is-answer .fact-question {max-width: none;}
+.day-content[data-type="facts"] {padding-block: .75rem;}
+.fact-answer {line-height: 1.65;}
+.fact-answer p {margin-bottom: .8rem;}
+.fact-actions {margin: 0 0 .75rem;}
+.fact-navigation {margin-top: .75rem;}
+.fact-sources {margin-top: .65rem;}
+.poem-cinema .sequence-stage {min-height: clamp(10rem, 24dvh, 18rem);}
+}
+
+@media screen and (min-width: 960px) {
+    .joy-options {grid-template-columns: repeat(3, minmax(0, 1fr));}
+    .joy-timer {display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1rem;}
+    .joy-timer-optional {max-width: 20rem; margin: 0;}
+    .joy-duration {margin: 0;}
+}
+
+@media screen and (min-width: 960px) and (max-height: 850px) {
+    :root {--village-height: 190px; --house-size: 112px;}
+    body:not(.video-day):not(.joy-focus) .page-header :is(h1, h1 span) {font-size: 2.8rem;}
+    body:not(.video-day):not(.joy-focus) .brand {margin-bottom: .25rem;}
+    body:not(.video-day):not(.joy-focus) .header-ornament {height: 1.25rem;}
+    .day-content .content-heading h2 {font-size: 2.5rem;}
+    .day-content .content-heading {margin-bottom: .75rem;}
+    .day-content .eyebrow {margin-bottom: .3rem;}
+    .village-tree {max-height: 145px;}
+}
+@media screen and (max-width: 959px) {
+    html {min-width: 0; --village-height: 148px; --house-size: 83px; --house-slot: 94px; --house-gap: 12px;}
+    body:not(.video-day):not(.joy-focus) .page-header :is(h1, h1 span) {font-size: 2.5rem;}
+    .day-content .content-heading h2 {font-size: 2.25rem;}
+    .fact-topics {gap: .5rem;}
+    .fact-navigation {flex-wrap: wrap;}
+    .village-tree {max-height: 95px;}
+    .village-scroll-button {bottom: 36px;}
+}
+@media (forced-colors: active) {
+    :root {
+        --button-action-bg: ButtonFace;
+        --button-action-text: ButtonText;
+        --button-navigation-bg: ButtonFace;
+        --button-navigation-text: ButtonText;
+        --theme-green: ButtonText;
+    }
+    .fact-topic[aria-pressed="true"] {outline-color: Highlight;}
+}

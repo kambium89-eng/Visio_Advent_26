@@ -175,7 +175,7 @@ async function selectDay(day,updateUrl=false) {
         case "contribution": {
             contributionController = new AbortController();
             try {
-                const { renderContribution } = await import("./contribution.js?v=day21-pdf-20261123");
+                const { renderContribution } = await import("./contribution.js?v=theme-20261123");
                 if (viewId !== generation) return;
                 startContribution = renderContribution(body, DAYS[day], contributionController.signal);
             } catch {
@@ -230,7 +230,7 @@ async function renderStory(viewId) {
     if(!storyPromise)storyPromise=Promise.all(["content/05-dezember.md","content/05-dezember-erklaerung.md"].map(async path=>{const response=await fetch(path);if(!response.ok)throw new Error("story");return marked.parse((await response.text()).replace(/^##[^\n]*\n/,""));})).catch(error=>{storyPromise=null;throw error;});
     try{
         const [story,explanation]=await storyPromise;if(viewId!==generation)return;
-        body.innerHTML='<div class="reading" id="story-reading"></div><div class="story-actions"><button class="primary-button" id="explanation-toggle" type="button" aria-controls="story-reading"><span class="turn-symbol" aria-hidden="true">↻</span><span>Erklärung anzeigen</span></button></div>';
+        body.innerHTML='<div class="story-actions"><button class="primary-button" id="explanation-toggle" type="button" aria-controls="story-reading"><span class="turn-symbol" aria-hidden="true">↻</span><span>Erklärung anzeigen</span></button></div><div class="reading" id="story-reading"></div>';
         const reading=$("story-reading"),toggle=$("explanation-toggle");let showingExplanation=false;
         reading.innerHTML=story;
         toggle.addEventListener("click",async()=>{
@@ -249,12 +249,12 @@ async function renderStory(viewId) {
 
 async function renderText(day,viewId) {
     try{
-        const response=await fetch(`content/${String(day).padStart(2,"0")}-tagesinhalt.md?v=day19-wording-20261118`,{cache:"no-cache"});
+        const response=await fetch(`content/${String(day).padStart(2,"0")}-tagesinhalt.md?v=day7-greeting-20261123`,{cache:"no-cache"});
         if(!response.ok)throw new Error("text");
         const markdown=await response.text();
         if(viewId!==generation)return;
         const reading=document.createElement("div");
-        reading.className=day===7?"reading":"reading daily-reading";
+        reading.className=day===7?"reading day-message":"reading daily-reading";
         reading.innerHTML=marked.parse(markdown);
         body.append(reading);
     }catch{

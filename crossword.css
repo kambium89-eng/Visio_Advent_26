@@ -1,4 +1,4 @@
-#christmas-crossword { --pine: #294c40; --pine-soft: #567260; --gold: #a58039; --ink: #303e35; --muted: #68756a; --paper: #fffdf7; --line: #dce2d3; --selected: #c7a491; --active: #c7a491; --correct: #c8cfbf; --wrong: #f0d1c9; padding: 0; }
+#christmas-crossword { --pine: #294c40; --pine-soft: #567260; --gold: #a58039; --ink: #303e35; --muted: #68756a; --paper: #fffdf7; --line: #dce2d3; --selected: #eecfca; --active: #eecfca; --correct: #919682; --wrong: #c7a491; padding: 0; }
 #christmas-crossword, #christmas-crossword *, #christmas-crossword *::before, #christmas-crossword *::after { box-sizing: border-box; }
 #christmas-crossword [hidden] { display: none !important; }
 #christmas-crossword button, #christmas-crossword input { font: inherit; }

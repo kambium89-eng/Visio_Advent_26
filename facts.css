@@ -25,7 +25,7 @@
 .fact-sources li{padding:0 0 10px 3px;overflow-wrap:anywhere}
 .fact-source-note{display:block;margin-top:3px}
 .fact-source-date{font-size:11px;margin:0 0 11px}
-.fact-topics{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:20px auto 0}
+.fact-topics{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:0 auto 14px}
 .fact-topic{display:inline-flex;align-items:center;gap:7px;border:1px solid #bcc6b3;border-radius:20px;padding:7px 11px;background:transparent;color:var(--pine);font:12px/1.4 Georgia,serif;transition:background .18s,border-color .18s}
 .fact-topic:hover{background:#e7ecdf}
 .fact-topic[aria-pressed="true"]{background:#dce6d2;border-color:#7c977c;color:#294c40}
@@ -47,6 +47,6 @@
     .fact-question{font-size:23px;line-height:1.35}
     .fact-invitation{display:none}
     .fact-actions{margin-top:12px}
-    .fact-topics{margin-top:14px}
+    .fact-topics{margin-top:0;margin-bottom:12px}
 }
 @media(prefers-reduced-motion:reduce){.fact-topic{transition:none}}

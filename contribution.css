@@ -149,7 +149,7 @@
     margin: 0;
     white-space: pre-line;
     text-align: center;
-    font: normal clamp(1.75rem, 1.3rem + 1.5vw, 2.75rem)/1.23 "Alex Brush", cursive;
+    font: normal clamp(1.25rem, 1rem + 1dvw, 1.75rem)/1.5 Georgia, "Times New Roman", serif;
 }
 .poem-frame {z-index: 1;}
 .complete-poem {margin: 1rem 0; text-align: center;}
