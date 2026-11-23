@@ -5,7 +5,6 @@ let DAYS = {};
 const DAY_INTROS = {
     1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
     4: "Fünf Fragen. Wähle ein Thema und entdecke die Geschichte dahinter.",
-    5: "Eine Parabel über das, dem wir unsere Aufmerksamkeit schenken.",
     11: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst. Such dir eine Tätigkeit aus und gönn dir dafür fünf bis zehn Minuten. Wenn du magst, begleitet dich dabei ein Timer."
@@ -155,6 +154,7 @@ async function selectDay(day,updateUrl=false) {
     document.querySelectorAll(".village-house,.village-marker").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
     setHeading(day);
     content.dataset.type=DAYS[day].type;
+    content.dataset.day=day;
     document.body.classList.add("is-arriving");
     let startContribution;
     switch(DAYS[day].type){

@@ -114,6 +114,14 @@ body:not(.video-day):not(.joy-focus):not(.memories-ready) .day-content[data-type
 .day-content {padding: 1.25rem clamp(1.25rem, 3dvw, 2.5rem);}
 .content-heading {margin-bottom: 1rem;}
 .reading {line-height: 1.7;}
+/* Centre only the reading text on John's selected days. */
+.day-content:is(
+    [data-day="2"], [data-day="3"], [data-day="5"], [data-day="6"],
+    [data-day="8"], [data-day="10"], [data-day="12"], [data-day="13"],
+    [data-day="14"], [data-day="16"], [data-day="20"], [data-day="21"],
+    [data-day="22"]
+) .reading {text-align: center;}
+
 .contribution-reading {max-width: 67rem;}
 .contribution-actions {margin-top: 1rem;}
 #content-body > .contribution-actions:has(+ .video-card-face) {margin: 0 0 .75rem;}
