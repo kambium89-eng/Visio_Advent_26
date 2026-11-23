@@ -101,7 +101,7 @@ async function arrive(day,viewId) {
     image.src=targetImage.src;$("arrival-day").textContent=`${day}. Dezember`;
     target.classList.add("arrival-target");
     const wash=overlay.querySelector(".arrival-wash"),copy=overlay.querySelector(".arrival-copy");
-    wash.style.opacity="";copy.style.opacity="";$("arrival-skip").hidden=false;
+    wash.style.opacity="";copy.style.opacity="";
     try{await image.decode();}catch{}
     if(viewId!==generation)return;
     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
@@ -113,7 +113,6 @@ async function arrive(day,viewId) {
         if(viewId===generation){document.body.classList.remove("is-arriving");$("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;}
         finishArrival=null;
     };
-    $("arrival-skip").onclick=()=>{finishArrival?.();content.focus({preventScroll:true});};
     const from=image.getBoundingClientRect(),to=targetImage.getBoundingClientRect();
     const dx=to.left+to.width/2-(from.left+from.width/2),dy=to.top+to.height/2-(from.top+from.height/2),scale=to.width/from.width;
     const start="translate(-50%, -50%)";

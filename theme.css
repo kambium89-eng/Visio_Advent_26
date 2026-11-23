@@ -8,11 +8,11 @@
     --theme-blush: #eecfca;
     --button-action-bg: var(--theme-green);
     --button-action-text: var(--theme-pink-light);
-    --button-navigation-bg: var(--theme-rose);
+    --button-navigation-bg: var(--theme-blush);
     --button-navigation-text: var(--theme-green);
 }
 
-/* House numbers and crossword fields retain their own styles. */
+/* Shared button colours; house-number states are defined in style.css. */
 .primary-button,
 #christmas-crossword .cw-button-primary {
     background: var(--button-action-bg);
@@ -67,8 +67,6 @@ a.primary-button:hover, .navigation-button:hover, .fact-topic:hover,
 }
 .fact-navigation .text-button {font-size: .875rem;}
 .sequence-controls button {padding-inline: .8rem;}
-.arrival-skip {background: var(--button-navigation-bg);}
-.arrival-skip:hover {transform: translateX(-50%);}
 .memory-cloud .memory-cloud-close {
     background: var(--button-navigation-bg);
     color: var(--button-navigation-text);

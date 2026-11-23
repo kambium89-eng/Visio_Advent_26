@@ -126,8 +126,8 @@ main{position:relative;z-index:3;max-width:980px;margin:6px auto 0;padding:0 30p
 .village-house::before{content:"";position:absolute;left:9%;bottom:-4px;width:82%;height:12px;background:#a9b69a5e;border-radius:50%;filter:blur(4px);pointer-events:none}
 .village-house img{position:relative;display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 5px 4px #4a563e12);transform:translateY(calc(var(--house-size) * var(--base-gap) + var(--lift,0px)));transition:transform .25s ease}
 a.village-house:hover,a.village-house:focus-visible{--lift:-4px}
-.house-number{position:absolute;left:50%;bottom:26px;transform:translate(-50%,40%);font:28px/1 "Alex Brush",cursive;color:#40593e;min-width:28px;padding:3px 6px 0;border-radius:50%;background:#fffdf3ef;box-shadow:0 1px 6px #5d664517;z-index:2;pointer-events:auto;text-align:center;text-decoration:none}
-.village-marker[aria-current="page"]{color:#fffdf6;background:var(--pine)}
+.house-number{position:absolute;left:50%;bottom:26px;transform:translate(-50%,40%);font:28px/1 "Alex Brush",cursive;color:var(--theme-green);min-width:28px;padding:3px 6px 0;border-radius:50%;background:var(--theme-blush);box-shadow:0 1px 6px #5d664517;z-index:2;pointer-events:auto;text-align:center;text-decoration:none}
+.village-marker[aria-current="page"]{color:var(--theme-blush);background:var(--theme-green);text-decoration:underline;text-underline-offset:.12em}
 .village-plot:has(.arrival-target) .village-marker{visibility:hidden}
 .village-house[aria-current="page"] img{filter:drop-shadow(0 0 9px #d3ba6b75)}
 .village-scroll-button{position:absolute;bottom:65px;width:38px;height:48px;border:1px solid #c0caae;border-radius:22px;background:#fffdf2eb;color:var(--pine);font:34px/1 Georgia,serif;padding:0;z-index:6;box-shadow:0 4px 15px #4a563e12}
@@ -142,7 +142,7 @@ a.village-house:hover,a.village-house:focus-visible{--lift:-4px}
 .memory-house.is-smoking{--lift:-2px}
 .memory-house.is-smoking img{filter:drop-shadow(0 0 9px #d3ba6b8c)}
 .memory-day .village-marker{border:0;cursor:pointer;appearance:none}
-.memory-day .village-marker.is-smoking{background:#e7d8ad;color:var(--pine)}
+.memory-day .village-marker.is-smoking{outline:2px solid var(--theme-green);outline-offset:2px}
 .memory-cloud-layer{position:fixed;inset:0;z-index:15;overflow:hidden;pointer-events:none;font-family:Georgia,"Times New Roman",serif;mask-image:linear-gradient(to bottom,transparent,#000 85px,#000)}
 .memory-puff{position:absolute;display:block;border-radius:48% 56% 45% 52%;background:#fffef6;box-shadow:0 1px 8px #485a3620;opacity:0}
 .memory-cloud{position:absolute;pointer-events:auto;padding:45px 44px 43px;color:var(--pine);font-family:Georgia,"Times New Roman",serif;filter:drop-shadow(0 8px 16px #3f53312b);will-change:transform;isolation:isolate}
@@ -158,9 +158,6 @@ a.village-house:hover,a.village-house:focus-visible{--lift:-4px}
 #arrival-house{position:absolute;left:50%;top:44%;width:min(67vh,600px);height:min(67vh,600px);object-fit:contain;transform:translate(-50%,-50%);filter:drop-shadow(0 15px 25px #55744b20);will-change:transform}
 .arrival-copy{position:absolute;bottom:11%;left:0;right:0;text-align:center;color:var(--pine)}
 .arrival-copy span{font:49px/1.1 "Alex Brush",cursive;color:var(--gold)}
-.arrival-copy p{font:italic 16px/1.4 Georgia,serif;margin:10px 0 0}
-.arrival-skip{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);pointer-events:auto;font-size:11px;text-decoration:none;letter-spacing:.3px}
-.arrival-skip span{margin-left:7px}
 .noscript{padding:25px;text-align:center}
 @media(min-height:1000px){.page-header{padding-top:35px}.day-content{padding:36px 50px}}
 @media(max-width:1100px){main{max-width:850px}.day-content{padding:26px 36px}}
