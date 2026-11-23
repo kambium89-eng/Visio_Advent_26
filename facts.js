@@ -42,8 +42,7 @@ async function createChristmasFacts(target, {isCurrent, reducedMotion}) {
     title.id = "fact-question";
     const answer = el("div", "reading fact-answer");
     answer.id = "fact-answer";
-    const invitation = el("p", "fact-invitation", "Eine kleine Frage. Eine Geschichte zum Weitererzählen.");
-    face.append(icon, title, answer, invitation);
+    face.append(icon, title, answer);
     scene.append(face);
     const toggle = el("button", "primary-button fact-toggle");
     toggle.type = "button";
@@ -98,7 +97,6 @@ async function createChristmasFacts(target, {isCurrent, reducedMotion}) {
         title.textContent = showingAnswer ? fact.title : fact.question;
         answer.replaceChildren(...fact.paragraphs.map(paragraph => el("p", "", paragraph)));
         answer.hidden = !showingAnswer;
-        invitation.hidden = showingAnswer;
         sources.hidden = !showingAnswer;
         toggle.lastElementChild.textContent = showingAnswer ? "Frage anzeigen" : "Antwort entdecken";
         toggle.setAttribute("aria-label", `${showingAnswer ? "Frage anzeigen" : "Antwort entdecken"}: ${fact.label}`);

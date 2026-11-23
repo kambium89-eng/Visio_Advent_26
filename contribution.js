@@ -65,7 +65,7 @@ function player(url, title) {
 function reading(info) {
     const section = element("section", "reading contribution-reading");
     const [heading, ...lines] = info.copy.split("\n");
-    if (info.day !== 21) section.append(element("h3", "", heading));
+    if (![2, 3, 21].includes(info.day)) section.append(element("h3", "", heading));
     let filmHeading;
     for (const line of lines.filter(Boolean)) {
         if (info.day === 18 && /^\d+\. /.test(line)) {
@@ -264,10 +264,10 @@ export function renderContribution(parent, info, signal) {
     if (info.day === 8) return flipCard(parent, info, signal, "Rezept", showRecipe);
     if (info.day === 22) return flipCard(parent, info, signal, "Zur Sammlung", showQuotes);
     if (info.videoUrl) {
-        const labels = { 10: "Eine kleine Anleitung", 12: "Eine kleine Anleitung", 16: "Videoanleitung", 20: "Zum Video" };
+        const labels = { 6: "Zum Video", 10: "Eine kleine Anleitung", 12: "Eine kleine Anleitung", 16: "Videoanleitung", 20: "Zum Video" };
         return flipCard(parent, info, signal, labels[info.day], face => {
             face.append(player(info.videoUrl, info.title));
-            if (info.day === 16 || info.day === 20) face.append(videoLink(info.videoUrl, "Video auf YouTube öffnen"));
+            if ([6, 16, 20].includes(info.day)) face.append(videoLink(info.videoUrl, "Video auf YouTube öffnen"));
         });
     }
     parent.append(reading(info));

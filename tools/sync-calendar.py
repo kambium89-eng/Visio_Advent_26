@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 NS = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
-HANDLERS = {1: "form", 4: "facts", 5: "story", 6: "video", 7: "text", 9: "image", 11: "crossword", 15: "filmquiz", 17: "joy", 19: "text", 23: "reveal"}
+HANDLERS = {1: "form", 4: "facts", 5: "story", 7: "text", 9: "image", 11: "crossword", 15: "filmquiz", 17: "joy", 19: "text", 23: "reveal"}
 
 def contribution(day, cells):
     copy = cells.get("K", "").strip()
@@ -27,6 +27,7 @@ def contribution(day, cells):
     return fields
 
 def read_plan(path):
+    approved = json.loads((Path(__file__).resolve().parents[1] / "content/editorial-overrides.json").read_text(encoding="utf-8"))
     with zipfile.ZipFile(path) as book:
         shared = []
         if "xl/sharedStrings.xml" in book.namelist():
@@ -53,7 +54,9 @@ def read_plan(path):
                     if not cells.get(field, "").strip():
                         raise ValueError(f"Tag {day}: {field} ist leer")
                 entry = {"day": day, "title": cells["C"], "format": cells["D"], "description": cells["G"], "house": Path(house).stem, "type": HANDLERS.get(day, "contribution")}
-                if entry["type"] == "contribution":
+                # Preserve John's explicitly approved edits after reading the plan.
+                entry.update(approved.get(str(day), {}))
+                if entry["type"] == "contribution" and "copy" not in entry:
                     entry.update(contribution(day, cells))
                 rows.append(entry)
         rows.sort(key=lambda entry: entry["day"])

@@ -9,7 +9,6 @@
 .fact-icon{width:56px;height:56px;color:#9a7b40;margin:0 auto 15px;flex-shrink:0}
 .fact-icon svg{display:block;width:100%;height:100%}
 .fact-question{font:normal 27px/1.38 Georgia,"Times New Roman",serif;color:var(--pine);max-width:540px;text-align:center;margin:0 auto;text-wrap:balance}
-.fact-invitation{font:italic 12px/1.65 Georgia,serif;color:var(--muted);margin:14px 0 0;text-align:center}
 .fact-actions{display:flex;justify-content:center;margin-top:19px}
 .fact-toggle{min-width:190px;border-radius:24px;padding:9px 21px}
 .fact-toggle:disabled{cursor:wait;opacity:1}
@@ -45,7 +44,6 @@
     .fact-face{min-height:0}
     .fact-icon{width:36px;height:36px;margin-bottom:8px}
     .fact-question{font-size:23px;line-height:1.35}
-    .fact-invitation{display:none}
     .fact-actions{margin-top:12px}
     .fact-topics{margin-top:0;margin-bottom:12px}
 }

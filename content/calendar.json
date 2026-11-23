@@ -9,7 +9,7 @@
   },
   {
     "day": 2,
-    "title": "Eine herzerwärmende Weihnachtsgeschichte",
+    "title": "Das schönste Weihnachtsgeschenk",
     "format": "Geschichte",
     "description": "Eine kurze Weihnachtsgeschichte über Wärme, Hoffnung und menschliche Nähe lesen.",
     "house": "house-02",
@@ -18,7 +18,7 @@
   },
   {
     "day": 3,
-    "title": "Heute ein ehrliches Kompliment",
+    "title": "Ein kleines Kompliment. Eine grosse Wirkung",
     "format": "Challenge",
     "description": "Einem Menschen bewusst ein ehrliches, wertschätzendes Kompliment machen.",
     "house": "house-03",
@@ -43,11 +43,13 @@
   },
   {
     "day": 6,
-    "title": "Bullyparade: Weihnachten auf dem (T)Raumschiff",
+    "title": "Bullyparade: Weihnachten auf dem Traumschiff",
     "format": "YouTube-Video",
-    "description": "Einen kurzen Weihnachtsclip aus «Unser (T)Raumschiff» von Bullyparade anschauen.",
+    "description": "Einen Weihnachtsclip der Bullyparade vom Traumschiff anschauen.",
     "house": "house-06",
-    "type": "video"
+    "type": "contribution",
+    "copy": "Kurs auf gute Laune\n\nZwischen Weihnachtsvorbereitungen und Alltagsbetrieb darf es auch einmal etwas weniger ernst zugehen.\n\nHeute nehmen wir dich mit an Bord des Traumschiffs. Dort wartet ein Weihnachtsmoment mit dem unverwechselbaren Humor der Bullyparade auf dich.\n\nMach es dir gemütlich und lass dich überraschen!",
+    "videoUrl": "https://www.youtube.com/watch?v=kq3sYEPdvdM"
   },
   {
     "day": 7,
