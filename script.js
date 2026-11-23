@@ -61,18 +61,9 @@ function makeVillage() {
     scrollToCurrentHouse();
 }
 
-function updateVillageControls() {
-    const strip=$("village-scroll"),previous=$("village-previous"),next=$("village-next");
-    const maximum=Math.max(0,strip.scrollWidth-strip.clientWidth);
-    previous.hidden=next.hidden=maximum<2;
-    previous.disabled=strip.scrollLeft<2;
-    next.disabled=strip.scrollLeft>maximum-2;
-}
-
 function scrollToCurrentHouse() {
     const strip=$("village-scroll");
     strip.scrollTo({left:strip.scrollWidth-strip.clientWidth,behavior:"instant"});
-    updateVillageControls();
 }
 
 $("village").addEventListener("wheel",event=>{
@@ -85,11 +76,8 @@ $("village").addEventListener("wheel",event=>{
     strip.scrollLeft+=delta*unit;
 },{passive:false});
 $("village-scroll").addEventListener("scroll",()=>{
-    updateVillageControls();memoryClouds?.villageMoved();
+    memoryClouds?.villageMoved();
 },{passive:true});
-for(const [id,direction] of [["village-previous",-1],["village-next",1]]) {
-    $(id).onclick=()=>$("village-scroll").scrollBy({left:direction*$("village-scroll").clientWidth*.75,behavior:reducedMotion.matches?"instant":"smooth"});
-}
 window.addEventListener("resize",scrollToCurrentHouse);
 
 

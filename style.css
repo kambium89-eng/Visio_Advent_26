@@ -130,12 +130,7 @@ a.village-house:hover,a.village-house:focus-visible{--lift:-4px}
 .village-marker[aria-current="page"]{color:var(--theme-blush);background:var(--theme-green);text-decoration:underline;text-underline-offset:.12em}
 .village-plot:has(.arrival-target) .village-marker{visibility:hidden}
 .village-house[aria-current="page"] img{filter:drop-shadow(0 0 9px #d3ba6b75)}
-.village-scroll-button{position:absolute;bottom:65px;width:38px;height:48px;border:1px solid #c0caae;border-radius:22px;background:#fffdf2eb;color:var(--pine);font:34px/1 Georgia,serif;padding:0;z-index:6;box-shadow:0 4px 15px #4a563e12}
-.village-scroll-button:hover{background:#fffdf7;border-color:#8d9e7b}
-.village-scroll-button:disabled{opacity:.25;cursor:default}
-.village-previous{left:14px}
-.village-next{right:14px}
-.is-arriving .village-scroll,.is-arriving .village-scroll-button{pointer-events:none}
+.is-arriving .village-scroll{pointer-events:none}
 .memory-house{cursor:pointer;user-select:none}
 .memory-day .village{user-select:none}
 .memory-house img{user-select:none}

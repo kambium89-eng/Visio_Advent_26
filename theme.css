@@ -26,7 +26,7 @@
     border-color: var(--theme-green);
 }
 a.primary-button, .navigation-button, .fact-topic, .text-button,
-.village-scroll-button, .video-zoom, .contribution-link, .media-link a,
+.video-zoom, .contribution-link, .media-link a,
 #christmas-film-quiz :is(.text-button, .secondary-button, .navigation-button, .answer-option),
 #christmas-crossword .cw-button:not(.cw-button-primary),
 #christmas-crossword .cw-dialog-close {
@@ -35,7 +35,7 @@ a.primary-button, .navigation-button, .fact-topic, .text-button,
     border: 1px solid var(--theme-green);
 }
 a.primary-button:hover, .navigation-button:hover, .fact-topic:hover,
-.text-button:hover, .village-scroll-button:hover, .video-zoom:hover,
+.text-button:hover, .video-zoom:hover,
 .contribution-link:hover, .media-link a:hover,
 #christmas-film-quiz :is(.text-button, .secondary-button, .navigation-button, .answer-option):hover:not(:disabled),
 #christmas-crossword .cw-button:not(.cw-button-primary):hover:not(:disabled),
@@ -160,7 +160,6 @@ body:not(.video-day):not(.joy-focus):not(.memories-ready) .day-content[data-type
     .fact-topics {gap: .5rem;}
     .fact-navigation {flex-wrap: wrap;}
     .village-tree {max-height: 95px;}
-    .village-scroll-button {bottom: 36px;}
 }
 @media (forced-colors: active) {
     :root {

@@ -183,7 +183,6 @@
     }
     .content-panel:has(.day-content:is([data-type="contribution"], [data-type="image"])) {height: 100%;}
     body:has(.day-content:is([data-type="contribution"], [data-type="image"])) .village-tree {height: 95px;}
-    body:has(.day-content:is([data-type="contribution"], [data-type="image"])) .village-scroll-button {bottom: 36px;}
     .day-content:is([data-type="contribution"], [data-type="image"]) {
         padding: 1.1rem 1rem;
         height: 100%;
