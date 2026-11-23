@@ -273,7 +273,7 @@ export function renderContribution(parent, info, signal) {
     parent.append(reading(info));
     if (info.day === 21) {
         const actions = element("div", "contribution-actions");
-        actions.append(download("drei-wuensche.docx", "Wunschkarte herunterladen (Word)"));
+        actions.append(download("drei-wuensche.pdf", "Wunschkarte herunterladen (PDF)"));
         parent.append(actions);
     }
 }
