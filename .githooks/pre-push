@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+python3 tools/check-repository.py
+scanner=$(git config --get advent.gitleaksBinary || command -v gitleaks || true)
+if [ -z "$scanner" ] || [ ! -x "$scanner" ]; then
+    echo 'Push blocked: install the official Gitleaks scanner before publishing.' >&2
+    exit 1
+fi
+"$scanner" git --no-banner --redact=100 --log-opts=--all .

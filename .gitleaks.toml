@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Exact non-secret browser storage label, reviewed 2026-11-24"
+regexTarget = "line"
+regexes = ['''^\s*const storageKey = "visio-advent-day15-film-puzzle-v2";$''']

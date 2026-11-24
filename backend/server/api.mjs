@@ -30,7 +30,11 @@ async function readJson(request){
   const chunks=[];let size=0;
   while(true){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>12288){await reader.cancel();throw{status:413,error:"Die Eingabe ist zu lang."};}chunks.push(value);}
   const merged=new Uint8Array(size);let offset=0;for(const chunk of chunks){merged.set(chunk,offset);offset+=chunk.length;}
-  try{return JSON.parse(new TextDecoder().decode(merged));}catch{throw{status:400,error:"Die Formulardaten sind ungültig."};}
+  try{
+    const data=JSON.parse(new TextDecoder().decode(merged));
+    if(data===null||typeof data!=="object"||Array.isArray(data))throw new Error("Expected an object");
+    return data;
+  }catch{throw{status:400,error:"Die Formulardaten sind ungültig."};}
 }
 // The clock controls session expiry and login limiting, not which day link may open.
 export async function handleApi(request,env,now=new Date()){
@@ -43,7 +47,7 @@ export async function handleApi(request,env,now=new Date()){
   if(request.method==="OPTIONS")return new Response(null,{status:204,headers:{...headers,"Access-Control-Allow-Methods":"GET, POST, DELETE, OPTIONS","Access-Control-Allow-Headers":"Authorization, Content-Type","Access-Control-Max-Age":"600"}});
   const path=new URL(request.url).pathname.replace(/\/$/,"");
   if(path==="/api/health"&&request.method==="GET")return json({ok:true});
-  if(!env.TEAM_PASSWORD||!env.SESSION_SECRET||!env.DB)return json({error:"Der Teamzugang ist noch nicht bereit. Bitte versuche es später nochmals."},503);
+  if(!env.TEAM_USERNAME||!env.TEAM_PASSWORD||!env.SESSION_SECRET||!env.DB)return json({error:"Der Teamzugang ist noch nicht bereit. Bitte versuche es später nochmals."},503);
   try{
     if(path==="/api/login"&&request.method==="POST"){
       const data=await readJson(request);
@@ -54,8 +58,8 @@ export async function handleApi(request,env,now=new Date()){
       const limiterId=base64url(new Uint8Array(digest));
       const previous=await env.DB.prepare("SELECT attempts FROM login_attempts WHERE id = ?").bind(limiterId).first();
       if(previous&&previous.attempts>=30)return json({error:"Zu viele Anmeldeversuche. Bitte versuche es in 15 Minuten nochmals."},429,{"Retry-After":"900"});
-      const correct=await equalSecret(data.password,env.TEAM_PASSWORD);
-      if(data.username!=="Wichtel"||!correct){
+      const [correctUsername,correctPassword]=await Promise.all([equalSecret(data.username,env.TEAM_USERNAME),equalSecret(data.password,env.TEAM_PASSWORD)]);
+      if(!correctUsername||!correctPassword){
         await env.DB.batch([
           env.DB.prepare("DELETE FROM login_attempts WHERE window < ?").bind(window-1),
           env.DB.prepare("INSERT INTO login_attempts (id, window, attempts) VALUES (?, ?, 1) ON CONFLICT(id) DO UPDATE SET attempts = attempts + 1").bind(limiterId,window)

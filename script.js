@@ -14,16 +14,16 @@ const memoryClouds = typeof MemoryClouds === "function" ? new MemoryClouds() : n
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
-let token = readTeamToken();
+// Authentication stays in memory for this open page, never in Web Storage.
+let token = "";
+let prideDraft = [];
+let prideSubmissionId = readSession("advent-pride-id") || "";
 let storyPromise, disposeCrossword, disposeFacts, disposeFilmQuiz, disposeJoy;
 let contributionController;
 function readSession(key) {try{return sessionStorage.getItem(key);}catch{return null;}}
 function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(key);else sessionStorage.setItem(key,value);}catch{}}
-function readTeamToken() {
-    const candidate=readSession("advent-team-token")||"";
-    try{const claims=JSON.parse(atob(candidate.split('.')[0].replace(/-/g,'+').replace(/_/g,'/')));if(Number.isInteger(claims.exp)&&claims.exp>Date.now()/1000)return candidate;}catch{}
-    writeSession("advent-team-token",null);return "";
-}
+try { sessionStorage.removeItem("advent-team-token"); } catch {}
+function setPrideSubmissionId(value){prideSubmissionId=value;writeSession("advent-pride-id",value||null);}
 function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
 // Transparent space below each source motif; its visible base meets its snow shadow.
 const HOUSE_BASE_GAPS = [20,31,39,15,40,48,14,131,50,56,28,63,88,61,22,37,0,58,23,31,15,0,61,54].map(pixels=>pixels/768);
@@ -250,51 +250,60 @@ async function renderText(day,viewId) {
 
 
 async function api(path,options={}) {
-    let response;
-    try{response=await fetch(`${API_BASE}/api${path}`,{...options,headers:{"Content-Type":"application/json",...(token?{Authorization:`Bearer ${token}`}:{ }),...options.headers},credentials:"omit",cache:"no-store"});}
-    catch{throw new Error("Die Verbindung konnte nicht hergestellt werden. Bitte versuche es nochmals.");}
-    let data;try{data=await response.json();}catch{throw new Error("Der Teamzugang ist gerade nicht erreichbar. Bitte versuche es später nochmals.");}
-    if(!response.ok){const error=new Error(data.error||"Das hat leider nicht geklappt. Bitte versuche es nochmals.");error.status=response.status;error.data=data;throw error;}
-    return data;
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),20000);
+    try{
+        let response;
+        try{response=await fetch(`${API_BASE}/api${path}`,{...options,signal:options.signal||controller.signal,headers:{"Content-Type":"application/json",...(token?{Authorization:`Bearer ${token}`}:{ }),...options.headers},credentials:"omit",cache:"no-store"});}
+        catch{throw new Error("Die Verbindung konnte nicht hergestellt werden. Bitte versuche es nochmals.");}
+        let data;try{data=await response.json();}catch{throw new Error("Der Teamzugang ist gerade nicht erreichbar. Bitte versuche es später nochmals.");}
+        if(!response.ok){const error=new Error(data.error||"Das hat leider nicht geklappt. Bitte versuche es nochmals.");error.status=response.status;error.data=data;throw error;}
+        return data;
+    }finally{clearTimeout(timeout);}
 }
-function forgetLogin(){token="";writeSession("advent-team-token",null);memoryClouds?.clear();}
+function forgetLogin(){token="";memoryClouds?.clear();}
 function renderProtected(day,viewId) {
     if(!token){renderLogin(day,viewId);return;}
     if(day===23){makeVillage();setHeading(day);}
     body.innerHTML='<div class="team-session"><button class="text-button" id="team-logout" type="button">Abmelden</button></div><div id="protected-content"></div>';
-    $("team-logout").onclick=()=>{finishArrival?.();forgetLogin();writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);renderProtected(day,++generation);};
+    $("team-logout").onclick=()=>{finishArrival?.();forgetLogin();prideDraft=[];writeSession("advent-pride-saved",null);setPrideSubmissionId("");renderProtected(day,++generation);};
     if(day===1)renderPrideForm(viewId);else renderReveal(viewId);
 }
 function renderLogin(day,viewId,message="") {
     if(day===23){makeVillage();setHeading(day);}
-    body.innerHTML='<form class="login-panel" id="team-login"><p class="form-intro">Dieser Adventsmoment gehört unserem Team.</p><label class="field-label" for="team-name">Teamname</label><input id="team-name" name="username" autocomplete="username" required value="Wichtel" maxlength="80"><label class="field-label" for="team-password">Passwort</label><input id="team-password" name="password" type="password" autocomplete="current-password" required maxlength="200"><button class="primary-button" type="submit">Mit dem Teamzugang anmelden <span aria-hidden="true">→</span></button><p class="form-message" id="login-message" role="status"></p><p class="login-help">Verwende den gemeinsamen Teamzugang aus unserem Advents-E-Mail.</p></form>';
+    body.innerHTML='<form class="login-panel" id="team-login"><p class="form-intro">Dieser Adventsmoment gehört unserem Team.</p><label class="field-label" for="team-name">Teamname</label><input id="team-name" name="username" autocomplete="username" required autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="80"><label class="field-label" for="team-password">Passwort</label><input id="team-password" name="password" type="password" autocomplete="current-password" required maxlength="200"><button class="primary-button" type="submit">Mit dem Teamzugang anmelden <span aria-hidden="true">→</span></button><p class="form-message" id="login-message" role="status"></p><p class="login-help">Verwende den gemeinsamen Teamzugang aus unserem Advents-E-Mail.</p></form>';
     $("login-message").textContent=message;
     $("team-login").addEventListener("submit",async event=>{
         event.preventDefault();const button=event.currentTarget.querySelector("button"),status=$("login-message");button.disabled=true;status.textContent="Du wirst angemeldet …";status.classList.remove("error");
-        try{const data=await api("/login",{method:"POST",body:JSON.stringify({username:$("team-name").value.trim(),password:$("team-password").value})});if(viewId!==generation)return;token=data.token;writeSession("advent-team-token",token);$("team-password").value="";renderProtected(day,viewId);}
+        try{const data=await api("/login",{method:"POST",body:JSON.stringify({username:$("team-name").value.trim(),password:$("team-password").value})});if(viewId!==generation)return;token=data.token;$("team-password").value="";renderProtected(day,viewId);}
         catch(error){if(viewId!==generation)return;status.textContent=error.message;status.classList.add("error");button.disabled=false;}
     });
 }
 function handleProtectedError(error,day,viewId,status){
     if(viewId!==generation)return;
-    if(error.status===401){forgetLogin();renderLogin(day,viewId,"Deine Anmeldung ist abgelaufen. Bitte melde dich nochmals an.");}
+    if(error.status===401){forgetLogin();renderLogin(day,viewId,"Deine Anmeldung ist abgelaufen. Bitte melde dich nochmals an. Deine noch nicht gespeicherten Eingaben bleiben in diesem geöffneten Tab erhalten.");}
     else{status.textContent=error.message;status.classList.add("error");}
 }
 function renderPrideForm(viewId){
     const target=$("protected-content");
-    if(readSession("advent-pride-saved")){renderSaved();return;}
+    if(readSession("advent-pride-saved")&&!prideDraft.some(Boolean)){renderSaved();return;}
     showFields();
     function showFields(){
         target.innerHTML='<p class="form-intro">Was macht dich stolz?</p><form id="pride-form"><fieldset class="pride-fields"><legend class="sr-only">Deine Gedanken, bis zu fünf Dinge</legend></fieldset><p class="notice">Teile bitte nur, was du mit allen teilen möchtest und bleib freundlich und respektvoll. Die Antworten könnten vielleicht später zu einer Überraschung führen</p><div class="form-footer"><button class="primary-button" type="submit">Antworten speichern <span aria-hidden="true">→</span></button><p class="form-message" id="pride-message" role="status"></p></div></form>';
         const fields=target.querySelector(".pride-fields");
         for(let i=1;i<=5;i++){const field=document.createElement("div");field.className="pride-field";field.innerHTML=`<label class="field-label" for="pride-${i}"><span>${i}.</span>Darauf bin ich stolz</label><textarea id="pride-${i}" name="answer-${i}" rows="2" maxlength="500" placeholder="Eine kleine oder grosse Sache …"></textarea>`;fields.append(field);}
+        const draftFields=Array.from(fields.querySelectorAll("textarea"));
+        draftFields.forEach((field,index)=>{field.value=prideDraft[index]||"";});
+        $("pride-form").addEventListener("input",()=>{prideDraft=draftFields.map(field=>field.value);});
         $("pride-form").addEventListener("submit",async event=>{
             event.preventDefault();const answers=Array.from(fields.querySelectorAll("textarea"),t=>t.value.trim()).filter(Boolean);
             const status=$("pride-message");status.classList.remove("error");if(!answers.length){status.textContent="Ein Gedanke reicht. Wenn du magst, schreib etwas in eines der Felder.";return;}
-            let submissionId=readSession("advent-pride-id");if(!submissionId){submissionId=crypto.randomUUID();writeSession("advent-pride-id",submissionId);}
-            const button=event.currentTarget.querySelector("button");button.disabled=true;status.textContent="Deine Antworten werden gespeichert …";
-            try{await api("/responses",{method:"POST",body:JSON.stringify({answers,submissionId})});if(viewId!==generation)return;writeSession("advent-pride-saved","1");renderSaved();}
-            catch(error){handleProtectedError(error,1,viewId,status);button.disabled=false;}
+            prideDraft=draftFields.map(field=>field.value);
+            if(!prideSubmissionId)setPrideSubmissionId(crypto.randomUUID());
+            const submissionId=prideSubmissionId;
+            const button=event.currentTarget.querySelector("button");button.disabled=true;fields.disabled=true;status.textContent="Deine Antworten werden gespeichert …";
+            try{const result=await api("/responses",{method:"POST",body:JSON.stringify({answers,submissionId})});if(result.saved!==true)throw new Error("Das Speichern wurde nicht bestätigt. Bitte versuche es nochmals.");writeSession("advent-pride-saved","1");prideDraft=[];if(viewId!==generation)return;renderSaved();}
+            catch(error){handleProtectedError(error,1,viewId,status);if(viewId===generation&&status.isConnected)status.textContent+=" Deine Eingaben sind noch nicht bestätigt gespeichert. Lass diesen Tab offen und versuche es nochmals, ohne die Seite neu zu laden.";button.disabled=false;fields.disabled=false;}
         });
     }
     function renderSaved(){
@@ -305,7 +314,7 @@ function renderPrideForm(viewId){
             $("cancel-withdraw").onclick=()=>confirmation.replaceChildren();
             $("confirm-withdraw").onclick=async()=>{
                 const button=$("confirm-withdraw");button.disabled=true;
-                try{await api("/responses",{method:"DELETE",body:JSON.stringify({submissionId:readSession("advent-pride-id")})});if(viewId!==generation)return;writeSession("advent-pride-saved",null);writeSession("advent-pride-id",null);showFields();$("pride-message").textContent="Deine Antworten wurden aus der Sammlung gelöscht.";}
+                try{await api("/responses",{method:"DELETE",body:JSON.stringify({submissionId:prideSubmissionId})});if(viewId!==generation)return;writeSession("advent-pride-saved",null);setPrideSubmissionId("");prideDraft=[];showFields();$("pride-message").textContent="Deine Antworten wurden aus der Sammlung gelöscht.";}
                 catch(error){handleProtectedError(error,1,viewId,$("withdraw-message"));button.disabled=false;}
             };
         };
