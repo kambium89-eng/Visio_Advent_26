@@ -12,10 +12,12 @@ Die Datenbank enthält keine Namen, E-Mail-Adressen oder Firmenkonten. Die zufä
 
 Die Website darf öffentlich auf GitHub Pages liegen. Die API benötigt für den gemeinsamen Teamzugang einen ohne ChatGPT-Konto erreichbaren Service-Endpunkt. Der Datenzugriff wird in jeder API-Anfrage mit dem Team-Token geprüft. CORS erlaubt nur den Website-Ursprung und die lokalen Entwicklungsadressen. Das CORS-Setzen ersetzt keine Authentifizierung.
 
-`TEAM_PASSWORD` und `SESSION_SECRET` werden ausschliesslich als Sites-Runtime-Secrets eingerichtet. Geheimnisse gehören weder in Git noch in Browser-Code. Lokale `.env*`- und `.dev.vars*`-Dateien sind ausgeschlossen. Die Datenbankbindung heisst `DB`.
+`TEAM_USERNAME`, `TEAM_PASSWORD` und `SESSION_SECRET` werden ausschliesslich als Sites-Runtime-Secrets eingerichtet. Geheimnisse gehören weder in Git noch in Browser-Code. Lokale `.env*`- und `.dev.vars*`-Dateien sind ausgeschlossen. Die Datenbankbindung heisst `DB`.
 
 Die offizielle Website verwendet einen festen Link pro Tag. Der Tageslink bestimmt den Dorfstand. Es gibt keine Vorschau-Parameter und keine kalendarische Lese- oder Schreibsperre. Sitzungsgültigkeit, Eingabeprüfung und Authentifizierung bleiben serverseitig wirksam. Diese Änderung folgt der Nutzerentscheidung vom 12. November 2026.
 
 Tests: `node --test server/api.test.mjs`. Datenbankschema: `db/schema.ts`, generierte Migrationen unter `drizzle`. Bestehende Migrationen nicht verändern. Neue Migrationen mit `npm run db:generate` erzeugen. Veröffentlichung erfolgt über den Sites-Workflow. Website und Quellkopie dieses Dienstes liegen zusätzlich im lokalen GitHub-Repository `Visio_Advent_26`.
 
 Die Aufbewahrung und das Löschen der Beiträge nach dem Advent werden vor dem Versand an das Team festgelegt. Der Service richtet keinen E-Mail-Versand ein.
+
+Die Website hält das Anmeldetoken nur im Arbeitsspeicher der geöffneten Seite. Nach dem Neuladen ist eine erneute Anmeldung erforderlich. Ungespeicherte Eingaben bleiben bei einem fehlgeschlagenen Speicherversuch oder einer abgelaufenen Anmeldung im geöffneten Tab erhalten; Schliessen oder Neuladen verwirft diesen Entwurf. Eine Erfolgsmeldung erscheint erst nach ausdrücklicher Speicherbestätigung. Wiederholungen verwenden dieselbe Einsendungs-ID.
