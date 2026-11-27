@@ -66,25 +66,42 @@ function reading(info) {
     const section = element("section", "reading contribution-reading");
     const [heading, ...lines] = info.copy.split("\n");
     if (![2, 3, 21].includes(info.day)) section.append(element("h3", "", heading));
-    let filmHeading;
     for (const line of lines.filter(Boolean)) {
-        if (info.day === 18 && /^\d+\. /.test(line)) {
-            filmHeading = element("h4", "film-heading", line);
-            filmHeading.id = "film-" + parseInt(line, 10);
-            section.append(filmHeading);
-            continue;
-        }
-        if (info.day === 18 && line.startsWith("Trailer ansehen: ")) {
-            const trailer = videoLink(line.slice("Trailer ansehen: ".length).trim(), "Trailer");
-            trailer.className = "primary-button";
-            trailer.setAttribute("aria-describedby", filmHeading.id);
-            section.append(trailer);
-            continue;
-        }
         const text = info.videoUrl ? line.replace(info.videoUrl, "").trim() : line;
-        if (text) section.append(element("p", "", text));
+        if (text) {
+            const paragraph = element("p");
+            if ([3, 14].includes(info.day) && text.startsWith("Deine Aufgabe:")) {
+                paragraph.append(element("strong", "", text));
+            } else paragraph.textContent = text;
+            section.append(paragraph);
+        }
     }
     return section;
+}
+
+function filmCards(parent, info, signal) {
+    const [intro, ...films] = info.copy.split(/\n(?=\d+\. )/);
+    parent.append(reading({ ...info, copy: intro }));
+    for (const film of films) {
+        const [title, ...lines] = film.split("\n");
+        const trailerIndex = lines.findIndex(line => line.startsWith("Trailer ansehen: "));
+        const url = lines[trailerIndex].slice("Trailer ansehen: ".length).trim();
+        const card = element("section", "film-card");
+        card.setAttribute("aria-label", title);
+        const filmInfo = {
+            ...info,
+            title,
+            copy: [title, ...lines.slice(0, trailerIndex)].join("\n"),
+            cardId: "filmkarte-" + parseInt(title, 10)
+        };
+        flipCard(card, filmInfo, signal, "Trailer", face => {
+            face.append(player(url, "Trailer: " + title), videoLink(url, "Trailer auf YouTube öffnen"));
+        });
+        parent.append(card);
+        for (const line of lines.slice(trailerIndex + 1).filter(Boolean)) {
+            parent.append(element("p", "film-tip", line));
+        }
+    }
 }
 
 function showRecipe(parent) {
@@ -113,7 +130,7 @@ function showRecipe(parent) {
 
 function flipCard(parent, info, signal, label, showBack) {
     const face = element("div", "video-card-face");
-    face.id = "tageskarte-" + info.day;
+    face.id = info.cardId || "tageskarte-" + info.day;
     face.tabIndex = -1;
     face.append(reading(info));
     let backController;
@@ -140,7 +157,7 @@ function flipCard(parent, info, signal, label, showBack) {
         toggle.textContent = backController ? "Zurück zum Text" : label;
         toggle.setAttribute("aria-expanded", String(Boolean(backController)));
         face.focus({ preventScroll: true });
-        face.closest(".day-content").scrollTop = 0;
+        if (info.day !== 18) face.closest(".day-content").scrollTop = 0;
         if (!motion.matches) await tilt(88, 0);
         turning = false;
     });
@@ -152,7 +169,7 @@ function flipCard(parent, info, signal, label, showBack) {
 }
 
 // Both timed sequences keep the last frame available and stop when the day is left.
-function sequence(parent, { frames, delay, name, signal }) {
+function sequence(parent, { frames, delay, name, signal, fadeDuration = 560 }) {
     const stage = element("div", "sequence-stage");
     const actions = element("div", "sequence-controls");
     const position = element("span", "sequence-position");
@@ -167,17 +184,24 @@ function sequence(parent, { frames, delay, name, signal }) {
     let playing = !motion.matches;
     let inView = false;
     let timeout;
-    function show(i) {
+    let frameRequest = 0;
+    async function show(i) {
+        const request = ++frameRequest;
         index = i;
         const current = frames[i]();
+        if (current instanceof HTMLImageElement) {
+            try { await current.decode(); } catch {}
+        }
+        if (signal.aborted || request !== frameRequest) return;
         const outgoing = stage.lastElementChild;
+        stage.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
         stage.replaceChildren(current);
         if (!motion.matches && outgoing) {
             outgoing.setAttribute("aria-hidden", "true");
             stage.prepend(outgoing);
-            outgoing.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 560 })
+            // Keep the old card opaque underneath so the paper never flashes through.
+            current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fadeDuration, easing: "ease-in-out" })
                 .finished.then(() => outgoing.remove(), () => outgoing.remove());
-            current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 560 });
         }
         position.textContent = name + " " + (i + 1) + " von " + frames.length;
         previous.disabled = i === 0;
@@ -195,7 +219,7 @@ function sequence(parent, { frames, delay, name, signal }) {
     }
     function step(i) {
         playing = false;
-        show(i);
+        show(Math.max(0, Math.min(frames.length - 1, i)));
         schedule();
     }
     function pause() {
@@ -212,14 +236,18 @@ function sequence(parent, { frames, delay, name, signal }) {
     }, { threshold: 0.15 });
     document.addEventListener("visibilitychange", schedule, { signal });
     motion.addEventListener("change", pause, { signal });
-    signal.addEventListener("abort", () => { clearTimeout(timeout); observer.disconnect(); }, { once: true });
+    signal.addEventListener("abort", () => {
+        clearTimeout(timeout);
+        observer.disconnect();
+        stage.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
+    }, { once: true });
     return { start: () => observer.observe(stage), pause };
 }
 
 function showQuotes(parent, signal) {
     const gallery = element("section", "quote-gallery");
     gallery.setAttribute("aria-label", "Weihnachtskarten");
-    const frames = quotes.map((quote, i) => () => {
+    const cards = quotes.map((quote, i) => {
         const card = element("img", "quote-card");
         card.src = materials + "zitate/" + String(i + 1).padStart(2, "0") + ".webp";
         card.width = 256;
@@ -227,7 +255,8 @@ function showQuotes(parent, signal) {
         card.alt = quote;
         return card;
     });
-    const slides = sequence(gallery, { frames, delay: 10000, name: "Karte", signal });
+    const frames = cards.map(card => () => card.cloneNode());
+    const slides = sequence(gallery, { frames, delay: 6000, fadeDuration: 1100, name: "Karte", signal });
     const actions = element("div", "contribution-actions");
     actions.append(download("weihnachtsgedanken.pdf", "Sammlung als PDF herunterladen"));
     parent.append(gallery, actions);
@@ -260,6 +289,7 @@ function finale(parent, info, signal) {
 }
 
 export function renderContribution(parent, info, signal) {
+    if (info.day === 18) return filmCards(parent, info, signal);
     if (info.day === 24) return finale(parent, info, signal);
     if (info.day === 8) return flipCard(parent, info, signal, "Rezept", showRecipe);
     if (info.day === 22) return flipCard(parent, info, signal, "Zur Sammlung", showQuotes);

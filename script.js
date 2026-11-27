@@ -5,7 +5,7 @@ let DAYS = {};
 const DAY_INTROS = {
     1: "Grosse Schritte, kleine Erfolge – heute darfst du sie feiern.",
     4: "Fünf Fragen. Wähle ein Thema und entdecke die Geschichte dahinter.",
-    11: "Mach es dir gemütlich und rätsle los.\nHinter jedem Hinweis steckt ein kleines Stück Weihnachten.",
+    11: "Klicke auf die Nummern, um die Hinweise zu erhalten.",
     15: "Hinter diesem Puzzle versteckt sich eine Filmszene. Beantworte die Fragen und finde heraus, welcher Film gesucht ist.",
     17: "Zwischen all den Dingen, die erledigt werden wollen, darf heute auch etwas Platz haben, das du einfach gerne machst. Such dir eine Tätigkeit aus und gönn dir dafür fünf bis zehn Minuten. Wenn du magst, begleitet dich dabei ein Timer."
 };
@@ -161,7 +161,7 @@ async function selectDay(day,updateUrl=false) {
         case "contribution": {
             contributionController = new AbortController();
             try {
-                const { renderContribution } = await import("./contribution.js?v=day6-traumschiff-20261123");
+                const { renderContribution } = await import("./contribution.js?v=detail-edits-20261127");
                 if (viewId !== generation) return;
                 startContribution = renderContribution(body, DAYS[day], contributionController.signal);
             } catch {

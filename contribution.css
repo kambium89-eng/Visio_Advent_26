@@ -12,11 +12,16 @@
     font: normal 1.45rem/1.35 Georgia, serif;
     margin: 0 0 1.15rem;
 }
-.contribution-reading .film-heading {
-    margin: 1.65rem 0 .55rem;
+.film-card {
+    display: flex;
+    flex-direction: column;
+    margin: 1.65rem auto;
     border-top: 1px solid var(--line);
     padding-top: 1rem;
 }
+.film-card .reading {text-align: left;}
+.film-card > .contribution-actions {order: 1; margin-top: .4rem;}
+.film-tip {line-height: 1.7;}
 .contribution-link {overflow-wrap: anywhere;}
 .contribution-reading .primary-button {margin: 0 0 .75rem;}
 .contribution-player {

@@ -27,8 +27,9 @@ python3 tools/sync-calendar.py /absoluter/Pfad/Adventskalender_2026_Links.xlsx
 Alle 24 Tageslinks enthalten einen ersten vollständigen Entwurf. Für Tag 2, 3, 8, 10, 12, 13, 14, 16, 18, 20, 21, 22 und 24 übernimmt der Export den Wortlaut aus Spalte K. Das Bastelvideo an Tag 16 verwendet den Link aus Spalte N. Die Originalmaterialien für Rezept, Wunschkarte und Weihnachtsgedanken liegen für die Website in `assets/tagesmaterial/`.
 
 - Tag 8 öffnet mit «Rezept» die Rückseite mit dem Spitzbuben-PDF, dem Download und einer Druckansicht nur für das Rezept.
-- An Tag 6, 10, 12, 16 und 20 öffnet eine Drehung das jeweilige Video. Tag 18 enthält fünf Filmbeschreibungen mit je einer Schaltfläche «Trailer». Tag 21 bietet die überarbeitete Wunschkarte als einseitiges A4-PDF zum Herunterladen.
-- Tag 22 zeigt auf der Rückseite die 16 Karten einzeln für je zehn Sekunden. Tag 24 zeigt Fatimes Gedicht in goldener Georgia, rund fünf Sekunden pro Satz. Beide Folgen können angehalten und von Hand weitergeschaltet werden. Bei reduzierter Bewegung lässt sich das ganze Gedicht direkt lesen.
+- An Tag 6, 10, 12, 16 und 20 öffnet eine Drehung das jeweilige Video. An Tag 18 dreht «Trailer» die jeweilige Filmkarte zum eingebetteten Video; «Zurück zum Text» entfernt den Player wieder. Tag 21 bietet die überarbeitete Wunschkarte als einseitiges A4-PDF zum Herunterladen.
+- Tag 22 zeigt auf der Rückseite die 16 Karten einzeln für je sechs Sekunden mit einer weichen Überblendung von 1,1 Sekunden. Tag 24 zeigt Fatimes Gedicht in goldener Georgia, rund fünf Sekunden pro Satz. Beide Folgen können angehalten und von Hand weitergeschaltet werden. Bei reduzierter Bewegung lässt sich das ganze Gedicht direkt lesen.
+- An Tag 3 und 14 ist der gesamte Absatz «Deine Aufgabe: …» fett hervorgehoben. Tag 11 erklärt direkt, dass ein Klick auf die Nummern die Hinweise öffnet.
 
 - Tag 1: fünf freiwillige Felder; ein Gedanke genügt. Gemeinsamer Teamzugang, Speichern, Ersetzen und Zurückziehen. Der Hinweis verrät den späteren Rückblick nicht.
 - Tag 2 trägt nur den Titel «Das schönste Weihnachtsgeschenk», Tag 3 nur «Ein kleines Kompliment. Eine grosse Wirkung»; ihre bisher wiederholten Inhaltsüberschriften entfallen.
