@@ -2,11 +2,11 @@
 
 24 feste Tageslinks für VisioCoaching auf GitHub Pages:
 `https://kambium89-eng.github.io/Visio_Advent_26/?tag=N` (N = 1 bis 24).
-Ohne Tagesnummer öffnet sich Tag 1. Es gibt keine Vorschau-Ansicht oder Datumssperre.
+Ohne Tagesnummer öffnet sich Tag 1. Jeder Tageslink öffnet seinen Inhalt ab 00:00 Uhr am entsprechenden Dezembertag 2026 in `Europe/Zurich`. Frühere Tage bleiben danach verfügbar, auch nach Weihnachten und im Folgejahr. Vorher erscheint «Noch ein bisschen Vorfreude» mit dem Öffnungsdatum; Vorschau-Parameter umgehen diese Sperre nicht. Offene Seiten prüfen den Datumswechsel automatisch und bei der Rückkehr in den Tab.
 
 ## Tagesseiten und Dorf
 
-Der Tageslink bestimmt den Inhalt und den Dorfstand. Tag 7 zeigt die Häuser 1–7, Tag 24 alle 24 Häuser. Frühere Häuser und ihre Nummern führen zu ihrem Tageslink. Die Navigation verrät nur die Tagesnummer. Beim Öffnen erscheint das Tageshaus gross und verkleinert sich auf seinen Dorfplatz. Die Animation zeigt nur das Datum, ohne Schaltfläche oder zusätzlichen Begleittext. Bei reduzierter Bewegung entfällt die Animation. Der Aquarell-Hintergrund und der leichte Schneefall gelten für alle Seiten. Titel und Zahlen verwenden Alex Brush, die übrigen Texte Georgia. Die Gestaltung ist für Computer vorgesehen.
+Der Tageslink bestimmt den Inhalt und den Dorfstand. Tag 7 zeigt die Häuser 1–7, Tag 24 alle 24 Häuser. Bei einem noch gesperrten Tageslink erscheinen nur bereits freigegebene Häuser. Frühere Häuser und ihre Nummern führen zu ihrem Tageslink. Die Navigation verrät nur die Tagesnummer. Beim Öffnen erscheint das Tageshaus gross und verkleinert sich auf seinen Dorfplatz. Die Animation zeigt nur das Datum, ohne Schaltfläche oder zusätzlichen Begleittext. Bei reduzierter Bewegung entfällt die Animation. Der Aquarell-Hintergrund und der leichte Schneefall gelten für alle Seiten. Titel und Zahlen verwenden Alex Brush, die übrigen Texte Georgia. Die Gestaltung ist für Computer vorgesehen.
 
 Das Dorf steht in einer horizontal scrollbaren Reihe mit gleich grossen Hausrahmen (132 px) auf einer gemeinsamen Schneelinie. Der Dorfstreifen ist 224 px hoch und lässt dem Tagesinhalt mehr Platz. Das normale Mausrad bewegt über dem Dorf die Häuser seitlich, innerhalb des Tagesinhalts den Text vertikal; Zusatztasten sind nicht nötig. Die Bildlaufleiste und die Pfeiltasten der Tastatur im fokussierten Dorfstreifen erlauben zusätzliche Bedienung; seitliche Pfeil-Schaltflächen gibt es nicht. Beim Öffnen ist das aktuelle Tageshaus sichtbar. Die Häuser gleiten hinter den transparenten Bäumen am Fensterrand vorbei, deren Äste den sichtbaren Abschluss bilden. Schatten und `HOUSE_BASE_GAPS` gleichen den transparenten unteren Bildrand jedes Motivs aus. Bei einem Motivaustausch sind neben den Kaminpositionen auch diese Basisabstände zu prüfen.
 
@@ -57,10 +57,12 @@ Ist noch nichts gespeichert, steigt ein ausdrücklich neutraler Dorftext auf. Es
 
 GitHub Pages veröffentlicht die Website. Der separat über Sites bereitgestellte Dienst verwendet eine private D1-Datenbank; `backend/` ist seine Quellkopie. Tag 1 und Tag 23 benötigen den gemeinsamen Teamzugang. Jede Antwort-Anfrage wird auf dem Server geprüft. Passwörter und Sitzungsschlüssel stehen ausschliesslich in Runtime-Secrets.
 
-Gemäss der Entscheidung vom 12. November 2026 bestimmt der Tageslink die Ansicht, ohne kalendarische Lese- oder Schreibsperre. Die Anmeldung schützt die Beiträge weiterhin. Gespeichert werden ein bis fünf freiwillige Gedanken, eine zufällige Einsendungs-ID und ein Zeitpunkt, keine Namen oder E-Mail-Adressen. Der Rückblick enthält nur gemischte Texte ohne Personen-, ID- oder Zeitzuordnung.
+Seit der Freigabe vom 27. November 2026 gilt wieder die Tagessperre. Der Server erlaubt Einsendungen und das Zurückziehen ab dem 1. Dezember 2026 um 00:00 Uhr Schweizer Zeit; die gemeinsame Sammlung wird ab dem 23. Dezember 2026 um 00:00 Uhr Schweizer Zeit freigegeben. Die Anmeldung schützt die Beiträge weiterhin. Gespeichert werden ein bis fünf freiwillige Gedanken, eine zufällige Einsendungs-ID und ein Zeitpunkt, keine Namen oder E-Mail-Adressen. Der Rückblick enthält nur gemischte Texte ohne Personen-, ID- oder Zeitzuordnung.
 
 Die Original-PNGs für E-Mails liegen im Advent-Vault unter `Gestaltung/Häuser`. Alle 24 Dateinummern entsprechen dem Adventstag. Dieselben PNGs liegen für den Website-Build unter `assets/houses`, optimierte WebP-Häuser unter `assets/web/houses`. Hintergrund, Schrift und Dekorationen bleiben in ihren bisherigen Asset-Ordnern. Planung, Excel, Word-Quellen und Archive liegen im Obsidian-Vault unter `VisioCoaching/Projektwochen/Advent`.
 
 ## Lokal
 
 `python3 -m http.server 8765 --bind 127.0.0.1` im Repository, dann z. B. `http://localhost:8765/?tag=23` öffnen. Alle lokalen Dateiverweise funktionieren auch unter dem GitHub-Pages-Unterpfad.
+
+Prüfung der Tagessperre: `node --test tools/verify-day-lock.cjs`; die Serverprüfungen laufen mit `node --test backend/server/api.test.mjs`.

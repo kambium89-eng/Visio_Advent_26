@@ -14,6 +14,7 @@ const memoryClouds = typeof MemoryClouds === "function" ? new MemoryClouds() : n
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const content = $("day-content"), body = $("content-body");
 let selectedDay = 1, generation = 0, arrivalAnimation = null, finishArrival = null;
+let renderedReleaseDay = 0, dayLockTimer;
 // Authentication stays in memory for this open page, never in Web Storage.
 let token = "";
 let prideDraft = [];
@@ -25,14 +26,38 @@ function writeSession(key,value) {try{if(value===null)sessionStorage.removeItem(
 try { sessionStorage.removeItem("advent-team-token"); } catch {}
 function setPrideSubmissionId(value){prideSubmissionId=value;writeSession("advent-pride-id",value||null);}
 function getDayFromUrl() {const day=Number(new URLSearchParams(location.search).get("tag"));return Number.isInteger(day)&&day>=1&&day<=24?day:1;}
+function releasedDay(now=new Date()) {
+    const parts=Object.fromEntries(new Intl.DateTimeFormat("en",{timeZone:"Europe/Zurich",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now).map(part=>[part.type,part.value]));
+    const date=`${parts.year}-${parts.month}-${parts.day}`;
+    return date<"2026-12-01"?0:date>="2026-12-24"?24:Number(parts.day);
+}
+function scheduleDayLockCheck() {
+    clearTimeout(dayLockTimer);
+    const released=releasedDay();
+    if(released===24)return;
+    // Every release in December 2026 is at 00:00 CET (Europe/Zurich, UTC+01:00).
+    const next=Date.parse(`2026-12-${String(released+1).padStart(2,"0")}T00:00:00+01:00`);
+    dayLockTimer=setTimeout(refreshDayLock,Math.min(60000,Math.max(1,next-Date.now())));
+}
+function refreshDayLock() {
+    const released=releasedDay();
+    if(Object.keys(DAYS).length&&released!==renderedReleaseDay){
+        const wasLocked=selectedDay>renderedReleaseDay,isLocked=selectedDay>released;
+        renderedReleaseDay=released;
+        if(wasLocked!==isLocked){selectDay(selectedDay);return;}
+        if(isLocked)makeVillage();
+    }
+    scheduleDayLockCheck();
+}
 // Transparent space below each source motif; its visible base meets its snow shadow.
 const HOUSE_BASE_GAPS = [20,31,39,15,40,48,14,131,50,56,28,63,88,61,22,37,0,58,23,31,15,0,61,54].map(pixels=>pixels/768);
 
 function makeVillage() {
-    const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23);
+    const visibleDays=Math.min(selectedDay,releasedDay());
+    const memoryDay=Boolean(memoryClouds&&token&&selectedDay===23&&visibleDays===23);
     memoryClouds?.beginPage(memoryDay);
     const nav=$("village-houses");nav.replaceChildren();
-    for(let day=1;day<=selectedDay;day++) {
+    for(let day=1;day<=visibleDays;day++) {
         const house=document.createElement(memoryDay?"button":"a");
         house.className=`village-house${memoryDay?" memory-house":""}`;
         house.dataset.day=day;
@@ -55,7 +80,7 @@ function makeVillage() {
         const plot=document.createElement("div");plot.className="village-plot";
         house.append(image);plot.append(house,number);nav.append(plot);
     }
-    $("village-count").textContent=`${selectedDay} von 24 Häuschen`;
+    $("village-count").textContent=`${visibleDays} von 24 Häuschen`;
     scrollToCurrentHouse();
 }
 
@@ -119,17 +144,17 @@ function dayUrl(day) {
     return url;
 }
 
-function setHeading(day) {
-    const info=DAYS[day],surpriseLogin=day===23&&!token;
+function setHeading(day,locked=false) {
+    const info=DAYS[day],surpriseLogin=day===23&&!token&&!locked;
     $("day-eyebrow").textContent=`${day}. Dezember`;
-    $("day-title").textContent=surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":info.title;
-    $("day-title").hidden=day===7;
-    $("day-intro").textContent=DAY_INTROS[day]||"";
-    $("day-intro").hidden=surpriseLogin||!DAY_INTROS[day];
+    $("day-title").textContent=locked?"Noch ein bisschen Vorfreude":surpriseLogin?"Eine kleine Überraschung wartet auf dich nach dem Login":info.title;
+    $("day-title").hidden=day===7&&!locked;
+    $("day-intro").textContent=locked?`Dieses Häuschen öffnet sich am ${day}. Dezember.`:DAY_INTROS[day]||"";
+    $("day-intro").hidden=!locked&&(surpriseLogin||!DAY_INTROS[day]);
     const guidance=$("day-guidance");
-    guidance.hidden=day!==1;
+    guidance.hidden=day!==1||locked;
     guidance.textContent=day===1?"Versuche dir Fünf Dinge zu überlegen auf die du stolz bist. Falls dir nur etwas in den Sinn kommt, ist das nicht so schlimm.":"";
-    document.title=day===7?"7. Dezember · Adventskalender 2026":`${day}. Dezember · ${surpriseLogin?"Eine kleine Überraschung":info.title}`;
+    document.title=locked?`${day}. Dezember · Noch ein bisschen Vorfreude`:day===7?"7. Dezember · Adventskalender 2026":`${day}. Dezember · ${surpriseLogin?"Eine kleine Überraschung":info.title}`;
     $("page-status").textContent=`${day}. Dezember: ${$("day-title").textContent}`;
 }
 
@@ -141,9 +166,12 @@ function renderPlaceholder(day) {
 }
 
 async function selectDay(day,updateUrl=false) {
+    renderedReleaseDay=releasedDay();
+    const locked=day>renderedReleaseDay;
+    scheduleDayLockCheck();
     contributionController?.abort();
     finishArrival?.();disposeCrossword?.();disposeCrossword=null;disposeFacts?.();disposeFacts=null;disposeFilmQuiz?.();disposeFilmQuiz=null;disposeJoy?.();disposeJoy=null;generation++;const viewId=generation;selectedDay=day;
-    document.body.classList.toggle("video-day",DAYS[day].type==="video");
+    document.body.classList.toggle("video-day",!locked&&DAYS[day].type==="video");
     document.body.classList.remove("video-expanded");
     document.querySelectorAll('.arrival-target').forEach(h=>h.classList.remove('arrival-target'));
     $("arrival").hidden=true;
@@ -152,9 +180,10 @@ async function selectDay(day,updateUrl=false) {
     window.scrollTo({top:0,behavior:"instant"});
     body.replaceChildren();content.style.maxWidth="";content.scrollTop=0;
     document.querySelectorAll(".village-house,.village-marker").forEach(h=>{if(Number(h.dataset.day)===day)h.setAttribute("aria-current","page");else h.removeAttribute("aria-current");});
-    setHeading(day);
-    content.dataset.type=DAYS[day].type;
+    setHeading(day,locked);
+    content.dataset.type=locked?"locked":DAYS[day].type;
     content.dataset.day=day;
+    if(locked){document.body.classList.remove("is-arriving");return;}
     document.body.classList.add("is-arriving");
     let startContribution;
     switch(DAYS[day].type){
@@ -359,5 +388,7 @@ async function startCalendar() {
 const SNOWFLAKE_COUNT=Math.round(25*1.3);
 if(!reducedMotion.matches)for(let i=0;i<SNOWFLAKE_COUNT;i++){const flake=document.createElement("i");flake.className="snowflake";const size=2+(i%4);flake.style.cssText=`left:${(i*37.7)%100}%;width:${size}px;height:${size}px;--duration:${13+i%11}s;--delay:-${i*.93}s;--opacity:${.25+(i%4)*.1}`;$("snowfall").append(flake);}
 window.addEventListener("popstate",()=>{if(Object.keys(DAYS).length)selectDay(getDayFromUrl());});
-document.addEventListener("visibilitychange",()=>{if(document.hidden)finishArrival?.();});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)finishArrival?.();else refreshDayLock();});
+window.addEventListener("pageshow",refreshDayLock);
+window.addEventListener("focus",refreshDayLock);
 startCalendar();
